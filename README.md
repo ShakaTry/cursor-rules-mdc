@@ -65,33 +65,79 @@ The **Cursor Rules MDC System** is a professional development framework that tra
 
 ```mermaid
 graph TB
-    Start([User Request]) --> Research[MODE: RESEARCH<br/>Read Memory Bank<br/>Analyze Context]
+    Start([User Request]) --> Research[MODE: RESEARCH]
     
-    Research --> Decision{Code<br/>Needed?}
-    Decision -->|Yes| Plan[MODE: PLAN<br/>Create Structured Plan<br/>Include GitHub Steps]
-    Decision -->|No| Response[Provide Information]
+    Research --> R1[Read Memory Bank]
+    Research --> R2[Analyze Existing Code]
+    Research --> R3[Understand Context]
+    Research --> R4[Gather Requirements]
     
-    Plan --> Validation{User<br/>Approves?}
-    Validation -->|"OK/Approved"| Execute[MODE: EXECUTE<br/>Implement Code<br/>Apply Standards]
-    Validation -->|Changes| Plan
+    R1 & R2 & R3 & R4 --> Decision{Code<br/>Needed?}
     
-    Execute --> GitHub{GitHub<br/>Needed?}
-    GitHub -->|Yes| GHWorkflow[GitHub Workflow<br/>3 Phases]
+    Decision -->|Yes| Plan[MODE: PLAN]
+    Decision -->|No| Response[Provide Information<br/>Answer Questions]
+    
+    Plan --> P1[Create /plan Structure]
+    Plan --> P2[Define Steps & Milestones]
+    Plan --> P3[Include Test Strategy]
+    Plan --> P4[Add GitHub Steps if Needed]
+    Plan --> P5[Estimate Time/Complexity]
+    
+    P1 & P2 & P3 & P4 & P5 --> Validation{User<br/>Approves?}
+    
+    Validation -->|"OK/Approved"| Execute[MODE: EXECUTE]
+    Validation -->|Changes Requested| Plan
+    
+    Execute --> E1[Implement Code]
+    Execute --> E2[Apply Standards<br/>ESLint/Prettier]
+    Execute --> E3[Write Tests<br/>>80% Coverage]
+    Execute --> E4[Add Documentation<br/>JSDoc/Comments]
+    Execute --> E5[Security Checks<br/>OWASP]
+    
+    E1 & E2 & E3 & E4 & E5 --> GitHub{GitHub<br/>Needed?}
+    
+    GitHub -->|Yes| GHWorkflow[GitHub Workflow]
     GitHub -->|No| Review
     
-    GHWorkflow --> GHCheck[PHASE 1: CHECKS<br/>Git Status<br/>Auth Status<br/>Name Available]
-    GHCheck --> GHCreate[PHASE 2: CREATE<br/>Create Repo<br/>Push Code<br/>Set Remote]
-    GHCreate --> GHFinalize[PHASE 3: FINALIZE<br/>Add Topics<br/>Configure<br/>Validate]
-    GHFinalize --> Review
+    GHWorkflow --> GHCheck[PHASE 1: CHECKS]
+    GHCheck --> C1[git status --porcelain]
+    GHCheck --> C2[git branch --show-current]
+    GHCheck --> C3[gh auth status]
+    GHCheck --> C4[gh repo view name]
+    GHCheck --> C5[Scan Sensitive Files]
     
-    Review[MODE: REVIEW<br/>Validate Code<br/>Update Memory Bank<br/>Archive Plan] --> Complete([Task Complete])
+    C1 & C2 & C3 & C4 & C5 --> GHCreate[PHASE 2: CREATE]
+    
+    GHCreate --> CR1[gh repo create]
+    GHCreate --> CR2[--public/--private]
+    GHCreate --> CR3[--push --source=.]
+    GHCreate --> CR4[Set Description]
+    
+    CR1 & CR2 & CR3 & CR4 --> GHFinalize[PHASE 3: FINALIZE]
+    
+    GHFinalize --> F1[Add Topics<br/>cursor, mdc, tech]
+    GHFinalize --> F2[Configure Settings]
+    GHFinalize --> F3[Verify Remote]
+    GHFinalize --> F4[Update Memory Bank]
+    
+    F1 & F2 & F3 & F4 --> Review
+    
+    Review[MODE: REVIEW] --> RV1[Validate Implementation]
+    Review --> RV2[Run Final Tests]
+    Review --> RV3[Check Coverage]
+    Review --> RV4[Update Memory Bank]
+    Review --> RV5[Archive Plan]
+    Review --> RV6[Document Learnings]
+    
+    RV1 & RV2 & RV3 & RV4 & RV5 & RV6 --> Complete([Task Complete])
     
     Response --> Complete
     
-    style Research fill:#e1f5fe,stroke:#01579b
-    style Plan fill:#f3e5f5,stroke:#4a148c
-    style Execute fill:#e8f5e9,stroke:#1b5e20
-    style Review fill:#fff3e0,stroke:#e65100
+    style Research fill:#e1f5fe,stroke:#01579b,stroke-width:3px
+    style Plan fill:#f3e5f5,stroke:#4a148c,stroke-width:3px
+    style Execute fill:#e8f5e9,stroke:#1b5e20,stroke-width:3px
+    style Review fill:#fff3e0,stroke:#e65100,stroke-width:3px
+    style GHWorkflow fill:#f5f5f5,stroke:#424242,stroke-width:2px
     style GHCheck fill:#e3f2fd,stroke:#0d47a1
     style GHCreate fill:#f3e5f5,stroke:#6a1b9a
     style GHFinalize fill:#e8f5e9,stroke:#2e7d32
