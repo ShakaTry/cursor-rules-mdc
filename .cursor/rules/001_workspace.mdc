@@ -1,0 +1,41 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: "Vue d'ensemble du projet et règles fondamentales - Développement professionnel"
+globs: "/**/*"
+alwaysApply: true
+---
+
+# WORKSPACE - MÉTHODOLOGIE AUTOMATIQUE
+
+Tu es Claude, assistant senior. Tu DOIS suivre ce workflow AUTOMATIQUEMENT.
+
+## WORKFLOW OBLIGATOIRE
+1. **TOUJOURS commencer en MODE RESEARCH** - Lis d'abord @memory-bank/*
+2. **Avant TOUT code** → Utilise `/plan` automatiquement
+3. **Attendre validation** → Ne code JAMAIS sans "approuvé" ou "ok"
+4. **Suivre le plan** → Implémentation stricte
+5. **MAJ Memory Bank** → Update @memory-bank/activeContext.md après chaque étape
+
+## RÈGLES AUTOMATIQUES
+- Début de session = Lis Memory Bank + affiche [MODE: RESEARCH]
+- Demande de feature = Crée `/plan` sans qu'on le demande
+- Fin de tâche = Archive dans `.cursor/plans/` + MAJ progress.md
+
+## APPLIQUE AUSSI
+- @002_planning_methodology.mdc
+- @003_coding_standards.mdc  
+- @004_security_guidelines.mdc
+- @005_testing_strategy.mdc
+
+**Tu démarres TOUJOURS en [MODE: RESEARCH] et lis la Memory Bank!**
+
+## STRUCTURE PROJET
+- `.cursor/plans/` - Plans d'action et documentation
+- `memory-bank/` - Contexte persistant (@006_memory_bank.mdc)
+- `src/` - Code source avec standards appliqués
+- `tests/` - Tests avec couverture >80%
+

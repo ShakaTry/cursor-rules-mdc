@@ -1,0 +1,49 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: "Stratégie de tests et méthodologie TDD pour code fiable"
+globs: "tests/**/*,spec/**/*,__tests__/**/*,*.test.*,*.spec.*"
+alwaysApply: false
+---
+
+# TESTS - COUVERTURE >80%
+
+## PYRAMIDE DE TESTS
+```
+   /\    E2E (5%) - Parcours critiques
+  /--\   Integration (15%) - APIs, DB
+ /----\  Unit (80%) - Logique métier
+```
+
+## STRUCTURE AAA
+```javascript
+test('should calculate tax correctly', () => {
+  // Arrange
+  const amount = 100, rate = 0.2;
+  
+  // Act
+  const result = calculateTax(amount, rate);
+  
+  // Assert
+  expect(result).toBe(20);
+});
+```
+
+## RÈGLES
+- Test d'abord (TDD) pour nouvelles features
+- Un test = un seul comportement
+- Mocks pour dépendances externes
+- Factories pour données de test
+- Tests isolés et rapides (<100ms)
+
+## CHECKLIST PR
+- [ ] Tests unitaires ajoutés/modifiés
+- [ ] Coverage maintenue >80%
+- [ ] Tests d'intégration si API
+- [ ] Pas de `.only` ou `.skip`
+
+
+

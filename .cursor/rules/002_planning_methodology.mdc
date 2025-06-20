@@ -1,0 +1,44 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: "Méthodologie de planification avec intégration native du /plan de Claude"
+globs: ".cursor/plans/**/*,**/plan/**/*,**/planning/**/*"
+alwaysApply: false
+---
+
+# PLANIFICATION - UTILISE /plan
+
+## PROCESSUS OBLIGATOIRE
+1. **Analyse** → Comprendre contexte et contraintes
+2. **Plan** → Utilise `/plan` pour structurer
+3. **Validation** → Attendre approbation explicite
+4. **Exécution** → Suivre le plan à la lettre
+
+## TEMPLATE /plan
+```
+/plan
+# [TITRE TÂCHE]
+## Contexte: [Besoin et contraintes]
+## Objectifs:
+- [ ] Objectif 1
+- [ ] Objectif 2
+## Étapes:
+1. [Action] - [Fichiers impactés]
+2. [Action] - [Détails techniques]
+## Validation: [Critères de succès]
+```
+
+## RÈGLES PLAN
+- Décompose en étapes atomiques (<20min)
+- Identifie TOUS les fichiers impactés
+- Définis critères de validation mesurables
+- Archive dans `.cursor/plans/YYYY-MM-DD_task.md`
+- Met à jour `memory-bank/activeContext.md`
+
+**RAPPEL:** Utilise TOUJOURS `/plan` avant de coder!
+
+
+

@@ -1,0 +1,44 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: "Guidelines de sécurité et protection contre les vulnérabilités"
+globs: "src/**/*,api/**/*,auth/**/*,backend/**/*,server/**/*"
+alwaysApply: false
+---
+
+# SÉCURITÉ - AUCUN COMPROMIS
+
+## VALIDATION OBLIGATOIRE
+```javascript
+// ✅ TOUJOURS valider les entrées
+const schema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().min(8).required()
+});
+const validated = schema.validate(input);
+```
+
+## AUTHENTIFICATION
+- Bcrypt (saltRounds=12) pour passwords
+- JWT avec expiration courte (1h max)
+- Refresh tokens en HttpOnly cookies
+- Rate limiting sur endpoints sensibles
+
+## PROTECTION
+- **XSS**: Échapper TOUT contenu utilisateur
+- **SQL**: Requêtes préparées UNIQUEMENT
+- **CSRF**: Tokens sur toutes mutations
+- **Secrets**: Variables env, JAMAIS hardcodés
+
+## CHECKLIST DÉPLOIEMENT
+- [ ] Scan dépendances (`npm audit`)
+- [ ] HTTPS forcé partout
+- [ ] Headers sécurité (Helmet.js)
+- [ ] Logs sans données sensibles
+- [ ] Tests sécurité passent
+
+
+

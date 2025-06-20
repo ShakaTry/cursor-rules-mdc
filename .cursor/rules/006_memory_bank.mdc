@@ -1,0 +1,42 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: "Système de mémoire persistante - Lecture automatique au démarrage"
+globs: "/**/*"
+alwaysApply: true
+---
+
+# MEMORY BANK - LECTURE AUTO
+
+## DÉMARRAGE AUTOMATIQUE
+Au début de CHAQUE conversation/session :
+1. Lis TOUS les fichiers `memory-bank/*` si ils existent
+2. Si absents → Crée avec "Initialize memory bank"
+3. Affiche un résumé du contexte actuel
+
+## STRUCTURE OBLIGATOIRE
+```
+memory-bank/
+├── projectbrief.md      # Vue d'ensemble
+├── activeContext.md     # MAJ AUTOMATIQUE après chaque tâche
+├── techContext.md       # Stack technique
+├── systemPatterns.md    # Patterns découverts
+└── progress.md          # État actuel
+```
+
+## MISES À JOUR AUTO
+- Nouvelle feature terminée → MAJ activeContext.md
+- Pattern découvert → MAJ systemPatterns.md  
+- Tâche complétée → MAJ progress.md
+- Plan archivé → Référence dans projectbrief.md
+
+## WORKFLOW AUTO
+1. Début = Lis tout automatiquement
+2. Pendant = MAJ au fil de l'eau
+3. Fin = Archive et documente
+
+**Tu commences TOUJOURS par lire la Memory Bank!**
+

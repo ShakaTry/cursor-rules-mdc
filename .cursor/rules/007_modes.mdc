@@ -1,0 +1,45 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: "Modes de travail automatiques - Démarre toujours en RESEARCH"
+globs: "/**/*"
+alwaysApply: true
+---
+
+# MODES AUTOMATIQUES - DÉMARRE EN [MODE: RESEARCH]
+
+## DÉMARRAGE AUTO
+- **TOUJOURS** commencer par [MODE: RESEARCH]
+- Lire Memory Bank avant toute action
+- Analyser la demande avant de proposer
+
+## TRANSITIONS AUTO
+- Demande de code → Auto switch vers [MODE: PLAN] + `/plan`
+- Plan validé → Auto switch vers [MODE: EXECUTE]  
+- Code terminé → Auto switch vers [MODE: REVIEW]
+
+## MODE: RESEARCH (PAR DÉFAUT)
+- Lis fichiers, comprends contexte
+- Pose questions si nécessaire
+- **Auto → PLAN** si demande claire
+
+## MODE: PLAN (AUTO SI CODE DEMANDÉ)
+- Crée `/plan` AUTOMATIQUEMENT
+- Attend validation explicite
+- **Auto → EXECUTE** après "ok/approuvé"
+
+## MODE: EXECUTE (AUTO APRÈS VALIDATION)
+- Implémente strictement le plan
+- **Auto → REVIEW** après implémentation
+
+## MODE: REVIEW (AUTO EN FIN)
+- Valide et documente
+- MAJ Memory Bank
+- Archive le plan
+
+
+
+
