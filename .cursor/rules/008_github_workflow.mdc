@@ -1,0 +1,138 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+description: "Workflow GitHub complet - Vérifications, création et finalisation automatisées"
+globs: "/**/*"
+alwaysApply: true
+---
+
+# GITHUB WORKFLOW - AUTOMATISATION COMPLÈTE
+
+Tu es Claude, assistant senior. Tu DOIS appliquer ce workflow GitHub AUTOMATIQUEMENT.
+
+## WORKFLOW GITHUB OBLIGATOIRE
+
+### **PHASE 1: VÉRIFICATIONS (pré-création)**
+```bash
+# Status git local
+git status --porcelain
+git branch --show-current
+
+# Authentification GitHub CLI
+gh auth status
+
+# Vérification repository n'existe pas
+gh repo view [nom-repo] 2>/dev/null
+```
+
+**Validations automatiques:**
+- ✅ Working tree clean (ou commit avant)
+- ✅ Branch main/master active
+- ✅ GitHub CLI authentifié
+- ✅ Nom repository disponible
+- ✅ Pas de fichiers sensibles (.env, .key, secrets)
+
+### **PHASE 2: CRÉATION REPOSITORY**
+```bash
+# Création avec options standard
+gh repo create [nom-repo] \
+  --public \
+  --description "[description]" \
+  --push \
+  --source=.
+
+# Vérification création
+gh repo view [nom-repo]
+```
+
+**Options auto-appliquées:**
+- `--public` (par défaut, sauf demande contraire)
+- `--push` (push automatique)
+- `--source=.` (dossier courant)
+- Description courte (éviter les longues descriptions)
+
+### **PHASE 3: FINALISATION**
+```bash
+# Configuration repository
+gh repo edit [nom-repo] \
+  --add-topic "cursor" \
+  --add-topic "mdc" \
+  --add-topic "[tech-stack]"
+
+# Vérification finale
+gh repo list --limit 5
+git remote -v
+```
+
+**Actions automatiques:**
+- Topics ajoutés selon tech stack
+- README badges si applicable
+- License MIT par défaut
+- .gitignore optimisé
+
+## INTÉGRATION MEMORY BANK
+
+### **Tracking automatique**
+- Sauvegarder URL repository créé
+- Logger actions GitHub effectuées
+- Historique des configurations
+
+### **Format Memory Bank**
+```markdown
+## GITHUB REPOSITORIES CRÉÉS
+- [nom-repo] - https://github.com/[user]/[nom-repo] - [date]
+- Status: ✅ Créé et configuré
+- Topics: cursor, mdc, [tech]
+```
+
+## COMMANDES DISPONIBLES
+
+### **Vérifications rapides**
+- `/gh-check` - Vérifications complètes pré-création
+- `/gh-status` - Status authentification et repos
+
+### **Création automatisée**
+- `/gh-create [nom]` - Workflow complet automatique
+- `/gh-quick [nom]` - Création rapide sans finalisation
+
+### **Finalisation**
+- `/gh-config [nom]` - Configuration post-création
+- `/gh-topics [nom] [topics]` - Ajout topics personnalisés
+
+## SÉCURITÉ ET BONNES PRATIQUES
+
+### **Vérifications obligatoires**
+- Scan fichiers sensibles avant push
+- Validation noms repository (conventions)
+- Confirmation push de gros fichiers
+
+### **Standards appliqués**
+- README.md toujours présent
+- .gitignore adapté au projet
+- License explicite
+- Description claire et concise
+
+## GESTION ERREURS
+
+### **Erreurs courantes**
+- Nom repository déjà pris → Proposer alternatives
+- Authentification expirée → `gh auth login`
+- Working tree dirty → Proposer commit/stash
+- Remote déjà configuré → Nettoyer et reconfigurer
+
+### **Rollback automatique**
+Si erreur en phase 2/3 → Supprimer repository créé
+
+## INTÉGRATION MODES
+
+- **MODE RESEARCH** → Lit repos existants
+- **MODE PLAN** → Inclut étapes GitHub si applicable  
+- **MODE EXECUTE** → Applique workflow GitHub
+- **MODE REVIEW** → Vérifie repository créé et fonctionnel
+
+**GitHub CLI testé et fonctionnel** - Authentifié avec account ShakaTry ✅
+
+
+
