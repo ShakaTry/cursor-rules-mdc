@@ -57,7 +57,8 @@ alwaysApply: false
 4. **AFFICHE** le plan complété avec phases
 5. **ATTEND** validation : "ok", "approuvé", "validé"
 6. **IMPLÉMENTE** phase par phase selon le plan
-7. **ARCHIVE** dans `completed/` après finalisation
+7. **🚀 CONTINUE AUTOMATIQUEMENT** vers la phase suivante après chaque phase
+8. **ARCHIVE** dans `completed/` après finalisation
 
 ### 4. **STRUCTURE DES DOSSIERS**
 
@@ -92,6 +93,7 @@ echo "Plan complété" >> memory-bank/activeContext.md
 - **🚨 OBLIGATOIRE** : Découper en phases précises avec temps estimé
 - **TOUJOURS** suivre les phases dans l'ordre
 - **TOUJOURS** valider chaque phase avant la suivante
+- **🚀 TOUJOURS** continuer automatiquement vers la phase suivante après validation
 - **TOUJOURS** archiver après implémentation
 
 ## 📐 **BONNES PRATIQUES PHASES**
@@ -106,8 +108,11 @@ echo "Plan complété" >> memory-bank/activeContext.md
 - Objectifs **mesurables** et **vérifiables**
 - Actions **spécifiques** et **réalisables**
 
-### **Validation progressive**
+### **Validation progressive & Continuité automatique**
 - Valider chaque phase avant la suivante
+- **🚀 CONTINUER AUTOMATIQUEMENT** le workflow après chaque phase validée
+- **Ne PAS attendre** de nouvelle instruction utilisateur entre phases
+- Enchaîner les phases de manière fluide selon le plan
 - Ajuster les phases suivantes si nécessaire
 - Documenter les déviations du plan
 
