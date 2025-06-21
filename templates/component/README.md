@@ -1,6 +1,6 @@
 # 🧩 Template Composant
 
-> **Template pour créer des composants/modules réutilisables avec qualité garantie**
+> **Template for creating reusable components/modules with guaranteed quality**
 
 ## 🎯 À propos
 
