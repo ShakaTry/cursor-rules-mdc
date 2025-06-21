@@ -1,0 +1,362 @@
+name: 🚀 Universal Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      bump_type:
+        description: 'Version bump type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+      dry_run:
+        description: 'Dry run (no actual release)'
+        required: false
+        default: false
+        type: boolean
+
+env:
+  NODE_VERSION: '18'
+  PYTHON_VERSION: '3.11'
+  GO_VERSION: '1.21'
+  RUST_VERSION: 'stable'
+
+jobs:
+  detect-project:
+    name: 🔍 Detect Project Type
+    runs-on: ubuntu-latest
+    outputs:
+      project-type: ${{ steps.detect.outputs.project-type }}
+      package-manager: ${{ steps.detect.outputs.package-manager }}
+      build-tool: ${{ steps.detect.outputs.build-tool }}
+      version-file: ${{ steps.detect.outputs.version-file }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Make scripts executable
+        run: |
+          chmod +x scripts/*.sh
+          chmod +x .githooks/*
+
+      - name: Detect project type
+        id: detect
+        run: |
+          ./scripts/project-detector.sh
+          source .automation/project.env
+          echo "project-type=$PROJECT_TYPE" >> $GITHUB_OUTPUT
+          echo "package-manager=$PACKAGE_MANAGER" >> $GITHUB_OUTPUT
+          echo "build-tool=$BUILD_TOOL" >> $GITHUB_OUTPUT
+          echo "version-file=$VERSION_FILE" >> $GITHUB_OUTPUT
+
+  test:
+    name: 🧪 Run Tests
+    runs-on: ubuntu-latest
+    needs: detect-project
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        if: needs.detect-project.outputs.project-type == 'javascript'
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: ${{ needs.detect-project.outputs.package-manager }}
+
+      - name: Setup Python
+        if: needs.detect-project.outputs.project-type == 'python'
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Setup Go
+        if: needs.detect-project.outputs.project-type == 'go'
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{ env.GO_VERSION }}
+
+      - name: Setup Rust
+        if: needs.detect-project.outputs.project-type == 'rust'
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ env.RUST_VERSION }}
+          override: true
+
+      - name: Install dependencies (JavaScript)
+        if: needs.detect-project.outputs.project-type == 'javascript'
+        run: |
+          if [ "${{ needs.detect-project.outputs.package-manager }}" = "yarn" ]; then
+            yarn install --frozen-lockfile
+          elif [ "${{ needs.detect-project.outputs.package-manager }}" = "pnpm" ]; then
+            npm install -g pnpm
+            pnpm install --frozen-lockfile
+          else
+            npm ci
+          fi
+
+      - name: Install dependencies (Python)
+        if: needs.detect-project.outputs.project-type == 'python'
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          elif [ -f pyproject.toml ]; then
+            pip install poetry
+            poetry install
+          fi
+
+      - name: Install dependencies (Go)
+        if: needs.detect-project.outputs.project-type == 'go'
+        run: go mod download
+
+      - name: Run tests (JavaScript)
+        if: needs.detect-project.outputs.project-type == 'javascript'
+        run: |
+          if [ "${{ needs.detect-project.outputs.package-manager }}" = "yarn" ]; then
+            yarn test
+          elif [ "${{ needs.detect-project.outputs.package-manager }}" = "pnpm" ]; then
+            pnpm test
+          else
+            npm test
+          fi
+
+      - name: Run tests (Python)
+        if: needs.detect-project.outputs.project-type == 'python'
+        run: |
+          if command -v pytest &> /dev/null; then
+            pytest
+          elif [ -f pyproject.toml ]; then
+            poetry run pytest
+          else
+            python -m unittest discover
+          fi
+
+      - name: Run tests (Go)
+        if: needs.detect-project.outputs.project-type == 'go'
+        run: go test -v ./...
+
+      - name: Run tests (Rust)
+        if: needs.detect-project.outputs.project-type == 'rust'
+        run: cargo test --verbose
+
+  build:
+    name: 🔨 Build Project
+    runs-on: ubuntu-latest
+    needs: [detect-project, test]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        if: needs.detect-project.outputs.project-type == 'javascript'
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: ${{ needs.detect-project.outputs.package-manager }}
+
+      - name: Setup Python
+        if: needs.detect-project.outputs.project-type == 'python'
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Setup Go
+        if: needs.detect-project.outputs.project-type == 'go'
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{ env.GO_VERSION }}
+
+      - name: Setup Rust
+        if: needs.detect-project.outputs.project-type == 'rust'
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ env.RUST_VERSION }}
+          override: true
+
+      - name: Install dependencies and build (JavaScript)
+        if: needs.detect-project.outputs.project-type == 'javascript'
+        run: |
+          if [ "${{ needs.detect-project.outputs.package-manager }}" = "yarn" ]; then
+            yarn install --frozen-lockfile
+            yarn build
+          elif [ "${{ needs.detect-project.outputs.package-manager }}" = "pnpm" ]; then
+            npm install -g pnpm
+            pnpm install --frozen-lockfile
+            pnpm build
+          else
+            npm ci
+            npm run build
+          fi
+
+      - name: Install dependencies and build (Python)
+        if: needs.detect-project.outputs.project-type == 'python'
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f pyproject.toml ]; then
+            pip install poetry build
+            poetry install
+            poetry build
+          elif [ -f setup.py ]; then
+            pip install build
+            python -m build
+          fi
+
+      - name: Build (Go)
+        if: needs.detect-project.outputs.project-type == 'go'
+        run: |
+          go mod download
+          go build -v ./...
+
+      - name: Build (Rust)
+        if: needs.detect-project.outputs.project-type == 'rust'
+        run: cargo build --release --verbose
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts
+          path: |
+            dist/
+            build/
+            target/release/
+            *.tar.gz
+            *.whl
+          retention-days: 30
+
+  release:
+    name: 🚀 Create Release
+    runs-on: ubuntu-latest
+    needs: [detect-project, test, build]
+    if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
+    permissions:
+      contents: write
+      packages: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        if: needs.detect-project.outputs.project-type == 'javascript'
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Setup Python
+        if: needs.detect-project.outputs.project-type == 'python'
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Setup Go
+        if: needs.detect-project.outputs.project-type == 'go'
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{ env.GO_VERSION }}
+
+      - name: Setup Rust
+        if: needs.detect-project.outputs.project-type == 'rust'
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ env.RUST_VERSION }}
+          override: true
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-artifacts
+
+      - name: Get version
+        id: version
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            # Manual trigger - use auto-release script
+            chmod +x scripts/*.sh
+            ./scripts/auto-release.sh ${{ github.event.inputs.bump_type }} --dry-run
+            VERSION=$(./scripts/version-manager.sh info | grep "Current Version:" | awk '{print $3}')
+          else
+            # Tag trigger - extract version from tag
+            VERSION=${GITHUB_REF#refs/tags/v}
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Generate release notes
+        id: release_notes
+        run: |
+          # Get the last tag
+          LAST_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          
+          if [[ -n "$LAST_TAG" ]]; then
+            # Generate notes from commits since last tag
+            NOTES=$(git log --pretty=format:"- %s" "$LAST_TAG"..HEAD)
+          else
+            # First release - get last 10 commits
+            NOTES=$(git log --pretty=format:"- %s" --max-count=10)
+          fi
+          
+          # Save to file for multiline output
+          echo "$NOTES" > release_notes.txt
+          echo "notes_file=release_notes.txt" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.version.outputs.version }}
+          release_name: Release v${{ steps.version.outputs.version }}
+          body_path: ${{ steps.release_notes.outputs.notes_file }}
+          draft: false
+          prerelease: false
+
+      - name: Publish to npm
+        if: needs.detect-project.outputs.project-type == 'javascript' && !github.event.inputs.dry_run
+        run: |
+          if [ "${{ needs.detect-project.outputs.package-manager }}" = "yarn" ]; then
+            yarn publish --non-interactive
+          elif [ "${{ needs.detect-project.outputs.package-manager }}" = "pnpm" ]; then
+            pnpm publish --no-git-checks
+          else
+            npm publish
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish to PyPI
+        if: needs.detect-project.outputs.project-type == 'python' && !github.event.inputs.dry_run
+        run: |
+          pip install twine
+          if [ -d "dist" ]; then
+            twine upload dist/*
+          fi
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+
+      - name: Publish to crates.io
+        if: needs.detect-project.outputs.project-type == 'rust' && !github.event.inputs.dry_run
+        run: cargo publish --token ${{ secrets.CARGO_TOKEN }}
+
+  notify:
+    name: 📢 Notify Success
+    runs-on: ubuntu-latest
+    needs: [detect-project, release]
+    if: success()
+    steps:
+      - name: Notify success
+        run: |
+          echo "🎉 Release completed successfully!"
+          echo "Project type: ${{ needs.detect-project.outputs.project-type }}"
+          echo "Package manager: ${{ needs.detect-project.outputs.package-manager }}" 

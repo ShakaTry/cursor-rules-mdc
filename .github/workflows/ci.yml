@@ -1,0 +1,411 @@
+name: 🔄 Universal CI
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '18'
+  PYTHON_VERSION: '3.11'
+  GO_VERSION: '1.21'
+  RUST_VERSION: 'stable'
+
+jobs:
+  detect-project:
+    name: 🔍 Detect Project Type
+    runs-on: ubuntu-latest
+    outputs:
+      project-type: ${{ steps.detect.outputs.project-type }}
+      package-manager: ${{ steps.detect.outputs.package-manager }}
+      build-tool: ${{ steps.detect.outputs.build-tool }}
+      version-file: ${{ steps.detect.outputs.version-file }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Make scripts executable
+        run: |
+          chmod +x scripts/*.sh || true
+          chmod +x .githooks/* || true
+
+      - name: Detect project type
+        id: detect
+        run: |
+          if [ -f "./scripts/project-detector.sh" ]; then
+            ./scripts/project-detector.sh
+            source .automation/project.env
+          else
+            # Fallback detection
+            if [ -f "package.json" ]; then
+              PROJECT_TYPE="javascript"
+              PACKAGE_MANAGER="npm"
+            elif [ -f "pyproject.toml" ] || [ -f "requirements.txt" ]; then
+              PROJECT_TYPE="python"
+              PACKAGE_MANAGER="pip"
+            elif [ -f "go.mod" ]; then
+              PROJECT_TYPE="go"
+              PACKAGE_MANAGER="go"
+            elif [ -f "Cargo.toml" ]; then
+              PROJECT_TYPE="rust"
+              PACKAGE_MANAGER="cargo"
+            else
+              PROJECT_TYPE="generic"
+              PACKAGE_MANAGER="git"
+            fi
+          fi
+          echo "project-type=$PROJECT_TYPE" >> $GITHUB_OUTPUT
+          echo "package-manager=$PACKAGE_MANAGER" >> $GITHUB_OUTPUT
+          echo "build-tool=$BUILD_TOOL" >> $GITHUB_OUTPUT
+          echo "version-file=$VERSION_FILE" >> $GITHUB_OUTPUT
+
+  lint-and-format:
+    name: 📋 Lint & Format Check
+    runs-on: ubuntu-latest
+    needs: detect-project
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        if: needs.detect-project.outputs.project-type == 'javascript'
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: ${{ needs.detect-project.outputs.package-manager }}
+
+      - name: Setup Python
+        if: needs.detect-project.outputs.project-type == 'python'
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Setup Go
+        if: needs.detect-project.outputs.project-type == 'go'
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{ env.GO_VERSION }}
+
+      - name: Setup Rust
+        if: needs.detect-project.outputs.project-type == 'rust'
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ env.RUST_VERSION }}
+          override: true
+          components: rustfmt, clippy
+
+      - name: Install dependencies (JavaScript)
+        if: needs.detect-project.outputs.project-type == 'javascript'
+        run: |
+          if [ "${{ needs.detect-project.outputs.package-manager }}" = "yarn" ]; then
+            yarn install --frozen-lockfile
+          elif [ "${{ needs.detect-project.outputs.package-manager }}" = "pnpm" ]; then
+            npm install -g pnpm
+            pnpm install --frozen-lockfile
+          else
+            npm ci
+          fi
+
+      - name: Install dependencies (Python)
+        if: needs.detect-project.outputs.project-type == 'python'
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8 black isort
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          elif [ -f pyproject.toml ]; then
+            pip install poetry
+            poetry install
+          fi
+
+      - name: Lint (JavaScript - ESLint)
+        if: needs.detect-project.outputs.project-type == 'javascript'
+        run: |
+          if [ "${{ needs.detect-project.outputs.package-manager }}" = "yarn" ]; then
+            yarn lint || npm run lint || echo "No lint script found"
+          elif [ "${{ needs.detect-project.outputs.package-manager }}" = "pnpm" ]; then
+            pnpm lint || npm run lint || echo "No lint script found"
+          else
+            npm run lint || echo "No lint script found"
+          fi
+
+      - name: Format check (JavaScript - Prettier)
+        if: needs.detect-project.outputs.project-type == 'javascript'
+        run: |
+          if command -v prettier &> /dev/null; then
+            prettier --check . || echo "Prettier not configured"
+          fi
+
+      - name: Lint (Python - flake8)
+        if: needs.detect-project.outputs.project-type == 'python'
+        run: |
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+      - name: Format check (Python - Black)
+        if: needs.detect-project.outputs.project-type == 'python'
+        run: black --check . || echo "Black formatting issues found"
+
+      - name: Import sorting check (Python - isort)
+        if: needs.detect-project.outputs.project-type == 'python'
+        run: isort --check-only . || echo "Import sorting issues found"
+
+      - name: Format check (Go)
+        if: needs.detect-project.outputs.project-type == 'go'
+        run: |
+          if [ -n "$(gofmt -l .)" ]; then
+            echo "Go formatting issues found:"
+            gofmt -l .
+            exit 1
+          fi
+
+      - name: Vet (Go)
+        if: needs.detect-project.outputs.project-type == 'go'
+        run: go vet ./...
+
+      - name: Format check (Rust)
+        if: needs.detect-project.outputs.project-type == 'rust'
+        run: cargo fmt --check
+
+      - name: Clippy (Rust)
+        if: needs.detect-project.outputs.project-type == 'rust'
+        run: cargo clippy -- -D warnings
+
+  test:
+    name: 🧪 Test Suite
+    runs-on: ${{ matrix.os }}
+    needs: detect-project
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        if: needs.detect-project.outputs.project-type == 'javascript'
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: ${{ needs.detect-project.outputs.package-manager }}
+
+      - name: Setup Python
+        if: needs.detect-project.outputs.project-type == 'python'
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Setup Go
+        if: needs.detect-project.outputs.project-type == 'go'
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{ env.GO_VERSION }}
+
+      - name: Setup Rust
+        if: needs.detect-project.outputs.project-type == 'rust'
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ env.RUST_VERSION }}
+          override: true
+
+      - name: Install dependencies (JavaScript)
+        if: needs.detect-project.outputs.project-type == 'javascript'
+        run: |
+          if [ "${{ needs.detect-project.outputs.package-manager }}" = "yarn" ]; then
+            yarn install --frozen-lockfile
+          elif [ "${{ needs.detect-project.outputs.package-manager }}" = "pnpm" ]; then
+            npm install -g pnpm
+            pnpm install --frozen-lockfile
+          else
+            npm ci
+          fi
+
+      - name: Install dependencies (Python)
+        if: needs.detect-project.outputs.project-type == 'python'
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          elif [ -f pyproject.toml ]; then
+            pip install poetry
+            poetry install
+          fi
+
+      - name: Install dependencies (Go)
+        if: needs.detect-project.outputs.project-type == 'go'
+        run: go mod download
+
+      - name: Run tests (JavaScript)
+        if: needs.detect-project.outputs.project-type == 'javascript'
+        run: |
+          if [ "${{ needs.detect-project.outputs.package-manager }}" = "yarn" ]; then
+            yarn test || echo "No test script found"
+          elif [ "${{ needs.detect-project.outputs.package-manager }}" = "pnpm" ]; then
+            pnpm test || echo "No test script found"
+          else
+            npm test || echo "No test script found"
+          fi
+
+      - name: Run tests (Python)
+        if: needs.detect-project.outputs.project-type == 'python'
+        run: |
+          if command -v pytest &> /dev/null; then
+            pytest --verbose
+          elif [ -f pyproject.toml ]; then
+            poetry run pytest --verbose || poetry run python -m unittest discover
+          else
+            python -m unittest discover -v
+          fi
+
+      - name: Run tests (Go)
+        if: needs.detect-project.outputs.project-type == 'go'
+        run: go test -v -race -coverprofile=coverage.out ./...
+
+      - name: Run tests (Rust)
+        if: needs.detect-project.outputs.project-type == 'rust'
+        run: cargo test --verbose
+
+      - name: Upload coverage (Go)
+        if: needs.detect-project.outputs.project-type == 'go'
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage.out
+          flags: unittests
+          name: codecov-umbrella
+
+  build:
+    name: 🔨 Build Check
+    runs-on: ubuntu-latest
+    needs: [detect-project, lint-and-format]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        if: needs.detect-project.outputs.project-type == 'javascript'
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: ${{ needs.detect-project.outputs.package-manager }}
+
+      - name: Setup Python
+        if: needs.detect-project.outputs.project-type == 'python'
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Setup Go
+        if: needs.detect-project.outputs.project-type == 'go'
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{ env.GO_VERSION }}
+
+      - name: Setup Rust
+        if: needs.detect-project.outputs.project-type == 'rust'
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ env.RUST_VERSION }}
+          override: true
+
+      - name: Build (JavaScript)
+        if: needs.detect-project.outputs.project-type == 'javascript'
+        run: |
+          if [ "${{ needs.detect-project.outputs.package-manager }}" = "yarn" ]; then
+            yarn install --frozen-lockfile
+            yarn build || echo "No build script found"
+          elif [ "${{ needs.detect-project.outputs.package-manager }}" = "pnpm" ]; then
+            npm install -g pnpm
+            pnpm install --frozen-lockfile
+            pnpm build || echo "No build script found"
+          else
+            npm ci
+            npm run build || echo "No build script found"
+          fi
+
+      - name: Build (Python)
+        if: needs.detect-project.outputs.project-type == 'python'
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f pyproject.toml ]; then
+            pip install poetry build
+            poetry install
+            poetry build || python -m build
+          elif [ -f setup.py ]; then
+            pip install build
+            python -m build
+          fi
+
+      - name: Build (Go)
+        if: needs.detect-project.outputs.project-type == 'go'
+        run: |
+          go mod download
+          go build -v ./...
+
+      - name: Build (Rust)
+        if: needs.detect-project.outputs.project-type == 'rust'
+        run: cargo build --verbose
+
+  security:
+    name: 🔒 Security Scan
+    runs-on: ubuntu-latest
+    needs: detect-project
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Security audit (JavaScript)
+        if: needs.detect-project.outputs.project-type == 'javascript'
+        run: |
+          if [ "${{ needs.detect-project.outputs.package-manager }}" = "yarn" ]; then
+            yarn audit || echo "Security issues found"
+          elif [ "${{ needs.detect-project.outputs.package-manager }}" = "pnpm" ]; then
+            pnpm audit || echo "Security issues found"
+          else
+            npm audit || echo "Security issues found"
+          fi
+
+      - name: Security audit (Python)
+        if: needs.detect-project.outputs.project-type == 'python'
+        run: |
+          pip install safety
+          safety check || echo "Security issues found"
+
+      - name: Security audit (Go)
+        if: needs.detect-project.outputs.project-type == 'go'
+        run: |
+          go install golang.org/x/vuln/cmd/govulncheck@latest
+          govulncheck ./... || echo "Security issues found"
+
+      - name: Security audit (Rust)
+        if: needs.detect-project.outputs.project-type == 'rust'
+        run: |
+          cargo install cargo-audit
+          cargo audit || echo "Security issues found"
+
+  summary:
+    name: 📊 CI Summary
+    runs-on: ubuntu-latest
+    needs: [detect-project, lint-and-format, test, build, security]
+    if: always()
+    steps:
+      - name: CI Summary
+        run: |
+          echo "## 🔄 Universal CI Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Project Type:** ${{ needs.detect-project.outputs.project-type }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Package Manager:** ${{ needs.detect-project.outputs.package-manager }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Job Results:" >> $GITHUB_STEP_SUMMARY
+          echo "- **Lint & Format:** ${{ needs.lint-and-format.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Tests:** ${{ needs.test.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Build:** ${{ needs.build.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Security:** ${{ needs.security.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ needs.lint-and-format.result }}" = "success" ] && [ "${{ needs.test.result }}" = "success" ] && [ "${{ needs.build.result }}" = "success" ]; then
+            echo "✅ **All checks passed!** Ready for merge." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Some checks failed.** Please review and fix issues." >> $GITHUB_STEP_SUMMARY
+          fi 

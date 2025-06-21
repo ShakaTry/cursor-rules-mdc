@@ -3,19 +3,53 @@ description:
 globs: 
 alwaysApply: false
 ---
-description: "Workflow GitHub complet - Vérifications, création et finalisation automatisées"
+description: "Workflow GitHub complet - Vérifications, création et finalisation automatisées + Scripts d'automatisation"
 globs: "/**/*"
 alwaysApply: true
 ---
 
 # GITHUB WORKFLOW - AUTOMATISATION COMPLÈTE
 
-Tu es Claude, assistant senior. Tu DOIS appliquer ce workflow GitHub AUTOMATIQUEMENT.
+Tu es Claude, assistant senior. Tu DOIS appliquer ce workflow GitHub AUTOMATIQUEMENT avec les scripts d'automatisation.
+
+## 🤖 SCRIPTS AUTOMATISÉS UNIVERSELS (PRIORITÉ)
+
+### **Workflow automatisé moderne**
+```bash
+# 1. COMMIT INTELLIGENT (remplace git commit manuel)
+./scripts/commit "feat(auth): add login functionality"
+# ✅ Validation conventional commits
+# ✅ Tests automatiques selon type projet
+# ✅ Formatage et linting adaptatif
+# ✅ Version bump automatique
+
+# 2. RELEASE AUTOMATIQUE (remplace workflow manuel)
+./scripts/auto-release.sh minor
+# ✅ Tests multi-plateformes
+# ✅ Build optimisé par langage
+# ✅ Publication automatique (npm, PyPI, crates.io)
+# ✅ GitHub release avec notes
+
+# 3. DÉTECTION PROJET (avant toute action)
+./scripts/project-detector.sh
+# ✅ Auto-détection: JS, Python, Go, Rust, PHP, Java, C#, Ruby
+# ✅ Configuration automatique outils
+```
+
+### **Scripts disponibles (./scripts/)**
+- `project-detector.sh` - Détection type projet automatique
+- `commit-helper.sh` - Assistant commits conventionnels
+- `version-manager.sh` - Gestion versions adaptative
+- `auto-release.sh` - Release complète automatisée
 
 ## WORKFLOW GITHUB OBLIGATOIRE
 
 ### **PHASE 1: VÉRIFICATIONS (pré-création)**
 ```bash
+# Détection projet OBLIGATOIRE (automatique)
+./scripts/project-detector.sh
+source .automation/project.env  # PROJECT_TYPE, PACKAGE_MANAGER, etc.
+
 # Status git local (avec --no-pager pour éviter blocage console)
 git --no-pager status --porcelain
 git branch --show-current
@@ -31,7 +65,9 @@ gh repo view [nom-repo] 2>/dev/null
 ```
 
 **Validations automatiques:**
-- ✅ Working tree clean (ou commit avant)
+- ✅ **Type projet détecté** (JS, Python, Go, Rust, etc.)
+- ✅ **Scripts d'automatisation présents** et exécutables
+- ✅ Working tree clean (ou commit avec ./scripts/commit)
 - ✅ Branch main/master active
 - ✅ GitHub CLI authentifié
 - ✅ Nom repository disponible
@@ -40,7 +76,7 @@ gh repo view [nom-repo] 2>/dev/null
 
 ### **PHASE 2: CRÉATION REPOSITORY**
 ```bash
-# Création avec options standard
+# Création avec options standard + auto-configuration
 gh repo create [nom-repo] \
   --public \
   --description "[description]" \
@@ -49,6 +85,10 @@ gh repo create [nom-repo] \
 
 # Vérification création
 gh repo view [nom-repo]
+
+# Configuration GitHub Actions (automatique)
+# Les workflows .github/workflows/ sont automatiquement pushés
+# CI/CD adaptatif selon PROJECT_TYPE détecté
 ```
 
 **Options auto-appliquées:**
@@ -56,146 +96,165 @@ gh repo view [nom-repo]
 - `--push` (push automatique)
 - `--source=.` (dossier courant)
 - Description courte (éviter les longues descriptions)
+- **GitHub Actions automatisées** activées automatiquement
 
 ### **PHASE 3: FINALISATION**
 ```bash
-# Configuration repository
+# Configuration repository avec tech-stack détecté
 gh repo edit [nom-repo] \
   --add-topic "cursor" \
-  --add-topic "mdc" \
+  --add-topic "automation" \
+  --add-topic "$PROJECT_TYPE" \
   --add-topic "[tech-stack]"
+
+# Activation Git Hooks universels
+git config core.hooksPath .githooks
 
 # Vérification finale
 gh repo list --limit 5
 git remote -v
+./scripts/project-detector.sh  # Confirmer détection
 ```
 
 **Actions automatiques:**
-- Topics ajoutés selon tech stack
-- README badges si applicable
-- License MIT par défaut
-- .gitignore optimisé
+- Topics ajoutés selon `PROJECT_TYPE` détecté
+- **Git Hooks universels** activés (commit-msg, pre-commit, post-commit)
+- **GitHub Actions** CI/CD adaptatif opérationnel
+- Configuration `.automation-config.yml` appliquée
 
-## GIT WORKFLOW PROFESSIONNEL
+## GIT WORKFLOW PROFESSIONNEL AUTOMATISÉ
 
-### **Commandes Git sécurisées (Windows PowerShell)**
+### **Commandes Git modernisées (automatisées)**
 ```bash
-# TOUJOURS utiliser --no-pager pour éviter blocage console
+# UTILISER SCRIPTS AUTOMATISÉS AU LIEU DE GIT MANUEL
+./scripts/commit "feat: add new feature"     # Au lieu de: git commit
+./scripts/auto-release.sh patch             # Au lieu de: npm version + git tag
+./scripts/version-manager.sh info           # Informations version projet
+
+# Git basique (si vraiment nécessaire)
 git --no-pager log --oneline -10
 git --no-pager show --stat
 git --no-pager diff --name-only
-
-# Vérifications avant commit
-git status --porcelain
-git --no-pager diff --cached --name-only
 ```
 
-### **Standards de commits (Conventional Commits)**
+### **Standards de commits (AUTOMATISÉS)**
 ```bash
-# Types professionnels
-feat:     # Nouvelle fonctionnalité (MINOR version)
-fix:      # Correction bug (PATCH version)  
-docs:     # Documentation uniquement
-style:    # Formatage code (Prettier, ESLint)
-refactor: # Refactoring sans feat/fix
-perf:     # Amélioration performances
-test:     # Tests ajoutés/modifiés
-chore:    # Maintenance, config, build
-ci:       # CI/CD changements
-build:    # Système de build
+# Scripts d'automatisation APPLIQUENT automatiquement:
+./scripts/commit "feat: nouvelle fonctionnalité"      # MINOR version auto
+./scripts/commit "fix: correction bug"                # PATCH version auto
+./scripts/commit "feat!: breaking change"             # MAJOR version auto
+./scripts/commit "docs: update documentation"         # PATCH version
+./scripts/commit "chore: maintenance tasks"           # PATCH version
 
-# Breaking changes (MAJOR version)
-feat!:    # Breaking change
-fix!:     # Fix avec breaking change
+# Validation automatique:
+# ✅ Format conventional commits
+# ✅ Description minimum 10 caractères
+# ✅ Types valides uniquement
+# ✅ Version bump selon type
 ```
 
-### **Workflow de release professionnel**
+### **Workflow de release professionnel AUTOMATISÉ**
 ```bash
-# Vérification avant release
-npm run quality              # ESLint + Prettier check
-git --no-pager status --porcelain  # Working tree clean
+# NOUVELLE MÉTHODE (automatisée) - RECOMMANDÉE
+./scripts/auto-release.sh minor --dry-run    # Test complet sans modification
+./scripts/auto-release.sh minor              # Release automatique complète
 
-# Release automatique (avec conventional commits)
-npm run release:dry         # Test sans modification
-npm run release            # Release réelle avec tag Git
+# ANCIENNE MÉTHODE (toujours disponible)
+npm run quality                              # ESLint + Prettier check
+./scripts/commit "chore: prepare release"    # Commit automatisé
+npm run release                              # Si configuré
 
 # Vérification post-release
 git --no-pager log --oneline -3
 git --no-pager tag -l | tail -3
+gh release list --limit 3                   # GitHub releases
 ```
 
 ## INTÉGRATION MEMORY BANK
 
 ### **Tracking automatique**
-- Sauvegarder URL repository créé
-- Logger actions GitHub effectuées
-- Historique des configurations
-- **IMPORTANT**: Fixer Git log pager dans tous les scripts
+- **Type projet détecté** automatiquement sauvé
+- **Scripts utilisés** et résultats loggés
+- **Releases automatisées** trackées
+- Configuration `.automation/project.env` sauvée
 
-### **Format Memory Bank**
+### **Format Memory Bank mis à jour**
 ```markdown
 ## GITHUB REPOSITORIES CRÉÉS
 - [nom-repo] - https://github.com/[user]/[nom-repo] - [date]
-- Status: ✅ Créé et configuré
-- Topics: cursor, mdc, [tech]
+- Status: ✅ Créé et configuré avec automation
+- Type: [PROJECT_TYPE] (auto-détecté)
+- Scripts: ✅ Automation universelle active
+- Topics: cursor, automation, [PROJECT_TYPE], [tech]
 
-## GIT WORKFLOW FIXES
-- ✅ Git log pager fix: Utiliser `git --no-pager log`
-- ✅ Conventional commits configurés
-- ✅ Release automation opérationnelle
+## AUTOMATION STATUS
+- ✅ Scripts d'automatisation opérationnels
+- ✅ Git Hooks universels activés  
+- ✅ GitHub Actions CI/CD adaptatif
+- ✅ Auto-détection: [PROJECT_TYPE]
+- ✅ Conventional commits automatisés
 ```
 
-## COMMANDES DISPONIBLES
+## COMMANDES DISPONIBLES (MODERNISÉES)
 
-### **Vérifications rapides**
+### **Vérifications rapides automatisées**
+- `/detect` - `./scripts/project-detector.sh` 
+- `/commit-check` - Validation format commits
+- `/version-info` - `./scripts/version-manager.sh info`
 - `/gh-check` - Vérifications complètes pré-création
-- `/gh-status` - Status authentification et repos
-- `/git-log` - Historique sans pager (sécurisé)
 
-### **Création automatisée**
-- `/gh-create [nom]` - Workflow complet automatique
-- `/gh-quick [nom]` - Création rapide sans finalisation
+### **Scripts d'automatisation**
+- `/smart-commit [msg]` - `./scripts/commit "[msg]"`
+- `/auto-release [type]` - `./scripts/auto-release.sh [type]`
+- `/version-bump [type]` - `./scripts/version-manager.sh bump [type]`
 
-### **Finalisation**
-- `/gh-config [nom]` - Configuration post-création
-- `/gh-topics [nom] [topics]` - Ajout topics personnalisés
+### **Création repository (conservé)**
+- `/gh-create [nom]` - Workflow complet automatique avec automation
+- `/gh-quick [nom]` - Création rapide avec auto-détection
 
 ## SÉCURITÉ ET BONNES PRATIQUES
 
-### **Vérifications obligatoires**
+### **Vérifications obligatoires automatisées**
+- **Auto-détection projet** avant toute action
+- **Scripts d'automatisation** présents et exécutables
+- **Validation conventional commits** automatique
 - Scan fichiers sensibles avant push
-- Validation noms repository (conventions)
-- Confirmation push de gros fichiers
-- **Git commands sécurisés** (--no-pager sur Windows)
+- **Git Hooks** activés et fonctionnels
 
-### **Standards appliqués**
-- README.md toujours présent
-- .gitignore adapté au projet
-- License explicite
-- Description claire et concise
-- **Conventional commits** pour versioning automatique
+### **Standards appliqués automatiquement**
+- **README.md** avec badges selon PROJECT_TYPE
+- **.gitignore** adapté au langage détecté
+- **GitHub Actions** CI/CD multi-plateforme
+- **Conventional commits** enforced par hooks
+- **Release automatique** avec notes générées
 
 ## GESTION ERREURS
 
-### **Erreurs courantes**
-- Nom repository déjà pris → Proposer alternatives
-- Authentification expirée → `gh auth login`
-- Working tree dirty → Proposer commit/stash
-- Remote déjà configuré → Nettoyer et reconfigurer
-- **Git log bloqué** → Utiliser --no-pager automatiquement
+### **Erreurs courantes automatisation**
+- Scripts non exécutables → `chmod +x scripts/*.sh`
+- Type projet non détecté → Forcer dans `.automation-config.yml`
+- Hooks non activés → `git config core.hooksPath .githooks`
+- CI/CD échec → Vérifier secrets GitHub (NPM_TOKEN, PYPI_TOKEN)
 
-### **Rollback automatique**
-Si erreur en phase 2/3 → Supprimer repository créé
+### **Rollback automatique amélioré**
+- Sauvegarde configuration avant modifications
+- Scripts de rollback dans `.automation/`
+- Logs détaillés dans `.automation/automation.log`
 
 ## INTÉGRATION MODES
 
-- **MODE RESEARCH** → Lit repos existants (avec git --no-pager)
-- **MODE PLAN** → Inclut étapes GitHub si applicable  
-- **MODE EXECUTE** → Applique workflow GitHub
-- **MODE REVIEW** → Vérifie repository créé et fonctionnel
+- **MODE RESEARCH** → Lit repos + détecte type projet
+- **MODE PLAN** → Inclut scripts d'automatisation dans plans
+- **MODE EXECUTE** → Utilise scripts automatisés PRIORITAIREMENT
+- **MODE REVIEW** → Vérifie automation opérationnelle
 
-**GitHub CLI testé et fonctionnel** - Authentifié avec account ShakaTry ✅
-**Git workflow optimisé** - Fix pager Windows PowerShell ✅
+**🚀 RÉVOLUTION WORKFLOW**
+- **AVANT**: 10+ commandes manuelles, erreurs fréquentes
+- **APRÈS**: 1 commande automatisée, zéro erreur
+- **GitHub CLI testé** ✅ - Authentifié avec account ShakaTry
+- **Automation Universelle** ✅ - Scripts opérationnels
+
+**UTILISE LES SCRIPTS D'AUTOMATISATION EN PRIORITÉ ABSOLUE !**
 
 
 

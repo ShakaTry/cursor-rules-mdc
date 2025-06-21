@@ -1,0 +1,316 @@
+#!/bin/bash
+# 🤖 PREPARE-COMMIT-MSG HOOK - Universal Commit Message Assistant
+# Provides templates and suggestions for commit messages
+# Part of Phase 4 - Universal Automation
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# Get parameters
+COMMIT_MSG_FILE="$1"
+COMMIT_SOURCE="$2"
+COMMIT_SHA="$3"
+
+# Load project configuration
+load_project_config() {
+    if [[ -f ".automation/project.env" ]]; then
+        source .automation/project.env
+    else
+        PROJECT_TYPE="generic"
+    fi
+}
+
+# Analyze staged changes
+analyze_staged_changes() {
+    # Get staged files
+    STAGED_FILES=$(git diff --cached --name-only)
+    STAGED_COUNT=$(echo "$STAGED_FILES" | wc -l)
+    
+    # Analyze file types
+    DOCS_CHANGED=$(echo "$STAGED_FILES" | grep -E '\.(md|txt|rst|adoc)$' | wc -l || echo "0")
+    CONFIG_CHANGED=$(echo "$STAGED_FILES" | grep -E '\.(json|yaml|yml|toml|ini|conf)$' | wc -l || echo "0")
+    TEST_CHANGED=$(echo "$STAGED_FILES" | grep -E '(test|spec)' | wc -l || echo "0")
+    
+    # Project-specific analysis
+    case "$PROJECT_TYPE" in
+        "javascript")
+            JS_CHANGED=$(echo "$STAGED_FILES" | grep -E '\.(js|ts|jsx|tsx)$' | wc -l || echo "0")
+            PACKAGE_CHANGED=$(echo "$STAGED_FILES" | grep -E 'package\.json' | wc -l || echo "0")
+            ;;
+        "python")
+            PY_CHANGED=$(echo "$STAGED_FILES" | grep -E '\.py$' | wc -l || echo "0")
+            REQ_CHANGED=$(echo "$STAGED_FILES" | grep -E '(requirements|pyproject\.toml|setup\.py)' | wc -l || echo "0")
+            ;;
+        "go")
+            GO_CHANGED=$(echo "$STAGED_FILES" | grep -E '\.go$' | wc -l || echo "0")
+            MOD_CHANGED=$(echo "$STAGED_FILES" | grep -E 'go\.(mod|sum)' | wc -l || echo "0")
+            ;;
+        "rust")
+            RUST_CHANGED=$(echo "$STAGED_FILES" | grep -E '\.rs$' | wc -l || echo "0")
+            CARGO_CHANGED=$(echo "$STAGED_FILES" | grep -E 'Cargo\.(toml|lock)' | wc -l || echo "0")
+            ;;
+    esac
+}
+
+# Suggest commit type based on changes
+suggest_commit_type() {
+    local suggestions=()
+    
+    # Documentation changes
+    if [[ "$DOCS_CHANGED" -gt 0 ]] && [[ "$STAGED_COUNT" -eq "$DOCS_CHANGED" ]]; then
+        suggestions+=("docs")
+    fi
+    
+    # Test changes
+    if [[ "$TEST_CHANGED" -gt 0 ]] && [[ "$STAGED_COUNT" -eq "$TEST_CHANGED" ]]; then
+        suggestions+=("test")
+    fi
+    
+    # Configuration changes
+    if [[ "$CONFIG_CHANGED" -gt 0 ]]; then
+        suggestions+=("build" "ci" "chore")
+    fi
+    
+    # Project-specific suggestions
+    case "$PROJECT_TYPE" in
+        "javascript")
+            if [[ "$PACKAGE_CHANGED" -gt 0 ]]; then
+                suggestions+=("build" "chore")
+            elif [[ "$JS_CHANGED" -gt 0 ]]; then
+                suggestions+=("feat" "fix" "refactor")
+            fi
+            ;;
+        "python")
+            if [[ "$REQ_CHANGED" -gt 0 ]]; then
+                suggestions+=("build" "chore")
+            elif [[ "$PY_CHANGED" -gt 0 ]]; then
+                suggestions+=("feat" "fix" "refactor")
+            fi
+            ;;
+        "go")
+            if [[ "$MOD_CHANGED" -gt 0 ]]; then
+                suggestions+=("build" "chore")
+            elif [[ "$GO_CHANGED" -gt 0 ]]; then
+                suggestions+=("feat" "fix" "refactor")
+            fi
+            ;;
+        "rust")
+            if [[ "$CARGO_CHANGED" -gt 0 ]]; then
+                suggestions+=("build" "chore")
+            elif [[ "$RUST_CHANGED" -gt 0 ]]; then
+                suggestions+=("feat" "fix" "refactor")
+            fi
+            ;;
+    esac
+    
+    # Default suggestions if none found
+    if [[ ${#suggestions[@]} -eq 0 ]]; then
+        suggestions=("feat" "fix" "chore")
+    fi
+    
+    echo "${suggestions[@]}"
+}
+
+# Generate commit message template
+generate_template() {
+    local suggested_types=($(suggest_commit_type))
+    local primary_type="${suggested_types[0]}"
+    
+    # Create template based on changes
+    local template=""
+    
+    # Add type and scope template
+    template="$primary_type"
+    
+    # Suggest scope based on project structure
+    local scope_suggestions=()
+    
+    # Analyze changed directories for scope suggestions
+    if [[ -n "$STAGED_FILES" ]]; then
+        local dirs=$(echo "$STAGED_FILES" | xargs dirname | sort -u)
+        for dir in $dirs; do
+            case "$dir" in
+                "src"|"lib"|"app")
+                    scope_suggestions+=("core")
+                    ;;
+                "test"|"tests"|"__tests__")
+                    scope_suggestions+=("test")
+                    ;;
+                "docs"|"doc")
+                    scope_suggestions+=("docs")
+                    ;;
+                "config"|"configs")
+                    scope_suggestions+=("config")
+                    ;;
+                "scripts")
+                    scope_suggestions+=("scripts")
+                    ;;
+                ".github")
+                    scope_suggestions+=("ci")
+                    ;;
+                *)
+                    if [[ "$dir" != "." ]]; then
+                        scope_suggestions+=("$(basename "$dir")")
+                    fi
+                    ;;
+            esac
+        done
+    fi
+    
+    # Add scope if suggestions exist
+    if [[ ${#scope_suggestions[@]} -gt 0 ]]; then
+        local primary_scope="${scope_suggestions[0]}"
+        template="$template($primary_scope)"
+    else
+        template="$template(scope)"
+    fi
+    
+    template="$template: "
+    
+    # Add description placeholder
+    case "$primary_type" in
+        "feat")
+            template="${template}add new feature"
+            ;;
+        "fix")
+            template="${template}resolve issue with"
+            ;;
+        "docs")
+            template="${template}update documentation"
+            ;;
+        "style")
+            template="${template}improve code formatting"
+            ;;
+        "refactor")
+            template="${template}restructure code"
+            ;;
+        "perf")
+            template="${template}improve performance"
+            ;;
+        "test")
+            template="${template}add tests for"
+            ;;
+        "build")
+            template="${template}update build configuration"
+            ;;
+        "ci")
+            template="${template}update CI/CD pipeline"
+            ;;
+        "chore")
+            template="${template}update maintenance tasks"
+            ;;
+        *)
+            template="${template}describe your changes"
+            ;;
+    esac
+    
+    echo "$template"
+}
+
+# Create helpful commit message template
+create_commit_template() {
+    local current_msg=$(cat "$COMMIT_MSG_FILE")
+    
+    # Only add template if message is empty or default
+    if [[ -z "$current_msg" ]] || [[ "$current_msg" =~ ^# ]]; then
+        local template=$(generate_template)
+        local suggested_types=($(suggest_commit_type))
+        
+        # Create the template message
+        cat > "$COMMIT_MSG_FILE" << EOF
+$template
+
+# 🤖 Commit Assistant - Phase 4 Universal Automation
+# 
+# Suggested types for your changes: ${suggested_types[*]}
+# 
+# Conventional Commit Format:
+# type(scope): description
+# 
+# Types:
+#   feat     - New feature
+#   fix      - Bug fix  
+#   docs     - Documentation changes
+#   style    - Code style changes
+#   refactor - Code refactoring
+#   perf     - Performance improvements
+#   test     - Adding or updating tests
+#   build    - Build system changes
+#   ci       - CI/CD changes
+#   chore    - Maintenance tasks
+#   revert   - Revert previous commit
+#
+# Breaking changes: Add ! after type/scope (e.g., feat!: breaking change)
+#
+# Files to be committed:
+$(echo "$STAGED_FILES" | sed 's/^/#   /')
+#
+# Project: $PROJECT_TYPE
+# Files changed: $STAGED_COUNT
+EOF
+
+        # Add project-specific hints
+        case "$PROJECT_TYPE" in
+            "javascript")
+                cat >> "$COMMIT_MSG_FILE" << EOF
+#
+# JavaScript/Node.js specific:
+#   - Consider version bump: npm version patch/minor/major
+#   - Run tests: npm test
+#   - Check linting: npm run lint
+EOF
+                ;;
+            "python")
+                cat >> "$COMMIT_MSG_FILE" << EOF
+#
+# Python specific:
+#   - Update version in pyproject.toml/setup.py
+#   - Run tests: pytest or python -m unittest
+#   - Check formatting: black . && isort .
+EOF
+                ;;
+            "go")
+                cat >> "$COMMIT_MSG_FILE" << EOF
+#
+# Go specific:
+#   - Format code: go fmt ./...
+#   - Run tests: go test ./...
+#   - Check with: go vet ./...
+EOF
+                ;;
+            "rust")
+                cat >> "$COMMIT_MSG_FILE" << EOF
+#
+# Rust specific:
+#   - Format code: cargo fmt
+#   - Run tests: cargo test
+#   - Check with: cargo clippy
+EOF
+                ;;
+        esac
+    fi
+}
+
+# Main execution
+main() {
+    # Skip if this is not an interactive commit
+    if [[ "$COMMIT_SOURCE" == "merge" ]] || [[ "$COMMIT_SOURCE" == "squash" ]] || [[ "$COMMIT_SOURCE" == "commit" ]]; then
+        exit 0
+    fi
+    
+    # Load project configuration
+    load_project_config
+    
+    # Analyze staged changes
+    analyze_staged_changes
+    
+    # Create commit template
+    create_commit_template
+}
+
+# Run main function
+main "$@" 

@@ -1,0 +1,51 @@
+changelog:
+  categories:
+    - title: '🚀 Features'
+      labels:
+        - 'feature'
+        - 'enhancement'
+        - 'feat'
+    - title: '🐛 Bug Fixes'
+      labels:
+        - 'bug'
+        - 'bugfix'
+        - 'fix'
+    - title: '📚 Documentation'
+      labels:
+        - 'documentation'
+        - 'docs'
+    - title: '🔧 Maintenance'
+      labels:
+        - 'maintenance'
+        - 'dependencies'
+        - 'chore'
+    - title: '⚡ Performance'
+      labels:
+        - 'performance'
+        - 'optimization'
+    - title: '🔒 Security'
+      labels:
+        - 'security'
+        - 'vulnerability'
+    - title: '♻️ Refactoring'
+      labels:
+        - 'refactor'
+        - 'refactoring'
+    - title: '🧪 Tests'
+      labels:
+        - 'test'
+        - 'tests'
+        - 'testing'
+    - title: '🔥 Breaking Changes'
+      labels:
+        - 'breaking-change'
+        - 'breaking'
+  exclude:
+    labels:
+      - 'skip-changelog'
+      - 'no-changelog'
+      - 'ignore'
+    authors:
+      - 'dependabot'
+      - 'renovate'
+      - 'github-actions' 

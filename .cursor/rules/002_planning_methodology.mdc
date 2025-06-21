@@ -23,15 +23,43 @@ alwaysApply: false
 → .cursor/plans/active/YYYY-MM-DD-[feature].md
 ```
 
-### 2. **WORKFLOW OBLIGATOIRE**
+### 2. **DÉCOUPAGE PAR PHASES OBLIGATOIRE**
+⚠️ **RÈGLE CRITIQUE** : Chaque plan DOIT être découpé en phases précises !
+
+**Structure obligatoire :**
+```markdown
+### **Phase 1: [Titre Phase] (~[temps]min)**
+- 📋 **Objectif** : Description claire
+- 🎯 **Livrable** : Résultat attendu
+- ⚡ **Actions** :
+  1. Action spécifique 1
+  2. Action spécifique 2
+  3. Action spécifique 3
+
+### **Phase 2: [Titre Phase] (~[temps]min)**
+- 📋 **Objectif** : Description claire
+- 🎯 **Livrable** : Résultat attendu
+- ⚡ **Actions** :
+  1. Action spécifique 1
+  2. Action spécifique 2
+```
+
+**Exemple type de phases :**
+- **Phase 1** : Analyse et architecture (~15min)
+- **Phase 2** : Implémentation core (~30min)
+- **Phase 3** : Tests et validation (~15min)
+- **Phase 4** : Documentation et finalisation (~10min)
+
+### 3. **WORKFLOW OBLIGATOIRE**
 1. **COPIE** le template générique
 2. **REMPLIT** toutes les sections `[PLACEHOLDER]`
-3. **AFFICHE** le plan complété
-4. **ATTEND** validation : "ok", "approuvé", "validé"
-5. **IMPLÉMENTE** selon le plan
-6. **ARCHIVE** dans `completed/` après finalisation
+3. **DÉCOUPE** en phases précises avec objectifs clairs
+4. **AFFICHE** le plan complété avec phases
+5. **ATTEND** validation : "ok", "approuvé", "validé"
+6. **IMPLÉMENTE** phase par phase selon le plan
+7. **ARCHIVE** dans `completed/` après finalisation
 
-### 3. **STRUCTURE DES DOSSIERS**
+### 4. **STRUCTURE DES DOSSIERS**
 
 .cursor/plans/
 ├── templates/
@@ -61,7 +89,27 @@ echo "Plan complété" >> memory-bank/activeContext.md
 - **NE JAMAIS** modifier le template générique
 - **TOUJOURS** faire une copie du template
 - **TOUJOURS** remplir TOUTES les sections
+- **🚨 OBLIGATOIRE** : Découper en phases précises avec temps estimé
+- **TOUJOURS** suivre les phases dans l'ordre
+- **TOUJOURS** valider chaque phase avant la suivante
 - **TOUJOURS** archiver après implémentation
+
+## 📐 **BONNES PRATIQUES PHASES**
+
+### **Estimation temps réaliste**
+- **Simple** : 2-3 phases, 30-60 min total
+- **Moyen** : 3-4 phases, 1-2h total  
+- **Complexe** : 4-6 phases, 2-4h total
+
+### **Objectifs phases clairs**
+- Chaque phase doit avoir un **livrable concret**
+- Objectifs **mesurables** et **vérifiables**
+- Actions **spécifiques** et **réalisables**
+
+### **Validation progressive**
+- Valider chaque phase avant la suivante
+- Ajuster les phases suivantes si nécessaire
+- Documenter les déviations du plan
 
 
 **Template générique : `.cursor/plans/templates/plan-template.md`**

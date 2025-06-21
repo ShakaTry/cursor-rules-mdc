@@ -1,0 +1,394 @@
+name: 🔍 Quality Checks
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '18'
+  PYTHON_VERSION: '3.11'
+  GO_VERSION: '1.21'
+  RUST_VERSION: 'stable'
+
+jobs:
+  detect-project:
+    name: 🔍 Detect Project Type
+    runs-on: ubuntu-latest
+    outputs:
+      project-type: ${{ steps.detect.outputs.project-type }}
+      package-manager: ${{ steps.detect.outputs.package-manager }}
+      build-tool: ${{ steps.detect.outputs.build-tool }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Make scripts executable
+        run: |
+          chmod +x scripts/*.sh
+          mkdir -p .automation
+
+      - name: Detect project type
+        id: detect
+        run: |
+          ./scripts/project-detector.sh
+          source .automation/project.env
+          echo "project-type=$PROJECT_TYPE" >> $GITHUB_OUTPUT
+          echo "package-manager=$PACKAGE_MANAGER" >> $GITHUB_OUTPUT
+          echo "build-tool=$BUILD_TOOL" >> $GITHUB_OUTPUT
+
+  lint:
+    name: 🔍 Lint Code
+    runs-on: ubuntu-latest
+    needs: detect-project
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # JavaScript/TypeScript Linting
+      - name: Setup Node.js
+        if: needs.detect-project.outputs.project-type == 'javascript'
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: ${{ needs.detect-project.outputs.package-manager }}
+
+      - name: Install dependencies (JavaScript)
+        if: needs.detect-project.outputs.project-type == 'javascript'
+        run: |
+          if [ "${{ needs.detect-project.outputs.package-manager }}" = "yarn" ]; then
+            yarn install --frozen-lockfile
+          elif [ "${{ needs.detect-project.outputs.package-manager }}" = "pnpm" ]; then
+            npm install -g pnpm
+            pnpm install --frozen-lockfile
+          else
+            npm ci
+          fi
+
+      - name: Lint JavaScript/TypeScript
+        if: needs.detect-project.outputs.project-type == 'javascript'
+        run: |
+          if [ "${{ needs.detect-project.outputs.package-manager }}" = "yarn" ]; then
+            yarn lint || true
+          elif [ "${{ needs.detect-project.outputs.package-manager }}" = "pnpm" ]; then
+            pnpm lint || true
+          else
+            npm run lint || true
+          fi
+
+      # Python Linting
+      - name: Setup Python
+        if: needs.detect-project.outputs.project-type == 'python'
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install Python linting tools
+        if: needs.detect-project.outputs.project-type == 'python'
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8 black isort mypy pylint
+
+      - name: Lint Python with flake8
+        if: needs.detect-project.outputs.project-type == 'python'
+        run: |
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+      - name: Check Python formatting with black
+        if: needs.detect-project.outputs.project-type == 'python'
+        run: black --check --diff .
+
+      - name: Check Python imports with isort
+        if: needs.detect-project.outputs.project-type == 'python'
+        run: isort --check-only --diff .
+
+      # Go Linting
+      - name: Setup Go
+        if: needs.detect-project.outputs.project-type == 'go'
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{ env.GO_VERSION }}
+
+      - name: Lint Go
+        if: needs.detect-project.outputs.project-type == 'go'
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: latest
+
+      # Rust Linting
+      - name: Setup Rust
+        if: needs.detect-project.outputs.project-type == 'rust'
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ env.RUST_VERSION }}
+          components: rustfmt, clippy
+          override: true
+
+      - name: Check Rust formatting
+        if: needs.detect-project.outputs.project-type == 'rust'
+        uses: actions-rs/cargo@v1
+        with:
+          command: fmt
+          args: --all -- --check
+
+      - name: Lint Rust with clippy
+        if: needs.detect-project.outputs.project-type == 'rust'
+        uses: actions-rs/cargo@v1
+        with:
+          command: clippy
+          args: -- -D warnings
+
+  security:
+    name: 🔒 Security Scan
+    runs-on: ubuntu-latest
+    needs: detect-project
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Generic security scan
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: Upload Trivy scan results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v2
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+      # JavaScript security
+      - name: Setup Node.js for security scan
+        if: needs.detect-project.outputs.project-type == 'javascript'
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Run npm audit (JavaScript)
+        if: needs.detect-project.outputs.project-type == 'javascript'
+        run: |
+          if [ -f package-lock.json ]; then
+            npm audit --audit-level=moderate
+          elif [ -f yarn.lock ]; then
+            yarn audit --level moderate
+          fi
+        continue-on-error: true
+
+      # Python security
+      - name: Setup Python for security scan
+        if: needs.detect-project.outputs.project-type == 'python'
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install safety (Python)
+        if: needs.detect-project.outputs.project-type == 'python'
+        run: pip install safety
+
+      - name: Run safety check (Python)
+        if: needs.detect-project.outputs.project-type == 'python'
+        run: |
+          if [ -f requirements.txt ]; then
+            safety check -r requirements.txt
+          fi
+        continue-on-error: true
+
+      # Rust security
+      - name: Setup Rust for security scan
+        if: needs.detect-project.outputs.project-type == 'rust'
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ env.RUST_VERSION }}
+          override: true
+
+      - name: Install cargo-audit (Rust)
+        if: needs.detect-project.outputs.project-type == 'rust'
+        run: cargo install cargo-audit
+
+      - name: Run cargo audit (Rust)
+        if: needs.detect-project.outputs.project-type == 'rust'
+        run: cargo audit
+        continue-on-error: true
+
+  documentation:
+    name: 📚 Documentation Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for README
+        run: |
+          if [ ! -f README.md ]; then
+            echo "❌ README.md is missing"
+            exit 1
+          else
+            echo "✅ README.md found"
+          fi
+
+      - name: Check for LICENSE
+        run: |
+          if [ ! -f LICENSE ] && [ ! -f LICENSE.md ] && [ ! -f LICENSE.txt ]; then
+            echo "⚠️  No LICENSE file found"
+          else
+            echo "✅ LICENSE file found"
+          fi
+
+      - name: Check for CONTRIBUTING
+        run: |
+          if [ ! -f CONTRIBUTING.md ]; then
+            echo "⚠️  CONTRIBUTING.md is missing"
+          else
+            echo "✅ CONTRIBUTING.md found"
+          fi
+
+      - name: Validate markdown files
+        uses: DavidAnson/markdownlint-action@v1
+        with:
+          files: '**/*.md'
+          config: |
+            {
+              "MD013": { "line_length": 120 },
+              "MD041": false
+            }
+        continue-on-error: true
+
+  commit-quality:
+    name: 📝 Commit Quality
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install commitlint
+        run: |
+          npm install -g @commitlint/cli @commitlint/config-conventional
+
+      - name: Validate commit messages
+        run: |
+          # Get commits in PR
+          git log --format="%H %s" origin/${{ github.base_ref }}..HEAD | while read commit message; do
+            echo "Checking commit: $commit"
+            echo "$message" | npx commitlint
+          done
+
+  dependency-check:
+    name: 📦 Dependency Analysis
+    runs-on: ubuntu-latest
+    needs: detect-project
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # JavaScript dependencies
+      - name: Setup Node.js
+        if: needs.detect-project.outputs.project-type == 'javascript'
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Check for outdated packages (JavaScript)
+        if: needs.detect-project.outputs.project-type == 'javascript'
+        run: |
+          if [ "${{ needs.detect-project.outputs.package-manager }}" = "yarn" ]; then
+            yarn outdated || true
+          elif [ "${{ needs.detect-project.outputs.package-manager }}" = "pnpm" ]; then
+            npm install -g pnpm
+            pnpm outdated || true
+          else
+            npm outdated || true
+          fi
+
+      # Python dependencies
+      - name: Setup Python
+        if: needs.detect-project.outputs.project-type == 'python'
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Check for outdated packages (Python)
+        if: needs.detect-project.outputs.project-type == 'python'
+        run: |
+          pip install pip-check
+          pip-check || true
+
+      # Go dependencies
+      - name: Setup Go
+        if: needs.detect-project.outputs.project-type == 'go'
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{ env.GO_VERSION }}
+
+      - name: Check Go mod (Go)
+        if: needs.detect-project.outputs.project-type == 'go'
+        run: |
+          go mod verify
+          go mod tidy
+          git diff --exit-code go.mod go.sum
+
+  performance:
+    name: ⚡ Performance Check
+    runs-on: ubuntu-latest
+    needs: detect-project
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Analyze code complexity
+        run: |
+          echo "📊 Code Analysis Results:"
+          echo "========================"
+          
+          # Count lines of code
+          echo "📏 Lines of Code:"
+          find . -name "*.js" -o -name "*.ts" -o -name "*.py" -o -name "*.go" -o -name "*.rs" | \
+            xargs wc -l | tail -1
+          
+          # Count files
+          echo "📁 Total Files:"
+          find . -type f -name "*.js" -o -name "*.ts" -o -name "*.py" -o -name "*.go" -o -name "*.rs" | wc -l
+          
+          # Estimate complexity (basic)
+          echo "🔄 Estimated Complexity (TODO count):"
+          grep -r "TODO\|FIXME\|HACK" . --include="*.js" --include="*.ts" --include="*.py" --include="*.go" --include="*.rs" | wc -l
+
+  quality-summary:
+    name: 📋 Quality Summary
+    runs-on: ubuntu-latest
+    needs: [lint, security, documentation, dependency-check]
+    if: always()
+    steps:
+      - name: Quality Summary
+        run: |
+          echo "🏆 Quality Check Results Summary"
+          echo "==============================="
+          echo "Lint: ${{ needs.lint.result }}"
+          echo "Security: ${{ needs.security.result }}"
+          echo "Documentation: ${{ needs.documentation.result }}"
+          echo "Dependencies: ${{ needs.dependency-check.result }}"
+          
+          # Set overall status
+          if [[ "${{ needs.lint.result }}" == "success" && \
+                "${{ needs.security.result }}" == "success" && \
+                "${{ needs.documentation.result }}" == "success" ]]; then
+            echo "✅ Overall Quality: PASSED"
+            exit 0
+          else
+            echo "⚠️  Overall Quality: NEEDS ATTENTION"
+            exit 0  # Don't fail the workflow, just report
+          fi 

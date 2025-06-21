@@ -9,16 +9,30 @@ globs: "/**/*"
 alwaysApply: true
 ---
 
-# WORKSPACE - MÉTHODOLOGIE AUTOMATIQUE
+# WORKSPACE - MÉTHODOLOGIE AUTOMATIQUE + AUTOMATION
 
-Tu es Claude, assistant senior. Tu DOIS suivre ce workflow AUTOMATIQUEMENT.
+Tu es Claude, assistant senior. Tu DOIS suivre ce workflow AUTOMATIQUEMENT avec les scripts d'automatisation.
+
+## 🤖 AUTOMATISATION UNIVERSELLE INTÉGRÉE
+
+### **Scripts disponibles (priorité absolue)**
+- `./scripts/project-detector.sh` - Détection type projet automatique
+- `./scripts/commit` - Commits conventionnels automatisés
+- `./scripts/auto-release.sh` - Release complète automatisée
+- `./scripts/version-manager.sh` - Gestion versions adaptative
+
+### **Workflow automatisé préféré**
+1. **Détection automatique** → `./scripts/project-detector.sh`
+2. **Commit intelligent** → `./scripts/commit "feat: message"`
+3. **Release automatique** → `./scripts/auto-release.sh [type]`
 
 ## WORKFLOW OBLIGATOIRE
 1. **TOUJOURS commencer en MODE RESEARCH** - Lis d'abord @memory-bank/*
-2. **Avant TOUT code** → Utilise `/plan` automatiquement
-3. **Attendre validation** → Ne code JAMAIS sans "approuvé" ou "ok"
-4. **Suivre le plan** → Implémentation stricte
-5. **MAJ Memory Bank** → Update @memory-bank/activeContext.md après chaque étape
+2. **Détection projet** → `./scripts/project-detector.sh` (si scripts disponibles)
+3. **Avant TOUT code** → Utilise `/plan` automatiquement
+4. **Attendre validation** → Ne code JAMAIS sans "approuvé" ou "ok"
+5. **Suivre le plan** → Implémentation stricte avec scripts d'automatisation si disponibles
+6. **MAJ Memory Bank** → Update @memory-bank/activeContext.md après chaque étape
 
 ## EXCEPTIONS INTELLIGENTES
 
@@ -39,6 +53,11 @@ Tu es Claude, assistant senior. Tu DOIS suivre ce workflow AUTOMATIQUEMENT.
 - **Action** : Appliquer directement sans plan détaillé
 - **Communication** : "Workflow système appliqué automatiquement"
 
+#### ✅ **Scripts d'automatisation disponibles**
+- **Cas** : Dossier `/scripts/` présent avec automation
+- **Action** : Utiliser scripts automatisés au lieu de commandes manuelles
+- **Communication** : "Utilisation scripts d'automatisation universelle"
+
 ### **COMMENT COMMUNIQUER LES EXCEPTIONS**
 
 **TOUJOURS expliquer quand tu dévies :**
@@ -46,6 +65,7 @@ Tu es Claude, assistant senior. Tu DOIS suivre ce workflow AUTOMATIQUEMENT.
 [MODE: RESEARCH] → [MODE: EXECUTE]
 ↳ Saut PLAN car: plan détaillé existant dans structure-projet-base.md
 ↳ Validation implicite: "débuter la Phase 1"
+↳ Scripts automation: Disponibles
 ```
 
 ### **RÈGLES D'EXCEPTIONS**
@@ -53,10 +73,13 @@ Tu es Claude, assistant senior. Tu DOIS suivre ce workflow AUTOMATIQUEMENT.
 - **Contexte** : Référencer le plan/contexte existant  
 - **Sécurité** : Si doute, appliquer le workflow strict
 - **Communication** : Informer l'utilisateur de ta logique
+- **Priorité automation** : Préférer scripts automatisés aux commandes manuelles
 
 ## RÈGLES AUTOMATIQUES
 - Début de session = Lis Memory Bank + affiche [MODE: RESEARCH]
+- Détection projet disponible = Utilise `./scripts/project-detector.sh`
 - Demande de feature = Crée `/plan` sans qu'on le demande
+- Commit nécessaire = Utilise `./scripts/commit` si disponible
 - Fin de tâche = Archive dans `.cursor/plans/` + MAJ progress.md
 
 ## APPLIQUE AUSSI
@@ -64,7 +87,8 @@ Tu es Claude, assistant senior. Tu DOIS suivre ce workflow AUTOMATIQUEMENT.
 - @003_coding_standards.mdc  
 - @004_security_guidelines.mdc
 - @005_testing_strategy.mdc
-- @008_github_workflow.mdc
+- @008_github_workflow.mdc (avec scripts automatisés)
+- @009_automation_scripts.mdc (automatisation universelle)
 
 **Tu démarres TOUJOURS en [MODE: RESEARCH] et lis la Memory Bank!**
 
@@ -73,5 +97,9 @@ Tu es Claude, assistant senior. Tu DOIS suivre ce workflow AUTOMATIQUEMENT.
 - `memory-bank/` - Contexte persistant (@006_memory_bank.mdc)
 - `src/` - Code source avec standards appliqués
 - `tests/` - Tests avec couverture >80%
+- **`scripts/` - Scripts automatisation universelle**
+- **`.automation/` - Configuration automation (NOUVEAU)**
+- **`.githooks/` - Git hooks universels (NOUVEAU)**
+- **`.github/workflows/` - CI/CD adaptatif (NOUVEAU)**
 
 

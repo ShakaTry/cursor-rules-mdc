@@ -1,0 +1,335 @@
+name: 🔍 Auto-Detect Project
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'package.json'
+      - 'requirements.txt'
+      - 'pyproject.toml'
+      - 'go.mod'
+      - 'Cargo.toml'
+      - 'composer.json'
+      - 'pom.xml'
+      - 'build.gradle'
+      - '*.csproj'
+      - 'Gemfile'
+
+jobs:
+  detect-and-configure:
+    name: 🔍 Detect Project Type and Configure
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Make scripts executable
+        run: |
+          chmod +x scripts/*.sh
+          mkdir -p .automation
+
+      - name: Run project detection
+        id: detect
+        run: |
+          echo "🔍 Running project detection..."
+          ./scripts/project-detector.sh
+          
+          # Read results
+          source .automation/project.env
+          
+          # Output to GitHub Actions
+          echo "project-type=$PROJECT_TYPE" >> $GITHUB_OUTPUT
+          echo "package-manager=$PACKAGE_MANAGER" >> $GITHUB_OUTPUT
+          echo "build-tool=$BUILD_TOOL" >> $GITHUB_OUTPUT
+          echo "version-file=$VERSION_FILE" >> $GITHUB_OUTPUT
+          
+          # Display results
+          echo "📋 Detection Results:"
+          echo "===================="
+          echo "Project Type: $PROJECT_TYPE"
+          echo "Package Manager: $PACKAGE_MANAGER"
+          echo "Build Tool: $BUILD_TOOL"
+          echo "Version File: $VERSION_FILE"
+
+      - name: Update automation config
+        if: steps.detect.outputs.project-type != 'generic'
+        run: |
+          echo "⚙️  Updating automation configuration..."
+          
+          # Create or update .automation-config.yml
+          cat > .automation-config.yml << EOF
+          # 🤖 Universal Automation Configuration
+          # Auto-generated on $(date)
+          
+          project:
+            type: "${{ steps.detect.outputs.project-type }}"
+            package_manager: "${{ steps.detect.outputs.package-manager }}"
+            build_tool: "${{ steps.detect.outputs.build-tool }}"
+            version_file: "${{ steps.detect.outputs.version-file }}"
+          
+          automation:
+            enabled: true
+            auto_commit: true
+            auto_release: true
+            auto_version_bump: true
+          
+          commit:
+            conventional: true
+            validate: true
+            auto_format: true
+          
+          release:
+            auto_tag: true
+            auto_changelog: true
+            auto_publish: true
+          
+          workflows:
+            ci_enabled: true
+            quality_checks: true
+            security_scan: true
+            dependency_check: true
+          
+          # Language-specific configuration
+          ${{ steps.detect.outputs.project-type }}:
+            package_manager: "${{ steps.detect.outputs.package-manager }}"
+            build_tool: "${{ steps.detect.outputs.build-tool }}"
+            version_strategy: "semantic"
+          EOF
+          
+          echo "✅ Configuration updated"
+
+      - name: Setup language-specific tools
+        run: |
+          echo "🔧 Setting up language-specific tools..."
+          
+          case "${{ steps.detect.outputs.project-type }}" in
+            "javascript")
+              echo "📦 JavaScript project detected"
+              if [ ! -f "commitlint.config.js" ]; then
+                echo "module.exports = {extends: ['@commitlint/config-conventional']}" > commitlint.config.js
+                echo "✅ Created commitlint.config.js"
+              fi
+              
+              # Add npm scripts if package.json exists
+              if [ -f "package.json" ] && ! grep -q '"lint"' package.json; then
+                echo "💡 Consider adding lint, test, and build scripts to package.json"
+              fi
+              ;;
+              
+            "python")
+              echo "🐍 Python project detected"
+              if [ ! -f ".flake8" ]; then
+                cat > .flake8 << EOF
+          [flake8]
+          max-line-length = 127
+          extend-ignore = E203, W503
+          exclude = .git,__pycache__,venv,env
+          EOF
+                echo "✅ Created .flake8 config"
+              fi
+              
+              if [ ! -f "pyproject.toml" ] && [ ! -f "setup.py" ]; then
+                echo "💡 Consider creating pyproject.toml for better Python project management"
+              fi
+              ;;
+              
+            "go")
+              echo "🔷 Go project detected"
+              if [ ! -f ".golangci.yml" ]; then
+                cat > .golangci.yml << EOF
+          linters-settings:
+            govet:
+              check-shadowing: true
+            golint:
+              min-confidence: 0
+            gocyclo:
+              min-complexity: 15
+            maligned:
+              suggest-new: true
+            dupl:
+              threshold: 100
+            goconst:
+              min-len: 2
+              min-occurrences: 2
+          
+          linters:
+            enable-all: true
+            disable:
+              - maligned
+              - prealloc
+          EOF
+                echo "✅ Created .golangci.yml config"
+              fi
+              ;;
+              
+            "rust")
+              echo "🦀 Rust project detected"
+              echo "✅ Rust projects typically have good defaults in Cargo.toml"
+              ;;
+              
+            *)
+              echo "📁 Generic project detected"
+              echo "💡 Limited automation available for generic projects"
+              ;;
+          esac
+
+      - name: Generate workflow recommendations
+        run: |
+          echo "💡 Workflow Recommendations for ${{ steps.detect.outputs.project-type }} project:"
+          echo "============================================================================="
+          
+          case "${{ steps.detect.outputs.project-type }}" in
+            "javascript")
+              echo "📋 Recommended npm scripts:"
+              echo '  "scripts": {'
+              echo '    "lint": "eslint .",'
+              echo '    "lint:fix": "eslint . --fix",'
+              echo '    "test": "jest",'
+              echo '    "test:watch": "jest --watch",'
+              echo '    "build": "your-build-command",'
+              echo '    "start": "your-start-command"'
+              echo '  }'
+              echo ""
+              echo "🔧 Recommended dev dependencies:"
+              echo "  - @commitlint/cli @commitlint/config-conventional"
+              echo "  - eslint, prettier"
+              echo "  - jest (for testing)"
+              ;;
+              
+            "python")
+              echo "📋 Recommended dev dependencies:"
+              echo "  - black (formatting)"
+              echo "  - flake8 (linting)"
+              echo "  - isort (import sorting)"
+              echo "  - pytest (testing)"
+              echo "  - mypy (type checking)"
+              echo ""
+              echo "🔧 Recommended project structure:"
+              echo "  - src/ (source code)"
+              echo "  - tests/ (test files)"
+              echo "  - pyproject.toml (project config)"
+              ;;
+              
+            "go")
+              echo "📋 Recommended Go tools:"
+              echo "  - golangci-lint (comprehensive linting)"
+              echo "  - go mod tidy (dependency management)"
+              echo "  - go test -race ./... (testing with race detection)"
+              echo ""
+              echo "🔧 Use semantic versioning with git tags"
+              ;;
+              
+            "rust")
+              echo "📋 Rust best practices enabled:"
+              echo "  - cargo fmt (formatting)"
+              echo "  - cargo clippy (linting)"
+              echo "  - cargo test (testing)"
+              echo "  - cargo audit (security)"
+              ;;
+          esac
+
+      - name: Create issue for manual review
+        if: steps.detect.outputs.project-type == 'generic'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '🔍 Manual Project Configuration Needed',
+              body: `
+              ## 🤖 Auto-Detection Results
+              
+              The automatic project detection couldn't identify a specific language/framework for this repository.
+              
+              **Current Status:**
+              - Project Type: Generic
+              - Automation Level: Limited
+              
+              ## 🔧 Manual Configuration Options
+              
+              To enable full automation features, please:
+              
+              1. **Add language-specific files:**
+                 - JavaScript: \`package.json\`
+                 - Python: \`requirements.txt\` or \`pyproject.toml\`
+                 - Go: \`go.mod\`
+                 - Rust: \`Cargo.toml\`
+                 - PHP: \`composer.json\`
+                 - Java: \`pom.xml\` or \`build.gradle\`
+                 - C#: \`*.csproj\` or \`*.sln\`
+                 - Ruby: \`Gemfile\`
+              
+              2. **Update \`.automation-config.yml\`** manually with your project type
+              
+              3. **Re-run detection:** Push changes to trigger auto-detection again
+              
+              ## 🚀 Available Features
+              
+              Even with generic detection, you still have access to:
+              - ✅ Git hooks for commit validation
+              - ✅ Universal release scripts
+              - ✅ Basic CI/CD workflows
+              - ✅ Security scanning
+              
+              /bugbot - Please review the project configuration
+              `,
+              labels: ['configuration', 'automation']
+            });
+            
+            console.log('Created issue:', issue.data.html_url);
+
+      - name: Commit changes
+        if: steps.detect.outputs.project-type != 'generic'
+        run: |
+          # Configure git
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+          # Add changes
+          git add .automation-config.yml
+          
+          # Add language-specific configs if created
+          [ -f "commitlint.config.js" ] && git add commitlint.config.js
+          [ -f ".flake8" ] && git add .flake8
+          [ -f ".golangci.yml" ] && git add .golangci.yml
+          
+          # Commit if there are changes
+          if git diff --staged --quiet; then
+            echo "📝 No configuration changes to commit"
+          else
+            git commit -m "feat: auto-configure project automation for ${{ steps.detect.outputs.project-type }}
+
+            - Auto-detected project type: ${{ steps.detect.outputs.project-type }}
+            - Package manager: ${{ steps.detect.outputs.package-manager }}
+            - Build tool: ${{ steps.detect.outputs.build-tool }}
+            - Version file: ${{ steps.detect.outputs.version-file }}
+            
+            This configuration enables universal automation features.
+            
+            /bugbot - Auto-configuration completed"
+            
+            git push
+            echo "✅ Configuration changes committed and pushed"
+          fi
+
+      - name: Summary
+        run: |
+          echo "🎉 Auto-Detection Completed!"
+          echo "============================"
+          echo ""
+          echo "📋 Results:"
+          echo "  Project Type: ${{ steps.detect.outputs.project-type }}"
+          echo "  Package Manager: ${{ steps.detect.outputs.package-manager }}"
+          echo "  Build Tool: ${{ steps.detect.outputs.build-tool }}"
+          echo ""
+          echo "✅ Next Steps:"
+          echo "  1. Review the generated .automation-config.yml"
+          echo "  2. Test automation: ./scripts/project-detector.sh"
+          echo "  3. Make a commit: ./scripts/commit-helper.sh \"feat: your message\""
+          echo "  4. Create a release: ./scripts/auto-release.sh patch"
+          echo ""
+          echo "🚀 Your project is now configured for universal automation!" 

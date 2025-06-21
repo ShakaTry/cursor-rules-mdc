@@ -1,0 +1,258 @@
+#!/bin/bash
+# 🤖 PRE-COMMIT HOOK - Universal Pre-commit Checks
+# Runs adaptive checks based on project type
+# Part of Phase 4 - Universal Automation
+
+set -e
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# Load project configuration
+load_project_config() {
+    if [[ -f ".automation/project.env" ]]; then
+        source .automation/project.env
+    else
+        # Run detection if not available
+        if [[ -f "./scripts/project-detector.sh" ]]; then
+            ./scripts/project-detector.sh > /dev/null
+            source .automation/project.env
+        else
+            # Fallback: basic detection
+            if [[ -f "package.json" ]]; then
+                PROJECT_TYPE="javascript"
+            elif [[ -f "pyproject.toml" ]] || [[ -f "requirements.txt" ]]; then
+                PROJECT_TYPE="python"
+            elif [[ -f "go.mod" ]]; then
+                PROJECT_TYPE="go"
+            elif [[ -f "Cargo.toml" ]]; then
+                PROJECT_TYPE="rust"
+            else
+                PROJECT_TYPE="generic"
+            fi
+        fi
+    fi
+}
+
+# Check if there are staged files
+check_staged_files() {
+    local staged_files=$(git diff --cached --name-only)
+    if [[ -z "$staged_files" ]]; then
+        echo -e "${YELLOW}⚠️  No staged files found${NC}" >&2
+        exit 0
+    fi
+    echo -e "${BLUE}📁 Staged files: $(echo "$staged_files" | wc -l) files${NC}" >&2
+}
+
+# JavaScript/Node.js checks
+run_javascript_checks() {
+    echo -e "${BLUE}🟨 Running JavaScript checks...${NC}" >&2
+    
+    # Check if package.json exists
+    if [[ ! -f "package.json" ]]; then
+        echo -e "${YELLOW}⚠️  No package.json found${NC}" >&2
+        return 0
+    fi
+    
+    # Run ESLint if available
+    if [[ -f "node_modules/.bin/eslint" ]] || command -v eslint &> /dev/null; then
+        echo -e "${BLUE}📋 Running ESLint...${NC}" >&2
+        if npm run lint 2>/dev/null || eslint . --fix-dry-run; then
+            echo -e "${GREEN}✅ ESLint passed${NC}" >&2
+        else
+            echo -e "${RED}❌ ESLint issues found${NC}" >&2
+            echo -e "${YELLOW}💡 Run 'npm run lint' or 'eslint . --fix' to fix issues${NC}" >&2
+            return 1
+        fi
+    fi
+    
+    # Run Prettier if available
+    if [[ -f "node_modules/.bin/prettier" ]] || command -v prettier &> /dev/null; then
+        echo -e "${BLUE}🎨 Checking Prettier formatting...${NC}" >&2
+        if prettier --check . 2>/dev/null; then
+            echo -e "${GREEN}✅ Prettier formatting is correct${NC}" >&2
+        else
+            echo -e "${YELLOW}⚠️  Prettier formatting issues found${NC}" >&2
+            echo -e "${YELLOW}💡 Run 'prettier --write .' to fix formatting${NC}" >&2
+        fi
+    fi
+    
+    # Check for package-lock.json consistency
+    if [[ -f "package-lock.json" ]] && [[ -f "package.json" ]]; then
+        if ! npm ls &>/dev/null; then
+            echo -e "${YELLOW}⚠️  package-lock.json might be out of sync${NC}" >&2
+            echo -e "${YELLOW}💡 Run 'npm install' to sync dependencies${NC}" >&2
+        fi
+    fi
+}
+
+# Python checks
+run_python_checks() {
+    echo -e "${BLUE}🐍 Running Python checks...${NC}" >&2
+    
+    # Run flake8 if available
+    if command -v flake8 &> /dev/null; then
+        echo -e "${BLUE}📋 Running flake8...${NC}" >&2
+        if flake8 . --count --statistics; then
+            echo -e "${GREEN}✅ flake8 passed${NC}" >&2
+        else
+            echo -e "${RED}❌ flake8 issues found${NC}" >&2
+            return 1
+        fi
+    fi
+    
+    # Run black if available
+    if command -v black &> /dev/null; then
+        echo -e "${BLUE}🎨 Checking Black formatting...${NC}" >&2
+        if black --check .; then
+            echo -e "${GREEN}✅ Black formatting is correct${NC}" >&2
+        else
+            echo -e "${YELLOW}⚠️  Black formatting issues found${NC}" >&2
+            echo -e "${YELLOW}💡 Run 'black .' to fix formatting${NC}" >&2
+        fi
+    fi
+    
+    # Run isort if available
+    if command -v isort &> /dev/null; then
+        echo -e "${BLUE}📦 Checking import sorting...${NC}" >&2
+        if isort --check-only .; then
+            echo -e "${GREEN}✅ Import sorting is correct${NC}" >&2
+        else
+            echo -e "${YELLOW}⚠️  Import sorting issues found${NC}" >&2
+            echo -e "${YELLOW}💡 Run 'isort .' to fix import sorting${NC}" >&2
+        fi
+    fi
+}
+
+# Go checks
+run_go_checks() {
+    echo -e "${BLUE}🐹 Running Go checks...${NC}" >&2
+    
+    # Run go fmt
+    echo -e "${BLUE}🎨 Running go fmt...${NC}" >&2
+    if [[ -n "$(gofmt -l .)" ]]; then
+        echo -e "${RED}❌ Go formatting issues found${NC}" >&2
+        echo -e "${YELLOW}Files with formatting issues:${NC}" >&2
+        gofmt -l . >&2
+        echo -e "${YELLOW}💡 Run 'go fmt ./...' to fix formatting${NC}" >&2
+        return 1
+    else
+        echo -e "${GREEN}✅ Go formatting is correct${NC}" >&2
+    fi
+    
+    # Run go vet
+    echo -e "${BLUE}🔍 Running go vet...${NC}" >&2
+    if go vet ./...; then
+        echo -e "${GREEN}✅ go vet passed${NC}" >&2
+    else
+        echo -e "${RED}❌ go vet issues found${NC}" >&2
+        return 1
+    fi
+    
+    # Run golint if available
+    if command -v golint &> /dev/null; then
+        echo -e "${BLUE}📋 Running golint...${NC}" >&2
+        if golint ./...; then
+            echo -e "${GREEN}✅ golint passed${NC}" >&2
+        else
+            echo -e "${YELLOW}⚠️  golint issues found${NC}" >&2
+        fi
+    fi
+}
+
+# Rust checks
+run_rust_checks() {
+    echo -e "${BLUE}🦀 Running Rust checks...${NC}" >&2
+    
+    # Run cargo fmt
+    echo -e "${BLUE}🎨 Running cargo fmt...${NC}" >&2
+    if cargo fmt --check; then
+        echo -e "${GREEN}✅ Rust formatting is correct${NC}" >&2
+    else
+        echo -e "${RED}❌ Rust formatting issues found${NC}" >&2
+        echo -e "${YELLOW}💡 Run 'cargo fmt' to fix formatting${NC}" >&2
+        return 1
+    fi
+    
+    # Run cargo clippy
+    echo -e "${BLUE}📋 Running cargo clippy...${NC}" >&2
+    if cargo clippy -- -D warnings; then
+        echo -e "${GREEN}✅ cargo clippy passed${NC}" >&2
+    else
+        echo -e "${RED}❌ cargo clippy issues found${NC}" >&2
+        return 1
+    fi
+}
+
+# Generic checks
+run_generic_checks() {
+    echo -e "${BLUE}📄 Running generic checks...${NC}" >&2
+    
+    # Check for common issues
+    local staged_files=$(git diff --cached --name-only)
+    
+    # Check for merge conflict markers
+    if echo "$staged_files" | xargs grep -l "<<<<<<< HEAD\|=======" 2>/dev/null; then
+        echo -e "${RED}❌ Merge conflict markers found in staged files${NC}" >&2
+        echo -e "${YELLOW}Files with conflict markers:${NC}" >&2
+        echo "$staged_files" | xargs grep -l "<<<<<<< HEAD\|=======" >&2
+        return 1
+    fi
+    
+    # Check for TODO/FIXME comments in staged files
+    local todo_count=$(echo "$staged_files" | xargs grep -c "TODO\|FIXME" 2>/dev/null | wc -l || echo "0")
+    if [[ "$todo_count" -gt 0 ]]; then
+        echo -e "${YELLOW}⚠️  Found TODO/FIXME comments in staged files${NC}" >&2
+        echo -e "${YELLOW}Consider addressing them before committing${NC}" >&2
+    fi
+    
+    # Check for trailing whitespace
+    if echo "$staged_files" | xargs grep -l "[[:space:]]$" 2>/dev/null; then
+        echo -e "${YELLOW}⚠️  Trailing whitespace found in staged files${NC}" >&2
+        echo -e "${YELLOW}Files with trailing whitespace:${NC}" >&2
+        echo "$staged_files" | xargs grep -l "[[:space:]]$" >&2
+    fi
+    
+    echo -e "${GREEN}✅ Generic checks completed${NC}" >&2
+}
+
+# Main execution
+main() {
+    echo -e "${BLUE}🔍 Running pre-commit checks...${NC}" >&2
+    
+    # Load project configuration
+    load_project_config
+    
+    # Check for staged files
+    check_staged_files
+    
+    echo -e "${BLUE}📋 Project type: ${GREEN}${PROJECT_TYPE:-unknown}${NC}" >&2
+    
+    # Run checks based on project type
+    case "${PROJECT_TYPE:-generic}" in
+        "javascript")
+            run_javascript_checks || exit 1
+            ;;
+        "python")
+            run_python_checks || exit 1
+            ;;
+        "go")
+            run_go_checks || exit 1
+            ;;
+        "rust")
+            run_rust_checks || exit 1
+            ;;
+        *)
+            run_generic_checks || exit 1
+            ;;
+    esac
+    
+    echo -e "${GREEN}✅ All pre-commit checks passed!${NC}" >&2
+}
+
+# Run main function
+main "$@" 
