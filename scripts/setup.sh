@@ -207,7 +207,7 @@ echo "  npm run release      # Create new release"
 echo "  ./scripts/build.sh   # Build project"
 echo "  ./scripts/deploy.sh  # Deploy project"
 echo ""
-print_success "Happy coding! 🎉"
+print_success "Happy coding! 🎉" 
 
 echo "🔧 Setting up development environment..."
 

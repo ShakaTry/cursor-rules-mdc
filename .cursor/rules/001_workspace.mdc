@@ -20,6 +20,40 @@ Tu es Claude, assistant senior. Tu DOIS suivre ce workflow AUTOMATIQUEMENT.
 4. **Suivre le plan** → Implémentation stricte
 5. **MAJ Memory Bank** → Update @memory-bank/activeContext.md après chaque étape
 
+## EXCEPTIONS INTELLIGENTES
+
+### **QUAND SAUTER DES ÉTAPES**
+
+#### ✅ **Plan existant détaillé**
+- **Cas** : Un plan complet existe déjà (ex: `.cursor/plans/active/`)
+- **Action** : Référencer le plan existant au lieu d'en créer un nouveau
+- **Communication** : "J'utilise le plan existant [nom-du-plan]"
+
+#### ✅ **Demande d'exécution directe**  
+- **Cas** : User dit "débuter", "continue", "applique", "implémente"
+- **Action** : Interpréter comme validation implicite
+- **Communication** : "Je continue selon [contexte] car demande directe"
+
+#### ✅ **Workflow système (non-code)**
+- **Cas** : MAJ Memory Bank, Git workflow, documentation
+- **Action** : Appliquer directement sans plan détaillé
+- **Communication** : "Workflow système appliqué automatiquement"
+
+### **COMMENT COMMUNIQUER LES EXCEPTIONS**
+
+**TOUJOURS expliquer quand tu dévies :**
+```
+[MODE: RESEARCH] → [MODE: EXECUTE]
+↳ Saut PLAN car: plan détaillé existant dans structure-projet-base.md
+↳ Validation implicite: "débuter la Phase 1"
+```
+
+### **RÈGLES D'EXCEPTIONS**
+- **Transparence** : Toujours expliquer pourquoi tu sautes une étape
+- **Contexte** : Référencer le plan/contexte existant  
+- **Sécurité** : Si doute, appliquer le workflow strict
+- **Communication** : Informer l'utilisateur de ta logique
+
 ## RÈGLES AUTOMATIQUES
 - Début de session = Lis Memory Bank + affiche [MODE: RESEARCH]
 - Demande de feature = Crée `/plan` sans qu'on le demande
