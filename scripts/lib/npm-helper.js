@@ -56,7 +56,7 @@ export class NpmHelper {
    */
   async ensurePackageManager() {
     const pm = await this.detectPackageManager();
-    
+
     if (!pm) {
       throw new Error('No package.json found in current directory');
     }
@@ -75,9 +75,9 @@ export class NpmHelper {
    */
   async install(options = {}) {
     const pm = await this.ensurePackageManager();
-    
+
     log.step(`Installing dependencies with ${pm}...`);
-    
+
     let command;
     switch (pm) {
       case 'npm':
@@ -99,7 +99,7 @@ export class NpmHelper {
     }
 
     const result = await cmd.exec(command);
-    
+
     if (result.success) {
       log.success(`Dependencies installed successfully with ${pm}`);
     } else {
@@ -114,7 +114,7 @@ export class NpmHelper {
    */
   async runScript(script, args = []) {
     const pm = await this.ensurePackageManager();
-    
+
     // Check if script exists
     const packageJson = await this.getPackageJson();
     if (!packageJson.scripts || !packageJson.scripts[script]) {
@@ -122,7 +122,7 @@ export class NpmHelper {
     }
 
     const argsStr = args.length > 0 ? ` -- ${args.join(' ')}` : '';
-    
+
     let command;
     switch (pm) {
       case 'npm':
@@ -141,7 +141,7 @@ export class NpmHelper {
 
     log.step(`Running script: ${script}`);
     const result = await cmd.exec(command);
-    
+
     if (result.success) {
       log.success(`Script '${script}' completed successfully`);
     } else {
@@ -173,10 +173,10 @@ export class NpmHelper {
   async updatePackageJson(updates) {
     const current = await this.getPackageJson();
     const updated = { ...current, ...updates };
-    
+
     await file.write('package.json', JSON.stringify(updated, null, 2));
     log.success('package.json updated');
-    
+
     return updated;
   }
 
@@ -185,11 +185,11 @@ export class NpmHelper {
    */
   async installPackage(packageName, options = {}) {
     const pm = await this.ensurePackageManager();
-    
+
     let command;
     const devFlag = options.dev ? (pm === 'npm' ? '--save-dev' : '--dev') : '';
     const globalFlag = options.global ? '--global' : '';
-    
+
     switch (pm) {
       case 'npm':
         command = `npm install ${packageName} ${devFlag} ${globalFlag}`.trim();
@@ -207,7 +207,7 @@ export class NpmHelper {
 
     log.step(`Installing package: ${packageName}`);
     const result = await cmd.exec(command);
-    
+
     if (result.success) {
       log.success(`Package '${packageName}' installed successfully`);
     } else {
@@ -222,7 +222,7 @@ export class NpmHelper {
    */
   async removePackage(packageName) {
     const pm = await this.ensurePackageManager();
-    
+
     let command;
     switch (pm) {
       case 'npm':
@@ -241,7 +241,7 @@ export class NpmHelper {
 
     log.step(`Removing package: ${packageName}`);
     const result = await cmd.exec(command);
-    
+
     if (result.success) {
       log.success(`Package '${packageName}' removed successfully`);
     } else {
@@ -256,7 +256,7 @@ export class NpmHelper {
    */
   async listPackages(options = {}) {
     const pm = await this.ensurePackageManager();
-    
+
     let command;
     switch (pm) {
       case 'npm':
@@ -282,20 +282,20 @@ export class NpmHelper {
    */
   async updateVersion(version, options = {}) {
     const pm = await this.ensurePackageManager();
-    
+
     // Use npm version command for safest version update
     if (pm === 'npm') {
       const flags = options.noGitTag ? '--no-git-tag-version' : '';
       const command = `npm version ${version} ${flags}`.trim();
-      
+
       const result = await cmd.exec(command);
-      
+
       if (result.success) {
         log.success(`Version updated to ${version}`);
       } else {
         throw new Error(`Failed to update version: ${result.stderr}`);
       }
-      
+
       return result;
     } else {
       // For other package managers, update manually
@@ -309,7 +309,7 @@ export class NpmHelper {
    */
   async checkOutdated() {
     const pm = await this.ensurePackageManager();
-    
+
     let command;
     switch (pm) {
       case 'npm':
@@ -335,25 +335,29 @@ export class NpmHelper {
    */
   async clean() {
     const pm = await this.ensurePackageManager();
-    
+
     log.step('Cleaning dependencies and cache...');
-    
+
     // Remove node_modules
     if (file.exists('node_modules')) {
-      const result = await cmd.exec(platform.isWindows ? 'rmdir /s /q node_modules' : 'rm -rf node_modules');
+      const result = await cmd.exec(
+        platform.isWindows ? 'rmdir /s /q node_modules' : 'rm -rf node_modules'
+      );
       if (result.success) {
         log.success('node_modules removed');
       }
     }
-    
+
     // Remove lock file if requested
     if (this.lockFile && file.exists(this.lockFile)) {
-      const result = await cmd.exec(platform.isWindows ? `del "${this.lockFile}"` : `rm "${this.lockFile}"`);
+      const result = await cmd.exec(
+        platform.isWindows ? `del "${this.lockFile}"` : `rm "${this.lockFile}"`
+      );
       if (result.success) {
         log.success(`${this.lockFile} removed`);
       }
     }
-    
+
     // Clean package manager cache
     let cleanCommand;
     switch (pm) {
@@ -370,12 +374,12 @@ export class NpmHelper {
         cleanCommand = 'bun pm cache rm';
         break;
     }
-    
+
     const result = await cmd.exec(cleanCommand);
     if (result.success) {
       log.success(`${pm} cache cleaned`);
     }
-    
+
     return result;
   }
 
@@ -385,7 +389,7 @@ export class NpmHelper {
   async getProjectInfo() {
     const packageJson = await this.getPackageJson();
     const pm = await this.detectPackageManager();
-    
+
     return {
       name: packageJson.name,
       version: packageJson.version,
@@ -395,7 +399,7 @@ export class NpmHelper {
       hasScripts: !!packageJson.scripts && Object.keys(packageJson.scripts).length > 0,
       scripts: packageJson.scripts || {},
       dependencies: packageJson.dependencies || {},
-      devDependencies: packageJson.devDependencies || {}
+      devDependencies: packageJson.devDependencies || {},
     };
   }
 }
@@ -404,4 +408,4 @@ export class NpmHelper {
 export const npmHelper = new NpmHelper();
 
 // Export class and default instance
-export default NpmHelper; 
+export default NpmHelper;

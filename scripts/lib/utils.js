@@ -15,19 +15,19 @@ import { homedir, platform as osPlatform, EOL } from 'os';
 // Check if chalk is available
 let chalk;
 try {
-    const chalkModule = await import('chalk');
-    chalk = chalkModule.default;
+  const chalkModule = await import('chalk');
+  chalk = chalkModule.default;
 } catch (error) {
-    // Fallback without colors
-    chalk = {
-        blue: (str) => str,
-        green: (str) => str,
-        yellow: (str) => str,
-        red: (str) => str,
-        gray: (str) => str,
-        cyan: (str) => str,
-        magenta: (str) => str
-    };
+  // Fallback without colors
+  chalk = {
+    blue: str => str,
+    green: str => str,
+    yellow: str => str,
+    red: str => str,
+    gray: str => str,
+    cyan: str => str,
+    magenta: str => str,
+  };
 }
 
 const execAsync = promisify(exec);
@@ -43,22 +43,22 @@ const platform_info = {
   platform: osPlatform(),
   pathSeparator: sep,
   lineEnding: EOL,
-  homeDir: homedir()
+  homeDir: homedir(),
 };
 
 /**
  * 🎨 Colored Console Output
  */
 const log = {
-  status: (message) => console.log(chalk.blue(`[INFO]`) + ` ${message}`),
-  info: (message) => console.log(chalk.blue(`[INFO]`) + ` ${message}`),
-  success: (message) => console.log(chalk.green(`[SUCCESS]`) + ` ${message}`),
-  warning: (message) => console.log(chalk.yellow(`[WARNING]`) + ` ${message}`),
-  error: (message) => console.log(chalk.red(`[ERROR]`) + ` ${message}`),
-  debug: (message) => console.log(chalk.gray(`[DEBUG]`) + ` ${message}`),
-  step: (message) => console.log(chalk.cyan(`🔧 ${message}`)),
-  header: (message) => console.log(chalk.magenta(`\n🤖 ${message}`)),
-  divider: () => console.log(chalk.gray('─'.repeat(50)))
+  status: message => console.log(chalk.blue(`[INFO]`) + ` ${message}`),
+  info: message => console.log(chalk.blue(`[INFO]`) + ` ${message}`),
+  success: message => console.log(chalk.green(`[SUCCESS]`) + ` ${message}`),
+  warning: message => console.log(chalk.yellow(`[WARNING]`) + ` ${message}`),
+  error: message => console.log(chalk.red(`[ERROR]`) + ` ${message}`),
+  debug: message => console.log(chalk.gray(`[DEBUG]`) + ` ${message}`),
+  step: message => console.log(chalk.cyan(`🔧 ${message}`)),
+  header: message => console.log(chalk.magenta(`\n🤖 ${message}`)),
+  divider: () => console.log(chalk.gray('─'.repeat(50))),
 };
 
 /**
@@ -68,21 +68,23 @@ const file = {
   /**
    * Check if file exists
    */
-  exists: (filePath) => existsSync(filePath),
-  
+  exists: filePath => existsSync(filePath),
+
   /**
    * Ensure directory exists
    */
-  ensureDir: async (dirPath) => {
+  ensureDir: async dirPath => {
     try {
       await mkdir(dirPath, { recursive: true });
       return true;
     } catch (error) {
-      if (error.code !== 'EEXIST') {throw error;}
+      if (error.code !== 'EEXIST') {
+        throw error;
+      }
       return true;
     }
   },
-  
+
   /**
    * Read file with error handling
    */
@@ -90,11 +92,13 @@ const file = {
     try {
       return await readFile(filePath, encoding);
     } catch (error) {
-      if (error.code === 'ENOENT') {return null;}
+      if (error.code === 'ENOENT') {
+        return null;
+      }
       throw error;
     }
   },
-  
+
   /**
    * Write file with directory creation
    */
@@ -102,31 +106,35 @@ const file = {
     await file.ensureDir(dirname(filePath));
     await writeFile(filePath, content, encoding);
   },
-  
+
   /**
    * Get file stats
    */
-  stats: async (filePath) => {
+  stats: async filePath => {
     try {
       return await stat(filePath);
     } catch (error) {
-      if (error.code === 'ENOENT') {return null;}
+      if (error.code === 'ENOENT') {
+        return null;
+      }
       throw error;
     }
   },
-  
+
   /**
    * List directory contents
    */
-  list: async (dirPath) => {
+  list: async dirPath => {
     try {
       return await readdir(dirPath);
     } catch (error) {
-      if (error.code === 'ENOENT') {return [];}
+      if (error.code === 'ENOENT') {
+        return [];
+      }
       throw error;
     }
   },
-  
+
   /**
    * Cross-platform path resolution
    */
@@ -134,9 +142,9 @@ const file = {
     join: (...paths) => path.join(...paths),
     resolve: (...paths) => path.resolve(...paths),
     relative: (from, to) => path.relative(from, to),
-    dirname: (filePath) => path.dirname(filePath),
-    basename: (filePath) => path.basename(filePath)
-  }
+    dirname: filePath => path.dirname(filePath),
+    basename: filePath => path.basename(filePath),
+  },
 };
 
 /**
@@ -150,22 +158,22 @@ const cmd = {
     const defaultOptions = {
       encoding: 'utf8',
       shell: true, // Let Node.js choose the appropriate shell
-      ...options
+      ...options,
     };
-    
+
     try {
       const { stdout, stderr } = await execAsync(command, defaultOptions);
       return { stdout: stdout.trim(), stderr: stderr.trim(), success: true };
     } catch (error) {
-      return { 
-        stdout: error.stdout?.trim() || '', 
-        stderr: error.stderr?.trim() || error.message, 
+      return {
+        stdout: error.stdout?.trim() || '',
+        stderr: error.stderr?.trim() || error.message,
         success: false,
-        error 
+        error,
       };
     }
   },
-  
+
   /**
    * Spawn process with cross-platform support
    */
@@ -181,36 +189,34 @@ const cmd = {
           }
         }
       }
-      
+
       const child = spawn(command, args, {
         stdio: 'inherit',
         shell: true,
-        ...options
+        ...options,
       });
-      
-      child.on('close', (code) => {
+
+      child.on('close', code => {
         if (code === 0) {
           resolve({ success: true, code });
         } else {
           reject(new Error(`Command failed with code ${code}`));
         }
       });
-      
+
       child.on('error', reject);
     });
   },
-  
+
   /**
    * Check if command exists
    */
-  exists: async (command) => {
-    const checkCommand = platform_info.isWindows 
-      ? `where ${command}` 
-      : `which ${command}`;
-    
+  exists: async command => {
+    const checkCommand = platform_info.isWindows ? `where ${command}` : `which ${command}`;
+
     const result = await cmd.exec(checkCommand);
     return result.success;
-  }
+  },
 };
 
 /**
@@ -225,10 +231,10 @@ const git = {
     return {
       clean: result.success && result.stdout === '',
       files: result.stdout.split('\n').filter(line => line.trim()),
-      ...result
+      ...result,
     };
   },
-  
+
   /**
    * Get current branch
    */
@@ -236,7 +242,7 @@ const git = {
     const result = await cmd.exec('git branch --show-current');
     return result.success ? result.stdout : null;
   },
-  
+
   /**
    * Get latest commit hash
    */
@@ -244,29 +250,29 @@ const git = {
     const result = await cmd.exec('git rev-parse HEAD');
     return result.success ? result.stdout : null;
   },
-  
+
   /**
    * Add files to staging
    */
   add: async (files = '.') => {
     return await cmd.exec(`git add ${files}`);
   },
-  
+
   /**
    * Commit changes
    */
-  commitChanges: async (message) => {
+  commitChanges: async message => {
     return await cmd.exec(`git commit -m "${message}"`);
   },
-  
+
   /**
    * Push changes
    */
   push: async (remote = 'origin', branch = null) => {
-    const currentBranch = branch || await git.branch();
+    const currentBranch = branch || (await git.branch());
     return await cmd.exec(`git push ${remote} ${currentBranch}`);
   },
-  
+
   /**
    * Get git tags
    */
@@ -274,16 +280,14 @@ const git = {
     const result = await cmd.exec('git tag --list');
     return result.success ? result.stdout.split('\n').filter(tag => tag.trim()) : [];
   },
-  
+
   /**
    * Create git tag
    */
   tag: async (tagName, message = null) => {
-    const command = message 
-      ? `git tag -a ${tagName} -m "${message}"`
-      : `git tag ${tagName}`;
+    const command = message ? `git tag -a ${tagName} -m "${message}"` : `git tag ${tagName}`;
     return await cmd.exec(command);
-  }
+  },
 };
 
 /**
@@ -294,30 +298,40 @@ const pkg = {
    * Detect package manager
    */
   detect: async () => {
-    if (file.exists('package-lock.json')) {return 'npm';}
-    if (file.exists('yarn.lock')) {return 'yarn';}
-    if (file.exists('pnpm-lock.yaml')) {return 'pnpm';}
-    if (file.exists('bun.lockb')) {return 'bun';}
-    if (file.exists('package.json')) {return 'npm';}
+    if (file.exists('package-lock.json')) {
+      return 'npm';
+    }
+    if (file.exists('yarn.lock')) {
+      return 'yarn';
+    }
+    if (file.exists('pnpm-lock.yaml')) {
+      return 'pnpm';
+    }
+    if (file.exists('bun.lockb')) {
+      return 'bun';
+    }
+    if (file.exists('package.json')) {
+      return 'npm';
+    }
     return null;
   },
-  
+
   /**
    * Run package manager command
    */
   run: async (command, packageManager = null) => {
-    const pm = packageManager || await pkg.detect() || 'npm';
+    const pm = packageManager || (await pkg.detect()) || 'npm';
     return await cmd.exec(`${pm} ${command}`);
   },
-  
+
   /**
    * Install dependencies
    */
   install: async (packageManager = null) => {
-    const pm = packageManager || await pkg.detect() || 'npm';
+    const pm = packageManager || (await pkg.detect()) || 'npm';
     const installCmd = pm === 'npm' ? 'install' : 'install';
     return await cmd.exec(`${pm} ${installCmd}`);
-  }
+  },
 };
 
 /**
@@ -328,24 +342,42 @@ const project = {
    * Detect project type based on files
    */
   detectType: async () => {
-    if (file.exists('package.json')) {return 'javascript';}
-    if (file.exists('pyproject.toml') || file.exists('requirements.txt')) {return 'python';}
-    if (file.exists('go.mod')) {return 'go';}
-    if (file.exists('Cargo.toml')) {return 'rust';}
-    if (file.exists('composer.json')) {return 'php';}
-    if (file.exists('pom.xml') || file.exists('build.gradle')) {return 'java';}
-    if (file.exists('package.swift')) {return 'swift';}
-    if (file.exists('Gemfile')) {return 'ruby';}
+    if (file.exists('package.json')) {
+      return 'javascript';
+    }
+    if (file.exists('pyproject.toml') || file.exists('requirements.txt')) {
+      return 'python';
+    }
+    if (file.exists('go.mod')) {
+      return 'go';
+    }
+    if (file.exists('Cargo.toml')) {
+      return 'rust';
+    }
+    if (file.exists('composer.json')) {
+      return 'php';
+    }
+    if (file.exists('pom.xml') || file.exists('build.gradle')) {
+      return 'java';
+    }
+    if (file.exists('package.swift')) {
+      return 'swift';
+    }
+    if (file.exists('Gemfile')) {
+      return 'ruby';
+    }
     return 'generic';
   },
-  
+
   /**
    * Get project info from package.json
    */
   getInfo: async () => {
     const packageJson = await file.read('package.json');
-    if (!packageJson) {return null;}
-    
+    if (!packageJson) {
+      return null;
+    }
+
     try {
       return JSON.parse(packageJson);
     } catch (error) {
@@ -353,18 +385,20 @@ const project = {
       return null;
     }
   },
-  
+
   /**
    * Update package.json
    */
-  updateInfo: async (updates) => {
+  updateInfo: async updates => {
     const current = await project.getInfo();
-    if (!current) {throw new Error('No package.json found');}
-    
+    if (!current) {
+      throw new Error('No package.json found');
+    }
+
     const updated = { ...current, ...updates };
     await file.write('package.json', JSON.stringify(updated, null, 2));
     return updated;
-  }
+  },
 };
 
 /**
@@ -374,8 +408,8 @@ const common = {
   /**
    * Sleep/delay function
    */
-  sleep: (ms) => new Promise(resolve => setTimeout(resolve, ms)),
-  
+  sleep: ms => new Promise(resolve => setTimeout(resolve, ms)),
+
   /**
    * Retry function with exponential backoff
    */
@@ -384,35 +418,40 @@ const common = {
       try {
         return await fn();
       } catch (error) {
-        if (i === maxRetries - 1) {throw error;}
+        if (i === maxRetries - 1) {
+          throw error;
+        }
         await common.sleep(delay * Math.pow(2, i));
       }
     }
   },
-  
+
   /**
    * Format bytes to human readable
    */
-  formatBytes: (bytes) => {
-    if (bytes === 0) {return '0 Bytes';}
+  formatBytes: bytes => {
+    if (bytes === 0) {
+      return '0 Bytes';
+    }
     const k = 1024;
     const sizes = ['Bytes', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   },
-  
+
   /**
    * Generate timestamp
    */
   timestamp: () => new Date().toISOString(),
-  
+
   /**
    * Validate semantic version
    */
-  isValidVersion: (version) => {
-    const semverRegex = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)))*(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/;
+  isValidVersion: version => {
+    const semverRegex =
+      /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)))*(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/;
     return semverRegex.test(version);
-  }
+  },
 };
 
 // Add new functions needed for Phase 4 scripts
@@ -423,14 +462,14 @@ const copyFiles = async (src, dest) => {
   await file.ensureDir(dest);
   await cmd.exec(`cp -r "${src}"/* "${dest}"/`);
 };
-const removeFiles = async (pattern) => {
+const removeFiles = async pattern => {
   try {
     await cmd.exec(`rm -rf "${pattern}"`);
   } catch (error) {
     // Ignore errors if files don't exist
   }
 };
-const getDirectorySize = async (dir) => {
+const getDirectorySize = async dir => {
   try {
     const result = await cmd.exec(`du -sh "${dir}"`);
     return result.success ? result.stdout.split('\t')[0] : '0';
@@ -438,7 +477,7 @@ const getDirectorySize = async (dir) => {
     return '0';
   }
 };
-const getDirectorySizeBytes = async (dir) => {
+const getDirectorySizeBytes = async dir => {
   try {
     const result = await cmd.exec(`du -sb "${dir}"`);
     return result.success ? parseInt(result.stdout.split('\t')[0]) : 0;
@@ -446,7 +485,7 @@ const getDirectorySizeBytes = async (dir) => {
     return 0;
   }
 };
-const countFiles = async (dir) => {
+const countFiles = async dir => {
   try {
     const result = await cmd.exec(`find "${dir}" -type f | wc -l`);
     return result.success ? parseInt(result.stdout.trim()) : 0;
@@ -473,7 +512,7 @@ export {
   removeFiles,
   getDirectorySize,
   getDirectorySizeBytes,
-  countFiles
+  countFiles,
 };
 
 // Default export for backwards compatibility
@@ -493,5 +532,5 @@ export default {
   removeFiles,
   getDirectorySize,
   getDirectorySizeBytes,
-  countFiles
-}; 
+  countFiles,
+};

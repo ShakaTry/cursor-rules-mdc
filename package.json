@@ -4,7 +4,6 @@
   "description": "Reusable universal base for all languages with Cursor MDC rules and automatic quality tools (Universal ESLint/Prettier)",
   "private": true,
   "type": "module",
-
   "keywords": [
     "cursor",
     "mdc",

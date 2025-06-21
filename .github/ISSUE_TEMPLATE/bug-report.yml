@@ -1,15 +1,15 @@
 name: 🐛 Bug Report
 description: Report a bug to help us improve
-title: '[BUG] '
-labels: ['bug']
+title: "[BUG] "
+labels: ["bug"]
 body:
   - type: markdown
     attributes:
       value: |
         Thanks for taking the time to fill out this bug report!
-        
+
         **Please search existing issues before creating a new one to avoid duplicates.**
-        
+
   - type: textarea
     id: description
     attributes:
@@ -18,7 +18,7 @@ body:
       placeholder: Describe the bug...
     validations:
       required: true
-      
+
   - type: textarea
     id: reproduction
     attributes:
@@ -31,7 +31,7 @@ body:
         4. See error
     validations:
       required: true
-      
+
   - type: textarea
     id: expected
     attributes:
@@ -40,7 +40,7 @@ body:
       placeholder: Describe what you expected...
     validations:
       required: true
-      
+
   - type: textarea
     id: actual
     attributes:
@@ -49,7 +49,7 @@ body:
       placeholder: Describe what actually happened...
     validations:
       required: true
-      
+
   - type: textarea
     id: environment
     attributes:
@@ -63,7 +63,7 @@ body:
         - Package Manager: [e.g. npm 8.0.0, yarn 1.22.0]
     validations:
       required: false
-      
+
   - type: textarea
     id: logs
     attributes:
@@ -72,7 +72,7 @@ body:
       placeholder: Paste error logs or attach screenshots here...
     validations:
       required: false
-      
+
   - type: textarea
     id: additional
     attributes:
@@ -81,7 +81,7 @@ body:
       placeholder: Any additional information that might help...
     validations:
       required: false
-      
+
   - type: checkboxes
     id: terms
     attributes:
@@ -93,4 +93,4 @@ body:
         - label: I have provided all required information
           required: true
         - label: This is a bug report, not a feature request
-          required: true 
+          required: true

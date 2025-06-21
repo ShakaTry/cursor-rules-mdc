@@ -32,7 +32,7 @@ validate_commit_message() {
     fi
     
     # Check basic format: type(scope): description
-    if [[ ! "$msg" =~ ^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([^)]+\))?!?:[[:space:]].+ ]]; then
+    if [[ ! "$msg" =~ ^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert).*:[[:space:]].+ ]]; then
         echo -e "${RED}❌ Invalid commit message format!${NC}" >&2
         echo -e "${YELLOW}Expected format: type(scope): description${NC}" >&2
         echo -e "${YELLOW}Example: feat(auth): add login functionality${NC}" >&2

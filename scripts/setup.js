@@ -25,7 +25,7 @@ class SetupManager {
       interactive: true,
       createExample: true,
       setupHooks: true,
-      ...options
+      ...options,
     };
     this.detector = new ProjectDetector();
   }
@@ -86,7 +86,7 @@ class SetupManager {
     }
 
     log.step('Installing dependencies...');
-    
+
     if (!file.exists('package.json')) {
       log.warning('No package.json found, skipping npm install');
       return;
@@ -95,7 +95,7 @@ class SetupManager {
     // Detect project type to choose the right package manager
     await this.detector.detectProjectType();
     const packageManager = this.detector.packageManager || 'npm';
-    
+
     try {
       let installCommand;
       switch (packageManager) {
@@ -111,7 +111,7 @@ class SetupManager {
 
       log.info(`Using ${packageManager} for dependency installation`);
       const result = await cmd.exec(installCommand);
-      
+
       if (result.success) {
         log.success('Dependencies installed successfully');
       } else {
@@ -128,7 +128,7 @@ class SetupManager {
    */
   async createProjectStructure() {
     log.step('Creating project structure...');
-    
+
     const directories = [
       'src',
       'src/components',
@@ -147,7 +147,7 @@ class SetupManager {
       '.cursor',
       '.cursor/plans',
       '.cursor/rules',
-      '.automation'
+      '.automation',
     ];
 
     for (const dir of directories) {
@@ -200,7 +200,7 @@ echo "✅ Quality checks passed"
 
     const hookPath = '.git/hooks/pre-commit';
     await file.write(hookPath, preCommitHook);
-    
+
     // Make executable on Unix systems
     if (platform_info.isUnix) {
       await cmd.exec(`chmod +x ${hookPath}`);
@@ -281,7 +281,7 @@ export const projectInfo = {
 
 export default projectInfo;
 `;
-      
+
       await file.write('src/index.js', indexContent);
       log.success('Created basic src/index.js');
     }
@@ -304,7 +304,7 @@ PORT=3000
 # Debug
 DEBUG=app:*
 `;
-      
+
       await file.write('.env.example', envExample);
       log.success('Created .env.example');
     }
@@ -338,7 +338,7 @@ Welcome to your new project! This project was set up using cursor-rules.
 
 Check the \`docs/\` directory for detailed documentation.
 `;
-      
+
       await file.write('README.md', readmeContent);
       log.success('Created README.md');
     }
@@ -350,11 +350,9 @@ Check the \`docs/\` directory for detailed documentation.
   async makeScriptsExecutable() {
     if (platform.isUnix) {
       log.step('Making scripts executable...');
-      
+
       const scriptFiles = await file.list('scripts');
-      const executableFiles = scriptFiles.filter(f => 
-        f.endsWith('.js') || f.endsWith('.sh')
-      );
+      const executableFiles = scriptFiles.filter(f => f.endsWith('.js') || f.endsWith('.sh'));
 
       for (const scriptFile of executableFiles) {
         const scriptPath = join('scripts', scriptFile);
@@ -374,26 +372,26 @@ Check the \`docs/\` directory for detailed documentation.
     }
 
     log.header('Interactive Setup');
-    
+
     const answers = await inquirer.prompt([
       {
         type: 'confirm',
         name: 'installDeps',
         message: 'Install dependencies?',
-        default: true
+        default: true,
       },
       {
         type: 'confirm',
         name: 'setupHooks',
         message: 'Setup Git hooks for quality checks?',
-        default: true
+        default: true,
       },
       {
         type: 'confirm',
         name: 'createExample',
         message: 'Create example files and documentation?',
-        default: true
-      }
+        default: true,
+      },
     ]);
 
     this.options = { ...this.options, ...answers };
@@ -420,7 +418,7 @@ Check the \`docs/\` directory for detailed documentation.
       await this.setupGitConfiguration();
       await this.createInitialContent();
       await this.makeScriptsExecutable();
-      
+
       // Verify installation
       const checks = await this.verifyInstallation();
 
@@ -428,17 +426,16 @@ Check the \`docs/\` directory for detailed documentation.
       log.divider();
       log.header('🎉 Setup completed successfully!');
       log.divider();
-      
+
       log.info('📋 What was configured:');
       checks.forEach(check => log.info(`  ${check}`));
-      
+
       log.divider();
       log.info('🚀 Next steps:');
-      log.info('  1. Run \'npm run quality\' to check everything works');
+      log.info("  1. Run 'npm run quality' to check everything works");
       log.info('  2. Start coding in the src/ directory');
       log.info('  3. Read docs/usage.md for detailed usage');
       log.divider();
-
     } catch (error) {
       log.error(`Setup failed: ${error.message}`);
       throw error;
@@ -461,14 +458,14 @@ program
   .option('--no-example', 'Skip creating example files', false)
   .option('--no-hooks', 'Skip Git hooks setup', false)
   .option('-v, --verbose', 'Verbose output', false)
-  .action(async (options) => {
+  .action(async options => {
     try {
       const setupManager = new SetupManager({
         dryRun: options.dryRun,
         skipInstall: options.skipInstall,
         interactive: options.interactive,
         createExample: options.example,
-        setupHooks: options.hooks
+        setupHooks: options.hooks,
       });
 
       await setupManager.run();
@@ -488,4 +485,4 @@ export { SetupManager };
 // Run if called directly
 if (import.meta.url.endsWith(process.argv[1].replace(/\\/g, '/'))) {
   program.parse();
-} 
+}

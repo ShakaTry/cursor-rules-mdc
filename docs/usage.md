@@ -283,6 +283,7 @@ npm run version:major    # 1.0.0 → 2.0.0
 ## 🔧 **Development Workflow**
 
 ### **Quality Control**
+
 ```bash
 # Check code quality
 npm run quality
@@ -294,6 +295,7 @@ npm run quality:fix
 ### **Git Workflow (Professional)**
 
 #### **Safe Git Commands (Windows PowerShell)**
+
 ```bash
 # Use --no-pager to avoid console hanging
 git --no-pager log --oneline -10
@@ -306,6 +308,7 @@ git st    # Clean status view
 ```
 
 #### **Commit Standards (Conventional Commits)**
+
 ```bash
 # Feature addition
 git commit -m "feat(auth): add login functionality"
@@ -324,6 +327,7 @@ git commit -m "feat!: remove deprecated API"
 ```
 
 #### **Release Workflow**
+
 ```bash
 # Test release (dry run)
 npm run release:dry

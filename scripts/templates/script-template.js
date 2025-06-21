@@ -3,7 +3,7 @@
 /**
  * 🤖 [SCRIPT_NAME] - [SCRIPT_DESCRIPTION]
  * Cross-platform Node.js automation script
- * 
+ *
  * @author cursor-rules automation
  * @version 1.0.0
  */
@@ -11,7 +11,7 @@
 import { Command } from 'commander';
 import utils from '../lib/utils.js';
 
-const { log, file, cmd, platform } = utils;
+const { log, platform } = utils;
 
 /**
  * Main script functionality class
@@ -21,7 +21,7 @@ class ScriptManager {
     this.options = {
       dryRun: false,
       verbose: false,
-      ...options
+      ...options,
     };
   }
 
@@ -98,7 +98,7 @@ program
   .option('-d, --dry-run', 'Show what would be done without executing', false)
   .option('-v, --verbose', 'Verbose output', false)
   .option('--no-color', 'Disable colored output', false)
-  .action(async (options) => {
+  .action(async options => {
     try {
       const manager = new ScriptManager(options);
       await manager.run();
@@ -137,4 +137,4 @@ node script-name.js --verbose
 # Disable colored output
 node script-name.js --no-color
 
-*/ 
+*/

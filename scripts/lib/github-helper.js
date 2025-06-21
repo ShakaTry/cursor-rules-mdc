@@ -161,7 +161,7 @@ export class GitHubHelper {
     await this.ensureAuth();
 
     const issueOptions = [`--title "${title}"`, `--body "${body}"`];
-    
+
     if (options.labels && options.labels.length > 0) {
       issueOptions.push(`--label "${options.labels.join(',')}"`);
     }
@@ -182,7 +182,9 @@ export class GitHubHelper {
   async getWorkflowRuns(limit = 10) {
     await this.ensureAuth();
 
-    const result = await cmd.exec(`gh run list --limit ${limit} --json status,conclusion,workflowName,createdAt`);
+    const result = await cmd.exec(
+      `gh run list --limit ${limit} --json status,conclusion,workflowName,createdAt`
+    );
     if (!result.success) {
       return [];
     }
@@ -232,10 +234,8 @@ export class GitHubHelper {
   async cloneRepo(repo, directory = null) {
     await this.ensureAuth();
 
-    const command = directory 
-      ? `gh repo clone ${repo} ${directory}`
-      : `gh repo clone ${repo}`;
-    
+    const command = directory ? `gh repo clone ${repo} ${directory}` : `gh repo clone ${repo}`;
+
     return await cmd.exec(command);
   }
 
@@ -258,5 +258,5 @@ export class GitHubHelper {
 // Create singleton instance
 const githubHelper = new GitHubHelper();
 
-// Export default instance  
-export default githubHelper; 
+// Export default instance
+export default githubHelper;

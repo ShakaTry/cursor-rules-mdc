@@ -2,7 +2,7 @@
 
 /**
  * 🚀 CURSOR TOOLS - Universal Project Setup & Automation
- * 
+ *
  * Dual Mode:
  * - DEVELOPMENT MODE: Uses individual scripts (scripts/*.js)
  * - COMPILED MODE: Self-contained with embedded scripts
@@ -29,12 +29,15 @@ async function executeScript(scriptName, args = []) {
     return new Promise((resolve, reject) => {
       const child = spawn('node', [`scripts/${scriptName}.js`, ...args], {
         stdio: 'inherit',
-        shell: true
+        shell: true,
       });
-      
-      child.on('close', (code) => {
-        if (code === 0) {resolve();}
-        else {reject(new Error(`Script failed with code ${code}`));}
+
+      child.on('close', code => {
+        if (code === 0) {
+          resolve();
+        } else {
+          reject(new Error(`Script failed with code ${code}`));
+        }
       });
     });
   } else {
@@ -57,10 +60,14 @@ program
   .description('Detect project type and configuration')
   .option('-f, --format <type>', 'Output format (console, json)', 'console')
   .option('-s, --save', 'Save results to .automation/')
-  .action(async (options) => {
+  .action(async options => {
     const args = [];
-    if (options.format) {args.push('-f', options.format);}
-    if (options.save) {args.push('-s');}
+    if (options.format) {
+      args.push('-f', options.format);
+    }
+    if (options.save) {
+      args.push('-s');
+    }
     await executeScript('project-detector', args);
   });
 
@@ -70,10 +77,14 @@ program
   .description('Complete project setup')
   .option('-d, --dry-run', 'Show what would be done')
   .option('--skip-install', 'Skip dependency installation')
-  .action(async (options) => {
+  .action(async options => {
     const args = [];
-    if (options.dryRun) {args.push('-d');}
-    if (options.skipInstall) {args.push('--skip-install');}
+    if (options.dryRun) {
+      args.push('-d');
+    }
+    if (options.skipInstall) {
+      args.push('--skip-install');
+    }
     await executeScript('setup', args);
   });
 
@@ -81,9 +92,11 @@ program
   .command('setup-automation')
   .description('Setup automation (Git hooks, etc.)')
   .option('-d, --dry-run', 'Show what would be done')
-  .action(async (options) => {
+  .action(async options => {
     const args = [];
-    if (options.dryRun) {args.push('-d');}
+    if (options.dryRun) {
+      args.push('-d');
+    }
     await executeScript('setup-automation', args);
   });
 
@@ -93,10 +106,14 @@ program
   .description('Build the project')
   .option('--skip-quality', 'Skip quality checks')
   .option('--skip-tests', 'Skip tests')
-  .action(async (options) => {
+  .action(async options => {
     const args = [];
-    if (options.skipQuality) {args.push('--skip-quality');}
-    if (options.skipTests) {args.push('--skip-tests');}
+    if (options.skipQuality) {
+      args.push('--skip-quality');
+    }
+    if (options.skipTests) {
+      args.push('--skip-tests');
+    }
     await executeScript('build', args);
   });
 
@@ -105,10 +122,14 @@ program
   .description('Clean temporary files and caches')
   .option('--skip-vcs', 'Skip VCS cleanup')
   .option('--skip-docker', 'Skip Docker cleanup')
-  .action(async (options) => {
+  .action(async options => {
     const args = [];
-    if (options.skipVcs) {args.push('--skip-vcs');}
-    if (options.skipDocker) {args.push('--skip-docker');}
+    if (options.skipVcs) {
+      args.push('--skip-vcs');
+    }
+    if (options.skipDocker) {
+      args.push('--skip-docker');
+    }
     await executeScript('clean', args);
   });
 
@@ -116,9 +137,11 @@ program
   .command('deploy')
   .description('Deploy the project')
   .option('-t, --target <target>', 'Deployment target')
-  .action(async (options) => {
+  .action(async options => {
     const args = [];
-    if (options.target) {args.push('-t', options.target);}
+    if (options.target) {
+      args.push('-t', options.target);
+    }
     await executeScript('deploy', args);
   });
 
@@ -130,7 +153,9 @@ program
   .argument('[type]', 'Bump type: patch, minor, major')
   .action(async (action = 'show', type) => {
     const args = [action];
-    if (type) {args.push(type);}
+    if (type) {
+      args.push(type);
+    }
     await executeScript('version-manager', args);
   });
 
@@ -139,23 +164,47 @@ program
   .description('Create automated release')
   .option('-t, --type <type>', 'Release type (patch, minor, major)', 'patch')
   .option('-d, --dry-run', 'Dry run mode')
-  .action(async (options) => {
+  .action(async options => {
     const args = [];
-    if (options.type) {args.push('-t', options.type);}
-    if (options.dryRun) {args.push('-d');}
+    if (options.type) {
+      args.push('-t', options.type);
+    }
+    if (options.dryRun) {
+      args.push('-d');
+    }
     await executeScript('auto-release', args);
   });
 
 // Git Workflow
 program
   .command('commit')
-  .description('Interactive commit with conventional format')
-  .argument('[message]', 'Commit message')
-  .option('-i, --interactive', 'Interactive mode')
+  .description('🧠 Smart commit with AI-powered type detection')
+  .argument('[message]', 'Commit message (optional with smart mode)')
+  .option('-i, --interactive', 'Smart interactive mode')
+  .option('-s, --smart', '🧠 Fully automated smart detection')
+  .option('--no-verify', 'Skip pre-commit hooks')
   .action(async (message, options) => {
     const args = [];
-    if (message) {args.push(message);}
-    if (options.interactive) {args.push('-i');}
+
+    // Smart mode par défaut si pas de message
+    if (!message && !options.interactive) {
+      console.log('🧠 No message provided - activating smart mode');
+      args.push('--smart');
+    } else {
+      if (message) {
+        args.push(message);
+      }
+      if (options.smart) {
+        args.push('-s');
+      }
+      if (options.interactive) {
+        args.push('-i');
+      }
+    }
+
+    if (options.noVerify) {
+      args.push('--no-verify');
+    }
     await executeScript('commit-helper', args);
   });
 
@@ -170,7 +219,7 @@ program
     console.log(`Version: 1.0.0`);
     console.log(`Platform: ${process.platform}`);
     console.log(`Node.js: ${process.version}`);
-    
+
     if (isDevelopmentMode) {
       console.log('\n📁 Available Scripts:');
       console.log('  • project-detector.js');
@@ -201,4 +250,4 @@ try {
   }
 }
 
-export default program; 
+export default program;

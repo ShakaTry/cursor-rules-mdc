@@ -7,7 +7,7 @@ detection:
   # Force a specific project type (optional)
   # Uncomment to override auto-detection
   # force_type: "javascript" # javascript, python, go, rust, php, java, csharp, ruby, generic
-  
+
   # Custom file patterns for detection
   custom_patterns:
     javascript:
@@ -34,27 +34,27 @@ detection:
 commits:
   # Enforce conventional commits
   enforce_conventional: true
-  
+
   # Valid commit types
   valid_types:
-    - "feat"     # New feature
-    - "fix"      # Bug fix
-    - "docs"     # Documentation changes
-    - "style"    # Code style changes
+    - "feat" # New feature
+    - "fix" # Bug fix
+    - "docs" # Documentation changes
+    - "style" # Code style changes
     - "refactor" # Code refactoring
-    - "perf"     # Performance improvements
-    - "test"     # Adding or updating tests
-    - "build"    # Build system changes
-    - "ci"       # CI/CD changes
-    - "chore"    # Maintenance tasks
-    - "revert"   # Revert previous commit
-  
+    - "perf" # Performance improvements
+    - "test" # Adding or updating tests
+    - "build" # Build system changes
+    - "ci" # CI/CD changes
+    - "chore" # Maintenance tasks
+    - "revert" # Revert previous commit
+
   # Minimum description length
   min_description_length: 10
-  
+
   # Maximum first line length
   max_first_line_length: 72
-  
+
   # Auto-suggest commit types based on file changes
   auto_suggest: true
 
@@ -62,7 +62,7 @@ commits:
 versioning:
   # Default version bump strategy
   default_bump: "patch" # patch, minor, major
-  
+
   # Automatic version bumping based on commit types
   auto_bump:
     enabled: true
@@ -78,7 +78,7 @@ versioning:
       ci: "patch"
       chore: "patch"
       # Breaking changes (with !) always trigger major
-  
+
   # Files to update with new version
   update_files:
     javascript:
@@ -101,72 +101,66 @@ hooks:
   # Enable pre-commit checks
   pre_commit:
     enabled: true
-    
     # Checks to run
     checks:
-      # Universal checks
-      - "staged_files"      # Check if files are staged
-      - "merge_conflicts"   # Check for merge conflict markers
-      - "trailing_whitespace" # Check for trailing whitespace
-      - "todo_comments"     # Warn about TODO/FIXME comments
-      
-      # Language-specific checks
+      universal:
+        - "staged_files" # Check if files are staged
+        - "merge_conflicts" # Check for merge conflict markers
+        - "trailing_whitespace" # Check for trailing whitespace
+        - "todo_comments" # Warn about TODO/FIXME comments
       javascript:
-        - "eslint"          # Run ESLint
-        - "prettier"        # Check Prettier formatting
-        - "package_lock"    # Check package-lock.json consistency
-      
+        - "eslint" # Run ESLint
+        - "prettier" # Check Prettier formatting
+        - "package_lock" # Check package-lock.json consistency
       python:
-        - "flake8"          # Run flake8
-        - "black"           # Check Black formatting
-        - "isort"           # Check import sorting
-      
+        - "flake8" # Run flake8
+        - "black" # Check Black formatting
+        - "isort" # Check import sorting
       go:
-        - "gofmt"           # Check Go formatting
-        - "go_vet"          # Run go vet
-        - "golint"          # Run golint (if available)
-      
+        - "gofmt" # Check Go formatting
+        - "go_vet" # Run go vet
+        - "golint" # Run golint (if available)
       rust:
-        - "cargo_fmt"       # Check Rust formatting
-        - "cargo_clippy"    # Run cargo clippy
-  
+        - "cargo_fmt" # Check Rust formatting
+        - "cargo_clippy" # Run cargo clippy
+
   # Post-commit actions
   post_commit:
     enabled: true
-    
+
     # Actions to perform
     actions:
-      - "commit_log"        # Log commit to automation log
-      - "commit_summary"    # Show commit summary
-      - "suggest_actions"   # Suggest next actions
-      - "check_release"     # Check if release is needed
+      - "commit_log" # Log commit to automation log
+      - "commit_summary" # Show commit summary
+      - "suggest_actions" # Suggest next actions
+      - "check_release" # Check if release is needed
 
 # Release Settings
 releases:
   # Automatic release conditions
   auto_release:
     enabled: false # Set to true to enable automatic releases
-    
+
     # Conditions that trigger auto-release
     conditions:
-      - commits_since_tag: 5    # Release after 5 commits
-      - breaking_changes: true  # Release immediately on breaking changes
-      - major_features: true    # Release on major features
-  
+      - commits_since_tag: 5 # Release after 5 commits
+      - breaking_changes: true # Release immediately on breaking changes
+      - major_features: true # Release on major features
+
   # Release notes generation
   release_notes:
     enabled: true
-    
+
     # Include commit types in release notes
     include_types:
       - "feat"
       - "fix"
       - "perf"
       - "docs"
-    
+
     # Group commits by type
     group_by_type: true
-    
+
     # Custom sections
     sections:
       "🚀 Features": ["feat"]
@@ -180,25 +174,25 @@ ci:
   # GitHub Actions settings
   github_actions:
     enabled: true
-    
+
     # Node.js version for JavaScript projects
     node_version: "18"
-    
+
     # Python version for Python projects
     python_version: "3.11"
-    
+
     # Go version for Go projects
     go_version: "1.21"
-    
+
     # Rust version for Rust projects
     rust_version: "stable"
-    
+
     # Test on multiple OS
     test_matrix:
       - "ubuntu-latest"
       - "windows-latest"
       - "macos-latest"
-    
+
     # Enable security scanning
     security_scan: true
 
@@ -208,12 +202,12 @@ notifications:
   success:
     enabled: true
     channels: ["console"] # console, webhook, email
-  
+
   # Error notifications
   error:
     enabled: true
     channels: ["console"]
-  
+
   # Webhook settings (if using webhook notifications)
   webhook:
     url: ""
@@ -223,25 +217,24 @@ notifications:
 advanced:
   # Logging level
   log_level: "info" # debug, info, warn, error
-  
+
   # Automation log file
   log_file: ".automation/automation.log"
-  
+
   # Keep log entries (number of entries)
   log_retention: 100
-  
+
   # Dry run mode (for testing)
   dry_run: false
-  
+
   # Skip certain checks (for debugging)
   skip_checks: []
-  
+
   # Custom scripts directory
   scripts_dir: "scripts"
-  
+
   # Custom hooks directory
   hooks_dir: ".githooks"
-
 # Project-specific overrides
 # Uncomment and customize for your specific needs
 # overrides:
@@ -255,4 +248,4 @@ advanced:
 #           - "mypy"  # Add mypy type checking
 #   go:
 #     ci:
-#       test_flags: "-race -coverprofile=coverage.out" 
+#       test_flags: "-race -coverprofile=coverage.out"

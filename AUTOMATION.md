@@ -9,6 +9,7 @@
 This universal automation system provides a **single, consistent workflow** for all your projects, regardless of programming language or framework. It automatically detects your project type and applies the appropriate tools and processes.
 
 ### **Supported Languages & Frameworks**
+
 - **JavaScript/Node.js** (npm, yarn, pnpm)
 - **Python** (pip, poetry, setuptools)
 - **Go** (go modules)
@@ -24,6 +25,7 @@ This universal automation system provides a **single, consistent workflow** for 
 ## ⚡ **Quick Start**
 
 ### **1. One-Command Commit**
+
 ```bash
 # Replace manual git workflow with intelligent automation
 ./scripts/commit "feat(auth): add login functionality"
@@ -38,6 +40,7 @@ This universal automation system provides a **single, consistent workflow** for 
 ```
 
 ### **2. Automated Release**
+
 ```bash
 # One command for complete release workflow
 ./scripts/auto-release.sh minor
@@ -54,6 +57,7 @@ This universal automation system provides a **single, consistent workflow** for 
 ```
 
 ### **3. Project Detection**
+
 ```bash
 # See what the system detected about your project
 ./scripts/project-detector.sh
@@ -75,6 +79,7 @@ This universal automation system provides a **single, consistent workflow** for 
 ### **Core Scripts**
 
 #### **`./scripts/commit "message"`**
+
 Intelligent commit helper with validation and automation.
 
 ```bash
@@ -92,6 +97,7 @@ Intelligent commit helper with validation and automation.
 ```
 
 #### **`./scripts/auto-release.sh <type> [options]`**
+
 Complete automated release workflow.
 
 ```bash
@@ -107,6 +113,7 @@ Complete automated release workflow.
 ```
 
 #### **`./scripts/version-manager.sh <command>`**
+
 Version management across different project types.
 
 ```bash
@@ -126,6 +133,7 @@ Version management across different project types.
 ```
 
 #### **`./scripts/project-detector.sh`**
+
 Detect and configure project type automatically.
 
 ```bash
@@ -143,7 +151,9 @@ Detect and configure project type automatically.
 The system installs intelligent Git hooks that work automatically:
 
 ### **Pre-commit Hook**
+
 Runs before each commit to ensure quality:
+
 - **Universal checks**: merge conflicts, trailing whitespace, TODO comments
 - **JavaScript**: ESLint, Prettier, package-lock consistency
 - **Python**: flake8, Black, isort
@@ -151,21 +161,27 @@ Runs before each commit to ensure quality:
 - **Rust**: cargo fmt, cargo clippy
 
 ### **Commit-msg Hook**
+
 Validates commit messages:
+
 - **Conventional commits**: Enforces proper format
 - **Length validation**: Minimum 10 chars description
 - **Type validation**: Only valid commit types
 - **Breaking changes**: Proper `!` notation
 
 ### **Post-commit Hook**
+
 Provides helpful information after commits:
+
 - **Commit summary**: Hash, type, impact, file count
 - **Next steps**: Push suggestions, version bump hints
 - **Release conditions**: When to create releases
 - **Project-specific tips**: Based on files changed
 
 ### **Prepare-commit-msg Hook**
+
 Assists with commit message creation:
+
 - **Smart templates**: Based on changed files
 - **Type suggestions**: Analyzes changes to suggest commit type
 - **Scope suggestions**: Based on directory structure
@@ -176,12 +192,13 @@ Assists with commit message creation:
 ## 🎛️ **Configuration**
 
 ### **Global Configuration**
+
 Edit `.automation-config.yml` to customize behavior:
 
 ```yaml
 # Force specific project type
 detection:
-  force_type: "javascript"
+  force_type: 'javascript'
 
 # Customize commit validation
 commits:
@@ -194,8 +211,8 @@ versioning:
   auto_bump:
     enabled: true
     rules:
-      feat: "minor"
-      fix: "patch"
+      feat: 'minor'
+      fix: 'patch'
 
 # Enable/disable hooks
 hooks:
@@ -206,16 +223,17 @@ hooks:
 ```
 
 ### **Project-specific Overrides**
+
 ```yaml
 overrides:
   javascript:
     versioning:
-      default_bump: "minor"
+      default_bump: 'minor'
   python:
     hooks:
       pre_commit:
         checks:
-          - "mypy"  # Add mypy type checking
+          - 'mypy' # Add mypy type checking
 ```
 
 ---
@@ -223,9 +241,11 @@ overrides:
 ## 🚀 **GitHub Actions Integration**
 
 ### **Automatic CI/CD**
+
 The system provides universal GitHub Actions workflows:
 
 #### **`.github/workflows/ci.yml`**
+
 - **Auto-detection**: Identifies project type and configures accordingly
 - **Multi-platform**: Tests on Ubuntu, Windows, macOS
 - **Language-specific**: Runs appropriate linters, formatters, tests
@@ -233,6 +253,7 @@ The system provides universal GitHub Actions workflows:
 - **Build verification**: Ensures project builds correctly
 
 #### **`.github/workflows/release.yml`**
+
 - **Tag-triggered**: Automatically runs on version tags
 - **Manual trigger**: Workflow dispatch with version bump options
 - **Multi-language publishing**: npm, PyPI, crates.io, etc.
@@ -240,7 +261,9 @@ The system provides universal GitHub Actions workflows:
 - **Artifact management**: Builds and uploads release assets
 
 ### **Setup GitHub Actions**
+
 1. **Secrets**: Add publishing tokens to repository secrets:
+
    ```
    NPM_TOKEN          # For npm publishing
    PYPI_TOKEN         # For PyPI publishing
@@ -250,8 +273,8 @@ The system provides universal GitHub Actions workflows:
 2. **Permissions**: Ensure GitHub Actions has proper permissions:
    ```yaml
    permissions:
-     contents: write    # For creating releases
-     packages: write    # For publishing packages
+     contents: write # For creating releases
+     packages: write # For publishing packages
    ```
 
 ---
@@ -259,6 +282,7 @@ The system provides universal GitHub Actions workflows:
 ## 📊 **Workflow Examples**
 
 ### **Daily Development**
+
 ```bash
 # 1. Make your changes
 git add .
@@ -271,6 +295,7 @@ git push
 ```
 
 ### **Creating a Release**
+
 ```bash
 # Option 1: Automatic (recommended)
 ./scripts/auto-release.sh minor
@@ -284,6 +309,7 @@ git push && git push --tags
 ```
 
 ### **Testing Before Release**
+
 ```bash
 # Dry run to see what would happen
 ./scripts/auto-release.sh minor --dry-run
@@ -302,6 +328,7 @@ git push && git push --tags
 ### **Common Issues**
 
 #### **Scripts Not Executable**
+
 ```bash
 # On Unix systems, make scripts executable
 chmod +x scripts/*.sh
@@ -311,6 +338,7 @@ chmod +x .githooks/*
 ```
 
 #### **Git Hooks Not Working**
+
 ```bash
 # Install hooks manually
 git config core.hooksPath .githooks
@@ -320,6 +348,7 @@ cp .githooks/* .git/hooks/
 ```
 
 #### **Project Detection Issues**
+
 ```bash
 # Force project type in .automation-config.yml
 detection:
@@ -331,6 +360,7 @@ cat .automation/project.env
 ```
 
 #### **Version Management Problems**
+
 ```bash
 # Check current version info
 ./scripts/version-manager.sh info
@@ -340,11 +370,13 @@ cat .automation/project.env
 ```
 
 ### **Debug Mode**
+
 Enable debug logging in `.automation-config.yml`:
+
 ```yaml
 advanced:
-  log_level: "debug"
-  dry_run: true  # Test without making changes
+  log_level: 'debug'
+  dry_run: true # Test without making changes
 ```
 
 ---
@@ -352,18 +384,21 @@ advanced:
 ## 🎉 **Benefits**
 
 ### **For Developers**
+
 - **⚡ 90% faster releases**: One command instead of 10+ manual steps
 - **🔒 Zero errors**: Automated validation prevents mistakes
 - **🎯 Consistent workflow**: Same commands for all projects
 - **📚 Learning**: Built-in best practices and suggestions
 
 ### **For Teams**
+
 - **📈 Higher quality**: Enforced standards and automated checks
 - **🚀 Faster delivery**: Streamlined release process
 - **🔄 Consistency**: Same workflow across all repositories
 - **📊 Visibility**: Clear commit history and release notes
 
 ### **For Projects**
+
 - **🌍 Universal**: Works with any programming language
 - **🔧 Configurable**: Customize to your project's needs
 - **📦 Complete**: From commit to release, fully automated
@@ -374,12 +409,14 @@ advanced:
 ## 🆘 **Support**
 
 ### **Getting Help**
+
 - **Documentation**: This file and inline script help
 - **Configuration**: Check `.automation-config.yml` examples
 - **Logs**: Review `.automation/automation.log` for details
 - **Debug**: Enable debug mode for verbose output
 
 ### **Script Help**
+
 ```bash
 # Get help for any script
 ./scripts/commit --help
@@ -388,6 +425,7 @@ advanced:
 ```
 
 ### **Configuration Validation**
+
 ```bash
 # Test your configuration
 ./scripts/project-detector.sh
@@ -397,4 +435,4 @@ advanced:
 
 ---
 
-**🎊 Congratulations! You now have a professional, universal automation system that will transform your development workflow.** 
+**🎊 Congratulations! You now have a professional, universal automation system that will transform your development workflow.**

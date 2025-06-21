@@ -1,51 +1,51 @@
 changelog:
   categories:
-    - title: '🚀 Features'
+    - title: "🚀 Features"
       labels:
-        - 'feature'
-        - 'enhancement'
-        - 'feat'
-    - title: '🐛 Bug Fixes'
+        - "feature"
+        - "enhancement"
+        - "feat"
+    - title: "🐛 Bug Fixes"
       labels:
-        - 'bug'
-        - 'bugfix'
-        - 'fix'
-    - title: '📚 Documentation'
+        - "bug"
+        - "bugfix"
+        - "fix"
+    - title: "📚 Documentation"
       labels:
-        - 'documentation'
-        - 'docs'
-    - title: '🔧 Maintenance'
+        - "documentation"
+        - "docs"
+    - title: "🔧 Maintenance"
       labels:
-        - 'maintenance'
-        - 'dependencies'
-        - 'chore'
-    - title: '⚡ Performance'
+        - "maintenance"
+        - "dependencies"
+        - "chore"
+    - title: "⚡ Performance"
       labels:
-        - 'performance'
-        - 'optimization'
-    - title: '🔒 Security'
+        - "performance"
+        - "optimization"
+    - title: "🔒 Security"
       labels:
-        - 'security'
-        - 'vulnerability'
-    - title: '♻️ Refactoring'
+        - "security"
+        - "vulnerability"
+    - title: "♻️ Refactoring"
       labels:
-        - 'refactor'
-        - 'refactoring'
-    - title: '🧪 Tests'
+        - "refactor"
+        - "refactoring"
+    - title: "🧪 Tests"
       labels:
-        - 'test'
-        - 'tests'
-        - 'testing'
-    - title: '🔥 Breaking Changes'
+        - "test"
+        - "tests"
+        - "testing"
+    - title: "🔥 Breaking Changes"
       labels:
-        - 'breaking-change'
-        - 'breaking'
+        - "breaking-change"
+        - "breaking"
   exclude:
     labels:
-      - 'skip-changelog'
-      - 'no-changelog'
-      - 'ignore'
+      - "skip-changelog"
+      - "no-changelog"
+      - "ignore"
     authors:
-      - 'dependabot'
-      - 'renovate'
-      - 'github-actions' 
+      - "dependabot"
+      - "renovate"
+      - "github-actions"

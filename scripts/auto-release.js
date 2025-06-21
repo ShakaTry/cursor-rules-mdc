@@ -21,7 +21,7 @@ class AutoRelease {
       dryRun: false,
       skipTests: false,
       skipBuild: false,
-      ...options
+      ...options,
     };
     this.projectConfig = null;
   }
@@ -38,10 +38,10 @@ class AutoRelease {
           return;
         }
       }
-      
+
       log.warning('Running project detection first...');
       await cmd.exec('node scripts/project-detector.js');
-      
+
       if (file.exists('.automation/project.env')) {
         const configContent = await file.read('.automation/project.env');
         this.projectConfig = this.parseEnvConfig(configContent);
@@ -58,7 +58,7 @@ class AutoRelease {
   parseEnvConfig(content) {
     const config = {};
     const lines = content.split('\n');
-    
+
     for (const line of lines) {
       const trimmed = line.trim();
       if (trimmed && !trimmed.startsWith('#')) {
@@ -68,7 +68,7 @@ class AutoRelease {
         }
       }
     }
-    
+
     return config;
   }
 
@@ -77,17 +77,17 @@ class AutoRelease {
    */
   async checkPrerequisites() {
     log.step('Checking prerequisites...');
-    
+
     const isRepo = await git.initialize();
     if (!isRepo) {
       throw new Error('Not in a git repository');
     }
-    
+
     const isClean = await git.isClean();
     if (!isClean) {
       throw new Error('Working directory is not clean');
     }
-    
+
     log.success('Prerequisites check passed');
   }
 
@@ -96,7 +96,7 @@ class AutoRelease {
    */
   async getCurrentVersion() {
     const projectType = this.projectConfig?.PROJECT_TYPE || 'generic';
-    
+
     switch (projectType) {
       case 'javascript':
         if (file.exists('package.json')) {
@@ -104,7 +104,7 @@ class AutoRelease {
           return packageJson.version;
         }
         break;
-        
+
       case 'generic':
         if (file.exists('VERSION')) {
           const version = await file.read('VERSION');
@@ -112,12 +112,12 @@ class AutoRelease {
         }
         break;
     }
-    
+
     const latestTag = await git.getLatestTag();
     if (latestTag && semver.valid(latestTag.replace(/^v/, ''))) {
       return latestTag.replace(/^v/, '');
     }
-    
+
     return null;
   }
 
@@ -126,33 +126,33 @@ class AutoRelease {
    */
   async createRelease(version) {
     log.step('Creating release...');
-    
+
     if (this.options.dryRun) {
       log.warning(`DRY RUN - Would create release v${version}`);
       return true;
     }
-    
+
     const versionUpdateResult = await cmd.exec(`node scripts/version-manager.js set ${version}`);
     if (!versionUpdateResult.success) {
       throw new Error('Failed to update version');
     }
-    
+
     await git.add('.');
     const commitResult = await git.commit(`chore: bump version to ${version}`);
     if (!commitResult.success) {
       throw new Error('Failed to commit version update');
     }
-    
+
     const tagResult = await git.createTag(`v${version}`, `Release version ${version}`);
     if (!tagResult.success) {
       throw new Error('Failed to create tag');
     }
-    
+
     const pushResult = await git.push('origin', null, { tags: true });
     if (!pushResult.success) {
       throw new Error('Failed to push release');
     }
-    
+
     log.success(`Release v${version} created and pushed`);
     return true;
   }
@@ -163,35 +163,36 @@ class AutoRelease {
   async executeRelease(bumpType = 'patch') {
     try {
       log.header('Universal Automated Release');
-      
+
       await this.loadProjectConfig();
       await this.checkPrerequisites();
-      
+
       const currentVersion = await this.getCurrentVersion();
       const nextVersion = currentVersion ? semver.inc(currentVersion, bumpType) : '1.0.0';
-      
+
       log.step(`Current version: ${currentVersion || 'none'}`);
       log.step(`Next version: ${nextVersion} (${bumpType})`);
-      
+
       if (!this.options.dryRun) {
-        const { confirm } = await inquirer.prompt([{
-          type: 'confirm',
-          name: 'confirm',
-          message: `Create release v${nextVersion}?`,
-          default: true
-        }]);
-        
+        const { confirm } = await inquirer.prompt([
+          {
+            type: 'confirm',
+            name: 'confirm',
+            message: `Create release v${nextVersion}?`,
+            default: true,
+          },
+        ]);
+
         if (!confirm) {
           log.warning('Release cancelled');
           return false;
         }
       }
-      
+
       await this.createRelease(nextVersion);
-      
+
       log.success('Release workflow completed successfully!');
       return true;
-      
     } catch (error) {
       log.error(`Release failed: ${error.message}`);
       throw error;
@@ -210,17 +211,16 @@ program
   .option('-d, --dry-run', 'Show what would be done without executing')
   .option('--skip-tests', 'Skip running tests')
   .option('--skip-build', 'Skip build step')
-  .action(async (options) => {
+  .action(async options => {
     try {
       const releaseOptions = {
         dryRun: options.dryRun,
         skipTests: options.skipTests,
-        skipBuild: options.skipBuild
+        skipBuild: options.skipBuild,
       };
-      
+
       const autoRelease = new AutoRelease(releaseOptions);
       await autoRelease.executeRelease(options.type);
-      
     } catch (error) {
       log.error(`Error: ${error.message}`);
       process.exit(1);
@@ -231,4 +231,4 @@ if (import.meta.url.endsWith(process.argv[1].replace(/\\/g, '/'))) {
   program.parse();
 }
 
-export default AutoRelease; 
+export default AutoRelease;

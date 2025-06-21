@@ -30,7 +30,7 @@ class ProjectDetector {
     if (file.exists('package.json')) {
       this.projectType = 'javascript';
       this.versionFile = 'package.json';
-      
+
       // Detect package manager
       if (file.exists('yarn.lock')) {
         this.packageManager = 'yarn';
@@ -39,7 +39,7 @@ class ProjectDetector {
       } else {
         this.packageManager = 'npm';
       }
-      
+
       return true;
     }
     return false;
@@ -131,7 +131,7 @@ class ProjectDetector {
     const files = await file.list('.');
     const hasCsProj = files.some(f => f.endsWith('.csproj'));
     const hasSolution = files.some(f => f.endsWith('.sln'));
-    
+
     if (hasCsProj || hasSolution) {
       this.projectType = 'csharp';
       this.packageManager = 'dotnet';
@@ -161,7 +161,7 @@ class ProjectDetector {
    */
   async detectProjectType() {
     log.step('Detecting project type...');
-    
+
     const detectors = [
       { name: 'JavaScript/Node.js', detect: () => this.detectJavaScript() },
       { name: 'Python', detect: () => this.detectPython() },
@@ -170,7 +170,7 @@ class ProjectDetector {
       { name: 'PHP', detect: () => this.detectPHP() },
       { name: 'Java', detect: () => this.detectJava() },
       { name: 'C#', detect: () => this.detectCSharp() },
-      { name: 'Ruby', detect: () => this.detectRuby() }
+      { name: 'Ruby', detect: () => this.detectRuby() },
     ];
 
     for (const detector of detectors) {
@@ -204,7 +204,7 @@ class ProjectDetector {
       buildTool: this.buildTool,
       versionFile: this.versionFile,
       platform: platform.platform,
-      detected: this.detected
+      detected: this.detected,
     };
 
     // Add version if available
@@ -226,7 +226,7 @@ class ProjectDetector {
    */
   async outputResults(format = 'console') {
     const info = await this.getEnhancedInfo();
-    
+
     if (format === 'json') {
       console.log(JSON.stringify(info, null, 2));
       return info;
@@ -240,7 +240,7 @@ class ProjectDetector {
     log.info(`Build Tool: ${info.buildTool || 'N/A'}`);
     log.info(`Version File: ${info.versionFile}`);
     log.info(`Platform: ${info.platform}`);
-    
+
     if (info.version) {
       log.info(`Version: ${info.version}`);
     }
@@ -256,10 +256,10 @@ class ProjectDetector {
    */
   async saveToConfig() {
     const info = await this.getEnhancedInfo();
-    
+
     // Ensure .automation directory exists
     await file.ensureDir('.automation');
-    
+
     // Save as environment format (compatible with bash)
     const envContent = [
       `PROJECT_TYPE=${info.projectType}`,
@@ -269,14 +269,14 @@ class ProjectDetector {
       `PLATFORM=${info.platform}`,
       `DETECTED=${info.detected}`,
       ...(info.version ? [`VERSION=${info.version}`] : []),
-      ...(info.name ? [`NAME=${info.name}`] : [])
+      ...(info.name ? [`NAME=${info.name}`] : []),
     ].join('\n');
 
     await file.write('.automation/project.env', envContent);
-    
+
     // Also save as JSON for Node.js scripts
     await file.write('.automation/project.json', JSON.stringify(info, null, 2));
-    
+
     log.success('Detection results saved to .automation/');
     return info;
   }
@@ -294,7 +294,7 @@ program
   .option('-f, --format <type>', 'Output format (console, json)', 'console')
   .option('-s, --save', 'Save results to .automation/ directory', false)
   .option('-v, --verbose', 'Verbose output', false)
-  .action(async (options) => {
+  .action(async options => {
     try {
       if (options.verbose) {
         log.debug(`Running on ${platform.platform}`);
@@ -303,13 +303,13 @@ program
 
       const detector = new ProjectDetector();
       await detector.detectProjectType();
-      
+
       await detector.outputResults(options.format);
-      
+
       if (options.save) {
         await detector.saveToConfig();
       }
-      
+
       process.exit(0);
     } catch (error) {
       log.error(`Detection failed: ${error.message}`);
@@ -326,4 +326,4 @@ export { ProjectDetector };
 // Run if called directly
 if (import.meta.url.endsWith(process.argv[1].replace(/\\/g, '/'))) {
   program.parse();
-} 
+}

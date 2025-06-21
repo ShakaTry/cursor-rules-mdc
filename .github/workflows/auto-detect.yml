@@ -5,16 +5,16 @@ on:
   push:
     branches: [main]
     paths:
-      - 'package.json'
-      - 'requirements.txt'
-      - 'pyproject.toml'
-      - 'go.mod'
-      - 'Cargo.toml'
-      - 'composer.json'
-      - 'pom.xml'
-      - 'build.gradle'
-      - '*.csproj'
-      - 'Gemfile'
+      - "package.json"
+      - "requirements.txt"
+      - "pyproject.toml"
+      - "go.mod"
+      - "Cargo.toml"
+      - "composer.json"
+      - "pom.xml"
+      - "build.gradle"
+      - "*.csproj"
+      - "Gemfile"
 
 jobs:
   detect-and-configure:
@@ -29,7 +29,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: "18"
 
       - name: Install Node.js dependencies
         run: |
@@ -46,16 +46,16 @@ jobs:
         run: |
           echo "🔍 Running project detection..."
           node scripts/project-detector.js --save
-          
+
           # Read results
           source .automation/project.env
-          
+
           # Output to GitHub Actions
           echo "project-type=$PROJECT_TYPE" >> $GITHUB_OUTPUT
           echo "package-manager=$PACKAGE_MANAGER" >> $GITHUB_OUTPUT
           echo "build-tool=$BUILD_TOOL" >> $GITHUB_OUTPUT
           echo "version-file=$VERSION_FILE" >> $GITHUB_OUTPUT
-          
+
           # Display results
           echo "📋 Detection Results:"
           echo "===================="
@@ -68,53 +68,53 @@ jobs:
         if: steps.detect.outputs.project-type != 'generic'
         run: |
           echo "⚙️  Updating automation configuration..."
-          
+
           # Create or update .automation-config.yml
           cat > .automation-config.yml << EOF
           # 🤖 Universal Automation Configuration
           # Auto-generated on $(date)
-          
+
           project:
             type: "${{ steps.detect.outputs.project-type }}"
             package_manager: "${{ steps.detect.outputs.package-manager }}"
             build_tool: "${{ steps.detect.outputs.build-tool }}"
             version_file: "${{ steps.detect.outputs.version-file }}"
-          
+
           automation:
             enabled: true
             auto_commit: true
             auto_release: true
             auto_version_bump: true
-          
+
           commit:
             conventional: true
             validate: true
             auto_format: true
-          
+
           release:
             auto_tag: true
             auto_changelog: true
             auto_publish: true
-          
+
           workflows:
             ci_enabled: true
             quality_checks: true
             security_scan: true
             dependency_check: true
-          
+
           # Language-specific configuration
           ${{ steps.detect.outputs.project-type }}:
             package_manager: "${{ steps.detect.outputs.package-manager }}"
             build_tool: "${{ steps.detect.outputs.build-tool }}"
             version_strategy: "semantic"
           EOF
-          
+
           echo "✅ Configuration updated"
 
       - name: Setup language-specific tools
         run: |
           echo "🔧 Setting up language-specific tools..."
-          
+
           case "${{ steps.detect.outputs.project-type }}" in
             "javascript")
               echo "📦 JavaScript project detected"
@@ -164,7 +164,7 @@ jobs:
             goconst:
               min-len: 2
               min-occurrences: 2
-          
+
           linters:
             enable-all: true
             disable:
@@ -190,7 +190,7 @@ jobs:
         run: |
           echo "💡 Workflow Recommendations for ${{ steps.detect.outputs.project-type }} project:"
           echo "============================================================================="
-          
+
           case "${{ steps.detect.outputs.project-type }}" in
             "javascript")
               echo "📋 Recommended npm scripts:"
@@ -289,7 +289,7 @@ jobs:
               `,
               labels: ['configuration', 'automation']
             });
-            
+
             console.log('Created issue:', issue.data.html_url);
 
       - name: Commit changes
@@ -298,15 +298,15 @@ jobs:
           # Configure git
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          
+
           # Add changes
           git add .automation-config.yml
-          
+
           # Add language-specific configs if created
           [ -f "commitlint.config.js" ] && git add commitlint.config.js
           [ -f ".flake8" ] && git add .flake8
           [ -f ".golangci.yml" ] && git add .golangci.yml
-          
+
           # Commit if there are changes
           if git diff --staged --quiet; then
             echo "📝 No configuration changes to commit"
@@ -342,4 +342,4 @@ jobs:
           echo "  3. Make a commit: node scripts/commit-helper.js \"feat: your message\""
           echo "  4. Create a release: node scripts/auto-release.js patch"
           echo ""
-          echo "🚀 Your project is now configured for universal automation!" 
+          echo "🚀 Your project is now configured for universal automation!"

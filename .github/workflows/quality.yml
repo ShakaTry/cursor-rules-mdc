@@ -8,10 +8,10 @@ on:
   workflow_dispatch:
 
 env:
-  NODE_VERSION: '18'
-  PYTHON_VERSION: '3.11'
-  GO_VERSION: '1.21'
-  RUST_VERSION: 'stable'
+  NODE_VERSION: "18"
+  PYTHON_VERSION: "3.11"
+  GO_VERSION: "1.21"
+  RUST_VERSION: "stable"
 
 jobs:
   detect-project:
@@ -28,7 +28,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: "18"
 
       - name: Install Node.js dependencies
         run: |
@@ -161,17 +161,17 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          scan-type: 'fs'
-          scan-ref: '.'
-          format: 'sarif'
-          output: 'trivy-results.sarif'
+          scan-type: "fs"
+          scan-ref: "."
+          format: "sarif"
+          output: "trivy-results.sarif"
 
       - name: Upload Trivy scan results to GitHub Security
         uses: github/codeql-action/upload-sarif@v3
         if: always()
         continue-on-error: true
         with:
-          sarif_file: 'trivy-results.sarif'
+          sarif_file: "trivy-results.sarif"
 
       # JavaScript security
       - name: Setup Node.js for security scan
@@ -260,7 +260,7 @@ jobs:
       - name: Validate markdown files
         uses: DavidAnson/markdownlint-cli2-action@v20
         with:
-          globs: '**/*.md'
+          globs: "**/*.md"
         continue-on-error: true
 
   commit-quality:
@@ -356,16 +356,16 @@ jobs:
         run: |
           echo "📊 Code Analysis Results:"
           echo "========================"
-          
+
           # Count lines of code
           echo "📏 Lines of Code:"
           find . -name "*.js" -o -name "*.ts" -o -name "*.py" -o -name "*.go" -o -name "*.rs" | \
             xargs wc -l | tail -1
-          
+
           # Count files
           echo "📁 Total Files:"
           find . -type f -name "*.js" -o -name "*.ts" -o -name "*.py" -o -name "*.go" -o -name "*.rs" | wc -l
-          
+
           # Estimate complexity (basic)
           echo "🔄 Estimated Complexity (TODO count):"
           grep -r "TODO\|FIXME\|HACK" . --include="*.js" --include="*.ts" --include="*.py" --include="*.go" --include="*.rs" | wc -l
@@ -384,7 +384,7 @@ jobs:
           echo "Security: ${{ needs.security.result }}"
           echo "Documentation: ${{ needs.documentation.result }}"
           echo "Dependencies: ${{ needs.dependency-check.result }}"
-          
+
           # Set overall status
           if [[ "${{ needs.lint.result }}" == "success" && \
                 "${{ needs.security.result }}" == "success" && \
@@ -394,4 +394,4 @@ jobs:
           else
             echo "⚠️  Overall Quality: NEEDS ATTENTION"
             exit 0  # Don't fail the workflow, just report
-          fi 
+          fi

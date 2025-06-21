@@ -1,15 +1,15 @@
 name: ❓ Question
 description: Ask a question about the project
-title: '[QUESTION] '
-labels: ['question']
+title: "[QUESTION] "
+labels: ["question"]
 body:
   - type: markdown
     attributes:
       value: |
         Thanks for your question!
-        
+
         **Please check the documentation and existing issues before asking a question.**
-        
+
   - type: textarea
     id: question
     attributes:
@@ -18,7 +18,7 @@ body:
       placeholder: I have a question about...
     validations:
       required: true
-      
+
   - type: textarea
     id: context
     attributes:
@@ -27,7 +27,7 @@ body:
       placeholder: I'm trying to...
     validations:
       required: false
-      
+
   - type: textarea
     id: attempted
     attributes:
@@ -36,7 +36,7 @@ body:
       placeholder: I have tried...
     validations:
       required: false
-      
+
   - type: textarea
     id: environment
     attributes:
@@ -48,7 +48,7 @@ body:
         - Node.js: [e.g. 18.0.0]
     validations:
       required: false
-      
+
   - type: checkboxes
     id: terms
     attributes:
@@ -58,4 +58,4 @@ body:
         - label: I have checked the documentation
           required: true
         - label: I have searched for existing questions
-          required: true 
+          required: true
