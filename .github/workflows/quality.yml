@@ -121,11 +121,10 @@ jobs:
       # Rust Linting
       - name: Setup Rust
         if: needs.detect-project.outputs.project-type == 'rust'
-        uses: actions-rs/toolchain@v1
+        uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: ${{ env.RUST_VERSION }}
           components: rustfmt, clippy
-          override: true
 
       - name: Check Rust formatting
         if: needs.detect-project.outputs.project-type == 'rust'
@@ -203,10 +202,9 @@ jobs:
       # Rust security
       - name: Setup Rust for security scan
         if: needs.detect-project.outputs.project-type == 'rust'
-        uses: actions-rs/toolchain@v1
+        uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: ${{ env.RUST_VERSION }}
-          override: true
 
       - name: Install cargo-audit (Rust)
         if: needs.detect-project.outputs.project-type == 'rust'
@@ -250,9 +248,9 @@ jobs:
           fi
 
       - name: Validate markdown files
-        uses: DavidAnson/markdownlint-action@v1
+        uses: DavidAnson/markdownlint-cli2-action@v20
         with:
-          files: '**/*.md'
+          globs: '**/*.md'
           config: |
             {
               "MD013": { "line_length": 120 },

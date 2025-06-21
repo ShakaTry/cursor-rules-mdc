@@ -90,10 +90,9 @@ jobs:
 
       - name: Setup Rust
         if: needs.detect-project.outputs.project-type == 'rust'
-        uses: actions-rs/toolchain@v1
+        uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: ${{ env.RUST_VERSION }}
-          override: true
           components: rustfmt, clippy
 
       - name: Install dependencies (JavaScript)
@@ -206,10 +205,9 @@ jobs:
 
       - name: Setup Rust
         if: needs.detect-project.outputs.project-type == 'rust'
-        uses: actions-rs/toolchain@v1
+        uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: ${{ env.RUST_VERSION }}
-          override: true
 
       - name: Install dependencies (JavaScript)
         if: needs.detect-project.outputs.project-type == 'javascript'
@@ -270,11 +268,13 @@ jobs:
 
       - name: Upload coverage (Go)
         if: needs.detect-project.outputs.project-type == 'go'
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v5
         with:
-          file: ./coverage.out
+          files: ./coverage.out
           flags: unittests
           name: codecov-umbrella
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false
 
   build:
     name: 🔨 Build Check
@@ -305,10 +305,9 @@ jobs:
 
       - name: Setup Rust
         if: needs.detect-project.outputs.project-type == 'rust'
-        uses: actions-rs/toolchain@v1
+        uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: ${{ env.RUST_VERSION }}
-          override: true
 
       - name: Build (JavaScript)
         if: needs.detect-project.outputs.project-type == 'javascript'
