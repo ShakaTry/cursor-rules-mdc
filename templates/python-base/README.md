@@ -60,7 +60,7 @@ pip install -e ".[dev]"
 # Equivalent to "npm run quality"
 make quality
 
-# Equivalent to "npm run quality:fix" 
+# Equivalent to "npm run quality:fix"
 make format
 
 # Run tests
@@ -124,15 +124,15 @@ make release            # tag + push + PyPI
 
 ## 📦 Equivalences with the JavaScript Template
 
-| JavaScript/Node.js | Python | Description |
-|-------------------|--------|-------------|
-| `package.json` | `pyproject.toml` | Main configuration |
-| `eslint` | `flake8` | Error detection |
-| `prettier` | `black` | Automatic formatting |
-| `jest` | `pytest` | Testing framework |
-| `npm install` | `pip install -e ".[dev]"` | Dependency installation |
-| `npm run quality` | `make quality` | Quality check |
-| `npm run quality:fix` | `make format` | Automatic correction |
+| JavaScript/Node.js    | Python                    | Description             |
+| --------------------- | ------------------------- | ----------------------- |
+| `package.json`        | `pyproject.toml`          | Main configuration      |
+| `eslint`              | `flake8`                  | Error detection         |
+| `prettier`            | `black`                   | Automatic formatting    |
+| `jest`                | `pytest`                  | Testing framework       |
+| `npm install`         | `pip install -e ".[dev]"` | Dependency installation |
+| `npm run quality`     | `make quality`            | Quality check           |
+| `npm run quality:fix` | `make format`             | Automatic correction    |
 
 ## 🎨 Customization
 
@@ -176,7 +176,7 @@ echo "sqlalchemy>=2.0.0" >> requirements.txt
 ```bash
 make quality
 # ✅ Black: All files formatted
-# ✅ Flake8: 0 errors, 0 warnings  
+# ✅ Flake8: 0 errors, 0 warnings
 # ✅ isort: All imports organized
 # ✅ Bandit: No security issues
 # ✅ Tests: >80% coverage
@@ -193,4 +193,4 @@ make quality
 - ✅ **Familiar workflow** for JS developers
 - ✅ **Ready for production** immediately
 
-**🚀 Universal base now available in Python!** 
+**🚀 Universal base now available in Python!**

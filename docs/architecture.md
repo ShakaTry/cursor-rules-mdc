@@ -58,14 +58,14 @@ cursor-rules/
 module.exports = {
   extends: [
     'eslint:recommended',
-    '@typescript-eslint/recommended'  // If TypeScript
+    '@typescript-eslint/recommended', // If TypeScript
   ],
   rules: {
     // Balanced rules: strict but flexible
-    'no-console': 'warn',           // Allows debug, alerts production
-    'no-unused-vars': 'error',      // Unused variables = error
-    'semi': ['error', 'always']     // Semicolons required
-  }
+    'no-console': 'warn', // Allows debug, alerts production
+    'no-unused-vars': 'error', // Unused variables = error
+    semi: ['error', 'always'], // Semicolons required
+  },
 };
 ```
 
