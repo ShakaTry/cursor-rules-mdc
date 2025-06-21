@@ -1,6 +1,6 @@
 {
   "name": "cursor-rules-mdc",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Base universelle réutilisable avec règles Cursor MDC et outils de qualité de code automatique",
   "private": true,
   "type": "module",
