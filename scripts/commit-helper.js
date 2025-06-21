@@ -470,8 +470,9 @@ class CommitHelper {
       const detection = await this.smartCommitDetection();
 
       if (!detection) {
-        log.error('Smart detection failed, falling back to interactive mode');
-        return await this.interactiveCommit();
+        log.error('Smart detection failed, using fallback commit');
+        const fallbackMessage = 'chore: update project files';
+        return await this.executeCommit(fallbackMessage);
       }
 
       // Step 2: Generate smart description
@@ -489,43 +490,27 @@ class CommitHelper {
       console.log(`   Full message: "${commitMessage}"`);
       log.divider();
 
-      // Step 5: Auto-commit based on confidence
-      if (detection.confidence > 0.8) {
-        log.success('🚀 High confidence - Auto-committing!');
+      // Step 5: Auto-commit (simplified for AI usage)
+      if (detection.confidence > 0.4) {
+        log.success(`🚀 Auto-committing (${(detection.confidence * 100).toFixed(1)}% confidence)!`);
         const success = await this.executeCommit(commitMessage);
         if (success) {
           log.success('✅ Smart commit completed successfully!');
         }
         return success;
-      } else if (detection.confidence > 0.5) {
-        log.warning('⚠️ Medium confidence - Requesting confirmation');
-        const { confirm } = await inquirer.prompt([
-          {
-            type: 'confirm',
-            name: 'confirm',
-            message: 'Proceed with smart commit?',
-            default: true,
-          },
-        ]);
-
-        if (confirm) {
-          const success = await this.executeCommit(commitMessage);
-          if (success) {
-            log.success('✅ Smart commit completed successfully!');
-          }
-          return success;
-        } else {
-          log.info('Falling back to interactive mode...');
-          return await this.interactiveCommit();
-        }
       } else {
-        log.warning('⚠️ Low confidence - Falling back to interactive mode');
-        return await this.interactiveCommit();
+        log.warning('⚠️ Low confidence - Using detected type anyway');
+        const success = await this.executeCommit(commitMessage);
+        if (success) {
+          log.success('✅ Smart commit completed successfully!');
+        }
+        return success;
       }
     } catch (error) {
       log.error(`Smart commit mode failed: ${error.message}`);
-      log.info('Falling back to interactive mode...');
-      return await this.interactiveCommit();
+      log.info('Using fallback commit...');
+      const fallbackMessage = 'chore: update project files';
+      return await this.executeCommit(fallbackMessage);
     }
   }
 

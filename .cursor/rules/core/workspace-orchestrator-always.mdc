@@ -58,8 +58,7 @@ memory/   → context-manager-auto.mdc
 - **Commit Intelligent** → `npm run cursor-tools -- commit --smart` en PRIORITÉ
 - **Auto-Détection** → Type commit (feat, fix, docs) + description intelligente
 - **Workflow Complet** → ESLint + Prettier + Tests + Version + Tag (selon config)
-- **Modes Disponibles** → `--smart` (auto), `--interactive` (assisté), `--skip-tests` (bypass)
-- **Confidence Based** → >80% = auto-commit, >50% = confirm, <50% = interactive
+- **Modes disponibles** → `--smart` (standard), `--skip-tests` (urgent)
 
 ### **Scripts Automation (Fallback)**
 - **Commit Manual** → `./scripts/commit-helper.js` si cursor-tools échoue
@@ -111,27 +110,19 @@ memory/   → context-manager-auto.mdc
 
 ## 🧠 SMART COMMIT WORKFLOWS
 
-### **Commandes Essentielles**
+### **Commandes IA**
 ```bash
-# Smart commit automatique (recommandé)
+# Standard pour tous les commits
 npm run cursor-tools -- commit --smart
 
-# Mode interactif avec suggestions IA
-npm run cursor-tools -- commit --interactive
-
-# Commit avec tests automatiques
-npm run cursor-tools -- commit --smart --run-tests
-
-# Bypass urgent (skip hooks)
+# Bypass urgent si nécessaire
 npm run cursor-tools -- commit --smart --skip-tests
 ```
 
-### **Workflow Complet Intégré**
-1. **🧠 Analyse intelligente** → Détection type + description auto
-2. **🧪 Tests conditionnels** → Selon configuration projet
-3. **✅ Validation hooks** → ESLint + Prettier automatique
-4. **📦 Version optionnelle** → Bump automatique si configuré
-5. **🚀 Commit + Metadata** → Message optimisé + post-commit analysis
+### **Workflow Automatisé**
+1. **🧠 Analyse** → Type + description auto
+2. **✅ Validation** → ESLint + Prettier + Tests
+3. **🚀 Commit** → Message optimisé + metadata
 
 ---
 
@@ -143,6 +134,9 @@ npm run cursor-tools -- commit --smart --skip-tests
 **🧠 Smart Commit** → Système de commit intelligent intégré
 
 **Smart Modular = Performance + Maintenabilité + Clarté**
+
+
+
 
 
 
