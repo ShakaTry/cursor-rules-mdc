@@ -1,47 +1,47 @@
-# 🚀 Exemple d'utilisation basique
+# 🚀 Basic Usage Example
 
-> **Cas pratique : Créer un projet JavaScript simple avec qualité automatique**
+> **Practical Case: Create a Simple JavaScript Project with Automatic Quality**
 
-## 🎯 Objectif
+## 🎯 Objective
 
-Démarrer un nouveau projet en moins de 5 minutes avec tous les outils de qualité configurés automatiquement.
+Start a new project in less than 5 minutes with all quality tools automatically configured.
 
-## 📋 Prérequis
+## 📋 Prerequisites
 
-- Node.js 18+ installé
-- Git configuré
-- Éditeur de code (VS Code recommandé)
+- Node.js 18+ installed
+- Git configured
+- Code editor (VS Code recommended)
 
-## 🚀 Étapes pas-à-pas
+## 🚀 Step-by-Step
 
-### 1. Cloner et personnaliser
+### 1. Clone and Customize
 
 ```bash
-# Cloner ce template
-git clone https://github.com/your-username/cursor-rules mon-projet
-cd mon-projet
+# Clone this template
+git clone https://github.com/your-username/cursor-rules my-project
+cd my-project
 
-# Personnaliser package.json
-nano package.json  # Changer name, description, author
+# Customize package.json
+nano package.json  # Change name, description, author
 ```
 
-### 2. Installation automatique
+### 2. Automatic Installation
 
 ```bash
-# Lancer l'installation complète
+# Run the complete installation
 ./scripts/setup.sh
 
-# Ou manuellement
+# Or manually
 npm install
 ```
 
-### 3. Premier code
+### 3. First Code
 
 ```bash
-# Créer votre premier fichier
+# Create your first file
 cat > src/index.js << 'EOF'
 /**
- * Mon premier projet avec cursor-rules
+ * My first project with cursor-rules
  */
 
 function sayHello(name = 'World') {
@@ -49,10 +49,10 @@ function sayHello(name = 'World') {
 }
 
 function main() {
-  console.log(sayHello('Développeur'));
-  console.log('🎉 Projet configuré avec succès!');
+  console.log(sayHello('Developer'));
+  console.log('🎉 Project successfully configured!');
 
-  // Exemple d'utilisation des outils
+  // Example of using tools
   const config = {
     name: require('../package.json').name,
     version: require('../package.json').version,
@@ -62,54 +62,54 @@ function main() {
   console.log('📋 Configuration:', config);
 }
 
-// Export pour réutilisation
+// Export for reuse
 module.exports = { sayHello, main };
 
-// Exécution si appelé directement
+// Execute if called directly
 if (require.main === module) {
   main();
 }
 EOF
 ```
 
-### 4. Vérification qualité
+### 4. Quality Check
 
 ```bash
-# Vérifier la qualité du code
+# Check code quality
 npm run quality
 
-# Voir la magie : le code est formaté automatiquement!
+# See the magic: the code is automatically formatted!
 cat src/index.js
 ```
 
-### 5. Premier commit
+### 5. First Commit
 
 ```bash
-# Ajouter les fichiers
+# Add files
 git add .
 
-# Commit avec convention (automatiquement formaté)
+# Commit with convention (automatically formatted)
 git commit -m "feat: initial project setup with working example"
 
-# Le hook pre-commit vérifie automatiquement la qualité!
+# The pre-commit hook automatically checks quality!
 ```
 
-### 6. Test et build
+### 6. Test and Build
 
 ```bash
-# Tester le code
+# Test the code
 node src/index.js
 
-# Construire le projet
+# Build the project
 ./scripts/build.sh
 
-# Tester le build
+# Test the build
 node dist/index.js
 ```
 
-## 🎨 Personnalisation rapide
+## 🎨 Quick Customization
 
-### Ajouter une fonction utilitaire
+### Add a Utility Function
 
 ```javascript
 // src/utils/helpers.js
@@ -124,21 +124,21 @@ const generateId = () => {
 module.exports = { formatDate, generateId };
 ```
 
-### Utiliser dans index.js
+### Use in index.js
 
 ```javascript
-// Ajouter en haut de src/index.js
+// Add at the top of src/index.js
 const { formatDate, generateId } = require('./utils/helpers');
 
-// Utiliser dans main()
+// Use in main()
 console.log('📅 Date:', formatDate());
 console.log('🆔 ID:', generateId());
 ```
 
-### Ajouter des scripts personnalisés
+### Add Custom Scripts
 
 ```json
-// Dans package.json, section "scripts"
+// In package.json, "scripts" section
 {
   "dev": "node src/index.js",
   "start": "node dist/index.js",
@@ -148,76 +148,76 @@ console.log('🆔 ID:', generateId());
 
 ## ✅ Validation
 
-### Vérifications automatiques
+### Automatic Checks
 
 ```bash
-# Qualité du code (0 erreur attendu)
+# Code quality (0 errors expected)
 npm run quality
 
-# Build sans erreur
+# Build without errors
 npm run build
 
-# Tests (si configurés)
+# Tests (if configured)
 npm test
 ```
 
-### Métriques attendues
+### Expected Metrics
 
-- ✅ ESLint: 0 erreur, 0 warning
-- ✅ Prettier: Code formaté automatiquement
-- ✅ Build: Succès en <30 secondes
-- ✅ Git: Hooks fonctionnels
+- ✅ ESLint: 0 errors, 0 warnings
+- ✅ Prettier: Code automatically formatted
+- ✅ Build: Success in <30 seconds
+- ✅ Git: Functional hooks
 
-## 🚀 Prochaines étapes
+## 🚀 Next Steps
 
-### Développement
+### Development
 
-1. **Ajouter des fonctionnalités** dans `src/`
-2. **Documenter** dans `docs/`
-3. **Tester** avec des exemples
-4. **Committer** avec les conventions
+1. **Add features** in `src/`
+2. **Document** in `docs/`
+3. **Test** with examples
+4. **Commit** with conventions
 
-### Déploiement
+### Deployment
 
 ```bash
-# Créer une release
+# Create a release
 npm run release
 
-# Déployer
+# Deploy
 ./scripts/deploy.sh
 ```
 
 ### Extensions
 
-- Ajouter TypeScript: `npm install typescript @types/node`
-- Ajouter des tests: `npm install jest`
-- Ajouter une API: `npm install express`
+- Add TypeScript: `npm install typescript @types/node`
+- Add tests: `npm install jest`
+- Add an API: `npm install express`
 
-## 🎯 Résultat attendu
+## 🎯 Expected Result
 
-À la fin de cet exemple, vous aurez :
+By the end of this example, you will have:
 
-- ✅ **Projet fonctionnel** en 5 minutes
-- ✅ **Qualité garantie** automatiquement
-- ✅ **Standards professionnels** appliqués
-- ✅ **Prêt pour l'équipe** et la production
+- ✅ **Functional project** in 5 minutes
+- ✅ **Quality guaranteed** automatically
+- ✅ **Professional standards** applied
+- ✅ **Ready for the team** and production
 
-## 💡 Conseils
+## 💡 Tips
 
-### Pour débutants
+### For beginners
 
-- Suivez les étapes dans l'ordre
-- Lisez les messages d'erreur (ils sont utiles!)
-- Utilisez `npm run quality:fix` pour corriger automatiquement
+- Follow the steps in order
+- Read error messages (they are useful!)
+- Use `npm run quality:fix` to automatically fix
 
-### Pour équipes
+### For teams
 
-- Partagez ce template avec tous
-- Personnalisez `.eslintrc.js` selon vos standards
-- Ajustez les scripts dans `package.json`
+- Share this template with everyone
+- Personalize `.eslintrc.js` according to your standards
+- Adjust scripts in `package.json`
 
 ---
 
-**🎉 Félicitations! Vous avez un projet professionnel en quelques minutes!**
+**🎉 Congratulations! You have a professional project in a few minutes!**
 
-➡️ **Suivant**: Consultez `../advanced-usage/` pour des fonctionnalités avancées.
+➡️ **Next**: Check out `../advanced-usage/` for advanced features.

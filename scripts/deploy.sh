@@ -1,5 +1,5 @@
 #!/bin/bash
-# 🚀 Deploy Script - Déploiement automatique
+# 🚀 Deploy Script - Automatic Deployment
 
 echo "🚀 Starting deployment process..."
 

@@ -1,37 +1,37 @@
-# 🚀 Exemple d'utilisation avancée
+# 🚀 Advanced Usage Example
 
-> **Cas pratique : API REST complète avec architecture professionnelle**
+> **Practical Case: Complete REST API with Professional Architecture**
 
-## 🎯 Objectif
+## 🎯 Objective
 
-Créer une API REST robuste avec authentification, base de données, tests automatisés et déploiement containerisé.
+Create a robust REST API with authentication, database, automated tests, and containerized deployment.
 
-## 🏗️ Architecture avancée
+## 🏗️ Advanced Architecture
 
-### Structure organisée
+### Organized Structure
 
 ```
 src/
-├── api/                    # API REST
-│   ├── controllers/        # Logique métier
-│   ├── middleware/         # Middlewares Express
-│   ├── routes/            # Définition des routes
-│   └── validators/        # Validation des données
+├── api/                    # REST API
+│   ├── controllers/        # Business logic
+│   ├── middleware/         # Express middlewares
+│   ├── routes/            # Route definitions
+│   └── validators/        # Data validation
 ├── config/                # Configuration
-│   ├── database.js        # Configuration DB
-│   ├── auth.js           # Configuration JWT
-│   └── environment.js     # Variables d'environnement
-├── models/                # Modèles de données
-├── services/              # Services métier
-├── utils/                 # Fonctions utilitaires
-└── app.js                # Point d'entrée
+│   ├── database.js        # DB configuration
+│   ├── auth.js           # JWT configuration
+│   └── environment.js     # Environment variables
+├── models/                # Data models
+├── services/              # Business services
+├── utils/                 # Utility functions
+└── app.js                # Entry point
 ```
 
-## 🚀 Implémentation complète
+## 🚀 Complete Implementation
 
-### 1. Configuration avancée
+### 1. Advanced Configuration
 
-#### Configuration environnement
+#### Environment Configuration
 
 ```javascript
 // src/config/environment.js
@@ -60,7 +60,7 @@ const env = process.env.NODE_ENV || 'development';
 module.exports = config[env];
 ```
 
-#### Configuration base de données
+#### Database Configuration
 
 ```javascript
 // src/config/database.js
@@ -92,7 +92,7 @@ const disconnectDatabase = async () => {
 module.exports = { connectDatabase, disconnectDatabase };
 ```
 
-### 2. Modèles avec validation
+### 2. Models with Validation
 
 ```javascript
 // src/models/User.js
@@ -157,7 +157,7 @@ userSchema.methods.generateAuthToken = function () {
 module.exports = mongoose.model('User', userSchema);
 ```
 
-### 3. Middleware d'authentification
+### 3. Authentication Middleware
 
 ```javascript
 // src/middleware/auth.js
@@ -211,7 +211,7 @@ const authorize = (...roles) => {
 module.exports = { authenticate, authorize };
 ```
 
-### 4. Contrôleurs avec gestion d'erreurs
+### 4. Controllers with Error Handling
 
 ```javascript
 // src/controllers/authController.js
@@ -221,7 +221,7 @@ const { validationResult } = require('express-validator');
 class AuthController {
   async register(req, res) {
     try {
-      // Validation des erreurs
+      // Validation of errors
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return res.status(400).json({
@@ -233,7 +233,7 @@ class AuthController {
 
       const { name, email, password } = req.body;
 
-      // Vérifier si l'utilisateur existe
+      // Check if user exists
       const existingUser = await User.findOne({ email });
       if (existingUser) {
         return res.status(409).json({
@@ -242,11 +242,11 @@ class AuthController {
         });
       }
 
-      // Créer utilisateur
+      // Create user
       const user = new User({ name, email, password });
       await user.save();
 
-      // Générer token
+      // Generate token
       const token = user.generateAuthToken();
 
       res.status(201).json({
@@ -284,7 +284,7 @@ class AuthController {
 
       const { email, password } = req.body;
 
-      // Trouver utilisateur avec mot de passe
+      // Find user with password
       const user = await User.findOne({ email }).select('+password');
       if (!user || !user.isActive) {
         return res.status(401).json({
@@ -293,7 +293,7 @@ class AuthController {
         });
       }
 
-      // Vérifier mot de passe
+      // Verify password
       const isMatch = await user.comparePassword(password);
       if (!isMatch) {
         return res.status(401).json({
@@ -302,7 +302,7 @@ class AuthController {
         });
       }
 
-      // Générer token
+      // Generate token
       const token = user.generateAuthToken();
 
       res.json({
@@ -354,7 +354,7 @@ class AuthController {
 module.exports = new AuthController();
 ```
 
-### 5. Validation des données
+### 5. Data Validation
 
 ```javascript
 // src/validators/authValidator.js
@@ -381,7 +381,7 @@ const loginValidator = [
 module.exports = { registerValidator, loginValidator };
 ```
 
-### 6. Routes organisées
+### 6. Organized Routes
 
 ```javascript
 // src/routes/auth.js
@@ -402,7 +402,7 @@ router.get('/profile', authenticate, authController.getProfile);
 module.exports = router;
 ```
 
-### 7. Application principale
+### 7. Main Application
 
 ```javascript
 // src/app.js
@@ -500,7 +500,7 @@ class App {
 module.exports = App;
 ```
 
-### 8. Point d'entrée
+### 8. Entry Point
 
 ```javascript
 // src/index.js
@@ -521,9 +521,9 @@ process.on('SIGINT', () => {
 });
 ```
 
-## 🧪 Tests automatisés
+## 🧪 Automated Tests
 
-### Configuration Jest
+### Jest Configuration
 
 ```javascript
 // jest.config.js
@@ -541,7 +541,7 @@ module.exports = {
 };
 ```
 
-### Tests d'intégration
+### Integration Tests
 
 ```javascript
 // tests/auth.test.js
@@ -573,9 +573,9 @@ describe('Auth Endpoints', () => {
 });
 ```
 
-## 🐳 Containerisation
+## 🐳 Containerization
 
-### Dockerfile optimisé
+### Optimized Dockerfile
 
 ```dockerfile
 FROM node:18-alpine AS base
@@ -603,7 +603,7 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
 CMD ["node", "src/index.js"]
 ```
 
-### Docker Compose pour développement
+### Docker Compose for Development
 
 ```yaml
 # docker-compose.yml
@@ -635,9 +635,9 @@ volumes:
   mongo_data:
 ```
 
-## 🚀 Déploiement
+## 🚀 Deployment
 
-### Scripts de déploiement
+### Deployment Scripts
 
 ```bash
 # Production deployment
@@ -651,7 +651,7 @@ docker run -d \
   myapp:latest
 ```
 
-### CI/CD avec GitHub Actions
+### CI/CD with GitHub Actions
 
 ```yaml
 # .github/workflows/deploy.yml
@@ -681,9 +681,9 @@ jobs:
       - run: docker push myregistry/myapp:latest
 ```
 
-## 📊 Monitoring et métriques
+## 📊 Monitoring and Metrics
 
-### Logging structuré
+### Structured Logging
 
 ```javascript
 // src/utils/logger.js
@@ -714,21 +714,21 @@ if (process.env.NODE_ENV !== 'production') {
 module.exports = logger;
 ```
 
-## 🎯 Résultat final
+## 🎯 Final Result
 
-Cette architecture avancée vous donne :
+This advanced architecture gives you:
 
-- ✅ **API REST complète** avec authentification JWT
-- ✅ **Base de données** MongoDB avec validation
-- ✅ **Tests automatisés** avec >80% de couverture
-- ✅ **Containerisation** Docker optimisée
-- ✅ **CI/CD** avec GitHub Actions
-- ✅ **Monitoring** et logging structuré
-- ✅ **Sécurité** intégrée (helmet, CORS, rate limiting)
-- ✅ **Qualité garantie** avec ESLint/Prettier
+- ✅ **Complete REST API** with JWT authentication
+- ✅ **Database** MongoDB with validation
+- ✅ **Automated Tests** with >80% coverage
+- ✅ **Containerization** Optimized Docker
+- ✅ **CI/CD** with GitHub Actions
+- ✅ **Monitoring** and structured logging
+- ✅ **Security** integrated (helmet, CORS, rate limiting)
+- ✅ **Quality Assurance** with ESLint/Prettier
 
 ---
 
-**🚀 Architecture prête pour la production!**
+**🚀 Architecture ready for production!**
 
-➡️ **Suivant**: Consultez `../integrations/` pour des intégrations externes.
+➡️ **Next**: Check out `../integrations/` for external integrations.

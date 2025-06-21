@@ -1,6 +1,6 @@
 # 🚀 Usage Guide
 
-> **Guide d'utilisation complet avec exemples pratiques**
+> **Comprehensive usage guide with practical examples**
 
 ## 🎉 **Version 1.1.1 - All Tools Operational** ✅
 
@@ -9,79 +9,79 @@
 ✅ Conventional commits + versioning system validated  
 ✅ Professional base ready for immediate use
 
-## 🎯 Vue d'ensemble
+## 🎯 Overview
 
-Ce projet fournit une **base universelle réutilisable** pour tous vos futurs projets avec :
+This project provides a **reusable universal base** for all your future projects with:
 
-- ✅ **Qualité automatique universelle** - ESLint/Prettier pour tous langages (JS, Python, Go, Rust...)
-- ✅ **Versioning automatique** - Plus de gestion manuelle
-- ✅ **Standards professionnels** - Collaboration facilitée tous langages
-- ✅ **Documentation complète** - Démarrage rapide
-- ✅ **Templates spécialisés** - JavaScript, Python, React... prêts à l'emploi
+- ✅ **Universal automatic quality** - ESLint/Prettier for all languages (JS, Python, Go, Rust...)
+- ✅ **Automatic versioning** - No more manual management
+- ✅ **Professional standards** - Facilitated collaboration across languages
+- ✅ **Complete documentation** - Quick start
+- ✅ **Specialized templates** - JavaScript, Python, React... ready to use
 
-### 🔧 Outils universels inclus
+### 🔧 Included universal tools
 
-**ESLint + Prettier** sont devenus les **standards universels** de qualité de code, supportés par tous les éditeurs modernes pour **tous les langages**. Le `package.json` sert de gestionnaire d'outils universel.
+**ESLint + Prettier** have become the **universal standards** for code quality, supported by all modern editors for **all languages**. The `package.json` serves as a universal tool manager.
 
-## 🏁 Démarrage rapide
+## 🏁 Quick Start
 
-### 1. Premier usage
+### 1. First use
 
 ```bash
-# Après installation
-npm run quality      # Vérifier que tout fonctionne
-npm run setup        # Configuration initiale (si pas fait)
+# After installation
+npm run quality      # Check everything is working
+npm run setup        # Initial setup (if not done)
 ```
 
-### 2. Workflow quotidien
+### 2. Daily workflow
 
 ```bash
-# Avant de commencer à coder
-npm run quality      # Vérifier l'état actuel
+# Before starting to code
+npm run quality      # Check current state
 
-# Pendant le développement
-npm run quality:fix  # Corriger automatiquement les problèmes
+# During development
+npm run quality:fix  # Automatically fix issues
 
-# Avant de committer
-npm run quality      # Validation finale
+# Before committing
+npm run quality      # Final validation
 ```
 
-## 🛠️ Commandes principales
+## 🛠️ Main Commands
 
-### Qualité de code
+### Code Quality
 
 ```bash
-npm run quality      # Vérification complète (ESLint + Prettier)
-npm run quality:fix  # Correction automatique des problèmes
-npm run lint         # ESLint seulement
-npm run format       # Prettier seulement
+npm run quality      # Complete check (ESLint + Prettier)
+npm run quality:fix  # Automatically fix issues
+npm run lint         # ESLint only
+npm run format       # Prettier only
 ```
 
-### Versioning automatique
+### Automatic Versioning
 
 ```bash
-# Commits conventionnels (exemples)
-git commit -m "feat: nouvelle fonctionnalité"    # 1.0.0 → 1.1.0
-git commit -m "fix: correction de bug"           # 1.1.0 → 1.1.1
-git commit -m "docs: mise à jour documentation"  # Pas de changement version
-git commit -m "feat!: changement breaking"       # 1.1.1 → 2.0.0
+# Conventional commits (examples)
+git commit -m "feat: new feature"    # 1.0.0 → 1.1.0
+git commit -m "fix: bug fix"           # 1.1.0 → 1.1.1
+git commit -m "docs: update documentation"  # No version change
+git commit -m "feat!: breaking change"       # 1.1.1 → 2.0.0
 
-# Générer nouvelle version
+# Generate new version
 npm run release      # Version + CHANGELOG + Tag + Push
 ```
 
-### Scripts d'automatisation
+### Automation Scripts
 
 ```bash
-./scripts/setup.sh   # Installation complète
-./scripts/build.sh   # Construction du projet
-./scripts/deploy.sh  # Déploiement
-./scripts/clean.sh   # Nettoyage fichiers temporaires
+./scripts/setup.sh   # Complete installation
+./scripts/build.sh   # Project build
+./scripts/deploy.sh  # Deployment
+./scripts/clean.sh   # Clean temporary files
 ```
 
 ## 📝 Conventional Commits
 
-### Format obligatoire
+### Mandatory Format
 
 ```
 <type>(<scope>): <description>
@@ -91,23 +91,23 @@ npm run release      # Version + CHANGELOG + Tag + Push
 [optional footer(s)]
 ```
 
-### Types principaux
+### Main Types
 
-- **feat**: Nouvelle fonctionnalité
-- **fix**: Correction de bug
-- **docs**: Documentation seulement
-- **style**: Formatage (sans changer la logique)
-- **refactor**: Refactoring (sans nouvelle feature ni fix)
-- **test**: Ajout ou modification de tests
-- **chore**: Maintenance (build, dépendances, etc.)
+- **feat**: New feature
+- **fix**: Bug fix
+- **docs**: Documentation only
+- **style**: Formatting (no logic change)
+- **refactor**: Refactoring (no new feature or fix)
+- **test**: Add or modify tests
+- **chore**: Maintenance (build, dependencies, etc.)
 
-### Exemples concrets
+### Concrete Examples
 
 ```bash
-# Nouvelle fonctionnalité
+# New feature
 git commit -m "feat(auth): add user login system"
 
-# Correction de bug
+# Bug fix
 git commit -m "fix(api): handle empty response correctly"
 
 # Documentation
@@ -117,163 +117,163 @@ git commit -m "docs(readme): add installation instructions"
 git commit -m "feat(api)!: change authentication method"
 ```
 
-## 🏗️ Structure du projet
+## 🏗️ Project Structure
 
-### Organisation des fichiers
+### File Organization
 
 ```
 cursor-rules/
-├── src/              # Code source principal
-├── docs/             # Documentation complète
-├── scripts/          # Scripts d'automatisation
-├── examples/         # Exemples pratiques
-├── templates/        # Templates réutilisables
-├── .cursor/          # Configuration Cursor/Claude
-└── package.json      # Configuration npm/outils
+├── src/              # Main source code
+├── docs/             # Complete documentation
+├── scripts/          # Automation scripts
+├── examples/         # Practical examples
+├── templates/        # Reusable templates
+├── .cursor/          # Cursor/Claude configuration
+└── package.json      # npm/tools configuration
 ```
 
-### Dossiers principaux
+### Main Directories
 
-#### `src/` - Code source
+#### `src/` - Source Code
 
 ```bash
-# Votre code principal ici
+# Your main code here
 src/
-├── components/       # Composants/modules
-├── utils/           # Fonctions utilitaires
+├── components/       # Components/modules
+├── utils/           # Utility functions
 ├── config/          # Configuration
-└── index.js         # Point d'entrée principal
+└── index.js         # Main entry point
 ```
 
 #### `docs/` - Documentation
 
-- `installation.md` - Guide installation
-- `usage.md` - Ce fichier
-- `examples.md` - Exemples détaillés
-- `architecture.md` - Vue technique
+- `installation.md` - Installation guide
+- `usage.md` - This file
+- `examples.md` - Detailed examples
+- `architecture.md` - Technical overview
 
-#### `examples/` - Exemples pratiques
+#### `examples/` - Practical Examples
 
-- `basic-usage/` - Utilisation de base
-- `advanced-usage/` - Fonctionnalités avancées
-- `integrations/` - Intégrations externes
+- `basic-usage/` - Basic usage
+- `advanced-usage/` - Advanced features
+- `integrations/` - External integrations
 
-## 🎨 Personnalisation
+## 🎨 Customization
 
-### 1. Adapter à votre projet
+### 1. Adapt to your project
 
 ```bash
-# 1. Changer les informations dans package.json
+# 1. Change information in package.json
 nano package.json
 
-# 2. Modifier la licence si nécessaire
+# 2. Modify license if necessary
 nano LICENSE
 
-# 3. Personnaliser CONTRIBUTING.md
+# 3. Customize CONTRIBUTING.md
 nano CONTRIBUTING.md
 ```
 
-### 2. Configuration des outils
+### 2. Tool Configuration
 
 ```bash
-# ESLint (règles de code)
+# ESLint (code rules)
 nano .eslintrc.js
 
-# Prettier (formatage)
+# Prettier (formatting)
 nano .prettierrc
 
-# EditorConfig (éditeur)
+# EditorConfig (editor)
 nano .editorconfig
 ```
 
-### 3. Scripts personnalisés
+### 3. Custom Scripts
 
 ```bash
-# Ajouter vos propres scripts
+# Add your own scripts
 nano scripts/custom-script.sh
 
-# Les rendre exécutables
+# Make them executable
 chmod +x scripts/custom-script.sh
 ```
 
-## 🔄 Workflow de développement
+## 🔄 Development Workflow
 
-### 1. Créer une nouvelle fonctionnalité
+### 1. Create a new feature
 
 ```bash
-# 1. Créer une branche
+# 1. Create a branch
 git checkout -b feat/ma-nouvelle-feature
 
-# 2. Développer avec qualité automatique
-npm run quality:fix  # Pendant le développement
+# 2. Develop with automatic quality
+npm run quality:fix  # During development
 
-# 3. Committer avec convention
+# 3. Commit with convention
 git add .
 git commit -m "feat: add ma nouvelle feature"
 
-# 4. Pousser et créer PR
+# 4. Push and create PR
 git push origin feat/ma-nouvelle-feature
 ```
 
-### 2. Maintenance régulière
+### 2. Regular maintenance
 
 ```bash
-# Vérification hebdomadaire
-npm run quality           # Vérifier qualité
-npm audit                # Vérifier sécurité
-npm outdated             # Vérifier mises à jour
+# Weekly check
+npm run quality           # Check quality
+npm audit                # Check security
+npm outdated             # Check updates
 
-# Nettoyage régulier
-./scripts/clean.sh       # Nettoyer fichiers temporaires
+# Regular cleanup
+./scripts/clean.sh       # Clean temporary files
 ```
 
-## 📊 Monitoring qualité
+## 📊 Monitoring quality
 
-### Métriques automatiques
+### Automatic Metrics
 
-- **ESLint**: 0 erreur, 0 warning
-- **Prettier**: Formatage cohérent
-- **Commits**: Convention respectée
-- **Tests**: Couverture >80% (si applicable)
+- **ESLint**: 0 error, 0 warning
+- **Prettier**: Consistent formatting
+- **Commits**: Convention followed
+- **Tests**: Coverage >80% (if applicable)
 
-### Vérifications continues
+### Continuous Checks
 
 ```bash
-# Avant chaque commit
+# Before each commit
 npm run quality
 
-# Avant chaque release
+# Before each release
 npm run quality && npm run build && npm test
 ```
 
-## 🚀 Déploiement
+## 🚀 Deployment
 
-### Déploiement automatique
+### Automatic Deployment
 
 ```bash
-# Release complète automatique
+# Complete automatic deployment
 npm run release
 
-# Ou étape par étape
+# Or step-by-step
 npm run version:patch    # 1.0.0 → 1.0.1
 npm run version:minor    # 1.0.0 → 1.1.0
 npm run version:major    # 1.0.0 → 2.0.0
 ```
 
-### GitHub Actions (automatique)
+### GitHub Actions (automatic)
 
-- ✅ Tests à chaque push
-- ✅ Release automatique sur `main`
-- ✅ CHANGELOG mis à jour automatiquement
-- ✅ GitHub Release créée automatiquement
+- ✅ Tests on each push
+- ✅ Automatic deployment on `main`
+- ✅ CHANGELOG updated automatically
+- ✅ GitHub Release created automatically
 
-## 📚 Ressources utiles
+## 📚 Useful Resources
 
 ### Documentation
 
-- 📖 [Examples détaillés](examples.md)
-- 🏗️ [Architecture technique](architecture.md)
-- 🛠️ [Guide installation](installation.md)
+- �� [Detailed examples](examples.md)
+- 🏗️ [Technical overview](architecture.md)
+- 🛠️ [Installation guide](installation.md)
 
 ### Standards
 
@@ -283,5 +283,5 @@ npm run version:major    # 1.0.0 → 2.0.0
 
 ---
 
-**Prêt à développer !** 🎉  
-➡️ **Suivant**: Consultez `docs/examples.md` pour des cas pratiques concrets.
+**Ready to develop!** 🎉  
+➡️ **Next**: Check out `docs/examples.md` for practical concrete cases.

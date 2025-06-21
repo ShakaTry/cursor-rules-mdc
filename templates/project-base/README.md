@@ -1,144 +1,144 @@
-# 📦 Template Projet Base
+# 📦 Project Base Template
 
-> **Template universel réutilisable pour démarrer n'importe quel projet avec qualité professionnelle**
+> **Universal reusable template to start any project with professional quality**
 
-## 🎯 À propos
+## 🎯 About
 
-Ce template fournit une **base solide et universelle** pour créer rapidement des projets de qualité professionnelle, quel que soit le langage ou framework choisi.
+This template provides a **solid and universal base** to quickly create professional quality projects, regardless of the chosen language or framework.
 
-## ✨ Fonctionnalités incluses
+## ✨ Included Features
 
-### 🔧 Qualité automatique
+### 🔧 Automatic Quality
 
-- ✅ **ESLint** - Détection d'erreurs automatique
-- ✅ **Prettier** - Formatage de code cohérent
-- ✅ **EditorConfig** - Configuration éditeur universelle
-- ✅ **Git hooks** - Vérification avant commit
+- ✅ **ESLint** - Automatic error detection
+- ✅ **Prettier** - Consistent code formatting
+- ✅ **EditorConfig** - Universal editor configuration
+- ✅ **Git hooks** - Pre-commit checks
 
-### 📋 Standards professionnels
+### 📋 Professional Standards
 
-- ✅ **Conventional Commits** - Messages standardisés
-- ✅ **Semantic Versioning** - Versioning automatique
-- ✅ **CHANGELOG** - Historique automatique
-- ✅ **MIT License** - Libre d'utilisation
+- ✅ **Conventional Commits** - Standardized messages
+- ✅ **Semantic Versioning** - Automatic versioning
+- ✅ **CHANGELOG** - Automatic history
+- ✅ **MIT License** - Free to use
 
-### 🚀 Automatisation
+### 🚀 Automation
 
-- ✅ **Scripts** - Installation, build, déploiement
-- ✅ **GitHub Actions** - CI/CD intégré
-- ✅ **Release automatique** - Plus de gestion manuelle
-- ✅ **Documentation** - Guides complets
+- ✅ **Scripts** - Installation, build, deployment
+- ✅ **GitHub Actions** - Integrated CI/CD
+- ✅ **Automatic Release** - No manual management
+- ✅ **Documentation** - Complete guides
 
-## 🚀 Utilisation rapide
+## 🚀 Quick Usage
 
-### 1. Créer un nouveau projet
+### 1. Create a New Project
 
 ```bash
-# Option 1: Cloner ce template
-git clone https://github.com/your-repo/cursor-rules nouveau-projet
-cd nouveau-projet
-rm -rf .git  # Supprimer l'historique Git
+# Option 1: Clone this template
+git clone https://github.com/your-repo/cursor-rules new-project
+cd new-project
+rm -rf .git  # Remove Git history
 
-# Option 2: Utiliser GitHub Template
-# Cliquer sur "Use this template" sur GitHub
+# Option 2: Use GitHub Template
+# Click on "Use this template" on GitHub
 
-# Option 3: Télécharger et extraire
-# Télécharger ZIP depuis GitHub
+# Option 3: Download and extract
+# Download ZIP from GitHub
 ```
 
-### 2. Personnaliser le projet
+### 2. Customize the Project
 
 ```bash
-# Modifier les informations du projet
-nano package.json  # Changer name, description, author, repository
+# Modify project information
+nano package.json  # Change name, description, author, repository
 
-# Exemple de personnalisation
+# Example customization
 {
-  "name": "mon-super-projet",
-  "description": "Description de mon projet",
-  "author": "Votre Nom <email@example.com>",
+  "name": "my-awesome-project",
+  "description": "Description of my project",
+  "author": "Your Name <email@example.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/votre-username/mon-super-projet"
+    "url": "https://github.com/your-username/my-awesome-project"
   }
 }
 ```
 
-### 3. Installation automatique
+### 3. Automatic Installation
 
 ```bash
-# Installation complète en une commande
+# Complete installation in one command
 ./scripts/setup.sh
 
-# Ou étape par étape
+# Or step by step
 npm install
 git init
 git add .
 git commit -m "feat: initial project setup"
 ```
 
-### 4. Démarrer le développement
+### 4. Start Development
 
 ```bash
-# Vérifier que tout fonctionne
+# Check everything is working
 npm run quality
 
-# Commencer à coder dans src/
+# Start coding in src/
 echo 'console.log("Hello World!");' > src/index.js
 
-# Formater automatiquement
+# Automatically format
 npm run quality:fix
 
-# Premier commit
+# First commit
 git add .
 git commit -m "feat: add hello world example"
 ```
 
-## 📁 Structure du template
+## 📁 Template Structure
 
 ```
 template-project-base/
 ├── 📋 Configuration
-│   ├── .editorconfig          # Configuration éditeur universel
-│   ├── .eslintrc.js          # Règles qualité JavaScript/TypeScript
-│   ├── .prettierrc           # Formatage automatique
-│   ├── .gitignore            # Exclusions Git
-│   ├── .gitattributes        # Configuration Git avancée
-│   ├── .gitmessage           # Template messages commit
-│   └── .nvmrc                # Version Node.js recommandée
+│   ├── .editorconfig          # Universal editor configuration
+│   ├── .eslintrc.js          # JavaScript/TypeScript quality rules
+│   ├── .prettierrc           # Automatic formatting
+│   ├── .gitignore            # Git exclusions
+│   ├── .gitattributes        # Advanced Git configuration
+│   ├── .gitmessage           # Commit message template
+│   └── .nvmrc                # Recommended Node.js version
 │
 ├── 📚 Documentation
-│   ├── README.md             # Ce fichier
-│   ├── CONTRIBUTING.md       # Guide contribution
-│   ├── CODE_OF_CONDUCT.md    # Code de conduite
-│   ├── LICENSE               # Licence MIT
-│   └── CHANGELOG.md          # Historique versions
+│   ├── README.md             # This file
+│   ├── CONTRIBUTING.md       # Contribution guide
+│   ├── CODE_OF_CONDUCT.md    # Code of conduct
+│   ├── LICENSE               # MIT License
+│   └── CHANGELOG.md          # Version history
 │
-├── 🔨 Développement
-│   ├── src/                  # Code source (vide initialement)
-│   ├── docs/                 # Documentation détaillée
-│   ├── scripts/              # Scripts automatisation
-│   ├── examples/             # Exemples d'utilisation
-│   └── templates/            # Templates réutilisables
+├── 🔨 Development
+│   ├── src/                  # Source code (initially empty)
+│   ├── docs/                 # Detailed documentation
+│   ├── scripts/              # Automation scripts
+│   ├── examples/             # Usage examples
+│   └── templates/            # Reusable templates
 │
 ├── ⚙️ Configuration
-│   ├── package.json          # Dependencies et scripts
-│   ├── .releaserc.js         # Configuration semantic-release
-│   ├── release-it.json       # Configuration release-it
-│   └── VERSION               # Version actuelle
+│   ├── package.json          # Dependencies and scripts
+│   ├── .releaserc.js         # Semantic-release configuration
+│   ├── release-it.json       # Release-it configuration
+│   └── VERSION               # Current version
 │
-└── 🤖 Automatisation
+└── 🤖 Automation
     ├── .github/              # GitHub Actions workflows
-    ├── .cursor/              # Configuration Cursor/Claude
-    └── memory-bank/          # Contexte persistant
+    ├── .cursor/              # Cursor/Claude configuration
+    └── memory-bank/          # Persistent context
 ```
 
-## 🎨 Personnalisation par langage
+## 🎨 Language Customization
 
-### JavaScript/Node.js (par défaut)
+### JavaScript/Node.js (default)
 
 ```bash
-# Configuration déjà incluse
+# Configuration already included
 npm install
 npm run quality
 ```
@@ -146,34 +146,34 @@ npm run quality
 ### TypeScript
 
 ```bash
-# Ajouter TypeScript
+# Add TypeScript
 npm install -D typescript @types/node ts-node
 
-# Ajouter dans package.json
+# Add to package.json
 "scripts": {
   "dev": "ts-node src/index.ts",
   "build": "tsc",
   "start": "node dist/index.js"
 }
 
-# Créer tsconfig.json
+# Create tsconfig.json
 npx tsc --init
 ```
 
 ### Python
 
 ```bash
-# Adapter pour Python
+# Adapt for Python
 rm package.json .eslintrc.js .prettierrc
 
-# Créer requirements.txt
+# Create requirements.txt
 cat > requirements.txt << EOF
 black
 flake8
 pytest
 EOF
 
-# Créer pyproject.toml
+# Create pyproject.toml
 cat > pyproject.toml << EOF
 [tool.black]
 line-length = 88
@@ -184,11 +184,11 @@ EOF
 ### React
 
 ```bash
-# Ajouter React
+# Add React
 npm install react react-dom
 npm install -D @vitejs/plugin-react vite
 
-# Configurer Vite
+# Configure Vite
 cat > vite.config.js << EOF
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
@@ -199,130 +199,130 @@ export default defineConfig({
 EOF
 ```
 
-## 🛠️ Scripts disponibles
+## 🛠️ Available Scripts
 
-### Qualité de code
+### Code Quality
 
 ```bash
-npm run quality      # Vérification complète (ESLint + Prettier)
-npm run quality:fix  # Correction automatique
-npm run lint         # ESLint seulement
-npm run format       # Prettier seulement
+npm run quality      # Complete check (ESLint + Prettier)
+npm run quality:fix  # Automatic correction
+npm run lint         # ESLint only
+npm run format       # Prettier only
 ```
 
-### Versioning et release
+### Versioning and Release
 
 ```bash
-npm run release         # Release complète automatique
+npm run release         # Complete automatic release
 npm run version:patch   # 1.0.0 → 1.0.1
 npm run version:minor   # 1.0.0 → 1.1.0
 npm run version:major   # 1.0.0 → 2.0.0
 ```
 
-### Build et déploiement
+### Build and Deployment
 
 ```bash
-./scripts/setup.sh      # Installation complète
-./scripts/build.sh      # Construction du projet
-./scripts/deploy.sh     # Déploiement
-./scripts/clean.sh      # Nettoyage
+./scripts/setup.sh      # Complete installation
+./scripts/build.sh      # Project construction
+./scripts/deploy.sh     # Deployment
+./scripts/clean.sh      # Cleaning
 ```
 
-## 🎯 Cas d'usage
+## 🎯 Usage Cases
 
-### Pour débutants
+### For Beginners
 
-1. **Cloner** le template
-2. **Personnaliser** package.json
-3. **Installer** avec `./scripts/setup.sh`
-4. **Développer** dans src/
-5. **Committer** avec les conventions
+1. **Clone** the template
+2. **Customize** package.json
+3. **Install** with `./scripts/setup.sh`
+4. **Develop** in src/
+5. **Commit** with conventions
 
-### Pour équipes
+### For Teams
 
-1. **Forker** le template sur GitHub
-2. **Personnaliser** les règles ESLint
-3. **Ajouter** des scripts spécifiques
-4. **Partager** avec l'équipe
-5. **Standardiser** tous les projets
+1. **Fork** the template on GitHub
+2. **Customize** ESLint rules
+3. **Add** specific scripts
+4. **Share** with the team
+5. **Standardize** all projects
 
-### Pour organisations
+### For Organizations
 
-1. **Adapter** le template aux standards
-2. **Créer** des variantes spécialisées
-3. **Publier** sur registry interne
-4. **Former** les développeurs
-5. **Gouverner** la qualité
+1. **Adapt** the template to standards
+2. **Create** specialized variants
+3. **Publish** on internal registry
+4. **Train** developers
+5. **Govern** quality
 
 ## ✅ Validation
 
-### Vérifications automatiques
+### Automatic Checks
 
-- ✅ ESLint: 0 erreur, 0 warning
-- ✅ Prettier: Code formaté parfaitement
-- ✅ Git hooks: Fonctionnels
-- ✅ Build: Réussi en <30s
-- ✅ Documentation: Synchronisée
+- ✅ ESLint: 0 errors, 0 warnings
+- ✅ Prettier: Perfectly formatted code
+- ✅ Git hooks: Functional
+- ✅ Build: Succeeded in <30s
+- ✅ Documentation: Synchronized
 
-### Métriques qualité
+### Quality Metrics
 
 ```bash
-# Commande de vérification complète
-npm run quality && echo "✅ Template validé!"
+# Complete check command
+npm run quality && echo "✅ Template validated!"
 
-# Métriques attendues
+# Expected metrics
 # - Setup time: <5 minutes
 # - First commit: <10 minutes
 # - Quality score: 100%
 # - Documentation: Complete
 ```
 
-## 🔄 Mise à jour du template
+## 🔄 Template Update
 
-### Récupérer les améliorations
+### Retrieve Improvements
 
 ```bash
-# Ajouter le template comme remote
+# Add template as remote
 git remote add template https://github.com/your-repo/cursor-rules
 
-# Récupérer les mises à jour
+# Retrieve updates
 git fetch template
 git merge template/main --allow-unrelated-histories
 
-# Résoudre les conflits si nécessaire
+# Resolve conflicts if necessary
 ```
 
-### Synchronisation automatique
+### Automatic Synchronization
 
 ```bash
-# Script de mise à jour automatique
+# Automatic update script
 ./scripts/update-template.sh
 ```
 
 ## 🤝 Contribution
 
-### Améliorer le template
+### Improve the Template
 
-1. **Fork** le repository
-2. **Créer** une branche feature
-3. **Améliorer** le template
-4. **Tester** avec plusieurs projets
-5. **Soumettre** une Pull Request
+1. **Fork** the repository
+2. **Create** a feature branch
+3. **Improve** the template
+4. **Test** with multiple projects
+5. **Submit** a Pull Request
 
-### Standards de contribution
+### Contribution Standards
 
-- Suivre les conventions du template
-- Ajouter de la documentation
-- Tester sur plusieurs environnements
-- Maintenir la compatibilité
+- Follow template conventions
+- Add documentation
+- Test on multiple environments
+- Maintain compatibility
 
-## 📚 Ressources
+## 📚 Resources
 
 ### Documentation
 
-- [Guide d'utilisation](../../docs/usage.md)
-- [Exemples pratiques](../../docs/examples.md)
-- [Architecture technique](../../docs/architecture.md)
+- [Usage Guide](../../docs/usage.md)
+- [Practical Examples](../../docs/examples.md)
+- [Technical Architecture](../../docs/architecture.md)
 
 ### Standards
 
@@ -332,28 +332,28 @@ git merge template/main --allow-unrelated-histories
 
 ## 🆘 Support
 
-### Problèmes courants
+### Common Issues
 
 1. **"ESLint not found"** → `npm install`
 2. **"Permission denied"** → `chmod +x scripts/*.sh`
 3. **"Git hooks failed"** → `npm run quality:fix`
 
-### Aide
+### Help
 
-- 📖 [Documentation complète](../../docs/)
-- 🐛 [Issues GitHub](https://github.com/your-repo/issues)
+- 📖 [Complete Documentation](../../docs/)
+- 🐛 [GitHub Issues](https://github.com/your-repo/issues)
 - 💬 [Discussions](https://github.com/your-repo/discussions)
 
 ---
 
-## 🎉 Résultat
+## 🎉 Result
 
-Avec ce template, vous obtenez en quelques minutes :
+With this template, you get in a few minutes:
 
-- ✅ **Projet professionnel** configuré
-- ✅ **Qualité automatique** garantie
-- ✅ **Standards appliqués** automatiquement
-- ✅ **Documentation complète** synchronisée
-- ✅ **Prêt pour l'équipe** et la production
+- ✅ **Professional Project** configured
+- ✅ **Automatic Quality** guaranteed
+- ✅ **Applied Standards** automatically
+- ✅ **Complete Documentation** synchronized
+- ✅ **Ready for Team** and Production
 
-**🚀 Template universel pour tous vos projets futurs!**
+**🚀 Universal Template for All Future Projects!**

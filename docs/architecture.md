@@ -1,6 +1,6 @@
 # 🏗️ Architecture Guide
 
-> **Vue d'ensemble technique et choix architecturaux**
+> **Technical overview and architectural choices**
 
 ## 🎉 **Version 1.1.1 - Architecture Validated** ✅
 
@@ -9,70 +9,70 @@
 ✅ MDC rules system fully functional and tested  
 ✅ Quality automation architecture proven in production
 
-## 🎯 Vue d'ensemble
+## 🎯 Overview
 
-Ce projet implémente une **architecture de base universelle** conçue pour être :
+This project implements a **universal base architecture** designed to be:
 
-- 🔧 **Extensible** - S'adapte à tout type de projet
-- 🛡️ **Robuste** - Qualité et sécurité intégrées
-- 🚀 **Scalable** - Croît avec vos besoins
-- 👥 **Collaborative** - Standards d'équipe automatiques
+- 🔧 **Extensible** - Adapts to any project type
+- 🛡️ **Robust** - Integrated quality and security
+- 🚀 **Scalable** - Grows with your needs
+- 👥 **Collaborative** - Automatic team standards
 
-## 🏛️ Architecture globale
+## 🏛️ Global Architecture
 
 ```
 cursor-rules/
 ├── 📋 Configuration & Standards
-│   ├── .cursor/               # Règles MDC + plans
-│   ├── .editorconfig         # Standards éditeur
-│   ├── .eslintrc.js          # Règles qualité code
-│   ├── .prettierrc           # Formatage automatique
-│   └── package.json          # Outils & scripts
+│   ├── .cursor/               # MDC rules + plans
+│   ├── .editorconfig         # Editor standards
+│   ├── .eslintrc.js          # Code quality rules
+│   ├── .prettierrc           # Automatic formatting
+│   └── package.json          # Tools & scripts
 │
 ├── 📚 Documentation
-│   ├── docs/                 # Documentation complète
-│   ├── README.md             # Vue d'ensemble
-│   ├── CONTRIBUTING.md       # Guide contribution
-│   └── CHANGELOG.md          # Historique automatique
+│   ├── docs/                 # Complete documentation
+│   ├── README.md             # Overview
+│   ├── CONTRIBUTING.md       # Contribution guide
+│   └── CHANGELOG.md          # Automatic history
 │
-├── 🔨 Code & Développement
-│   ├── src/                  # Code source principal
-│   ├── scripts/              # Automatisation
-│   ├── examples/             # Cas pratiques
-│   └── templates/            # Templates réutilisables
+├── 🔨 Code & Development
+│   ├── src/                  # Main source code
+│   ├── scripts/              # Automation
+│   ├── examples/             # Practical cases
+│   └── templates/            # Reusable templates
 │
-└── ⚖️ Légal & Versioning
+└── ⚖️ Legal & Versioning
     ├── LICENSE               # MIT License
-    ├── VERSION               # Version sémantique
-    └── .releaserc.js         # Release automatique
+    ├── VERSION               # Semantic version
+    └── .releaserc.js         # Automatic release
 ```
 
-## 🧩 Composants principaux
+## 🧩 Main Components
 
-### 1. **Système de qualité automatique**
+### 1. **Automatic Quality System**
 
 #### ESLint + Prettier
 
 ```javascript
-// Configuration optimisée pour tous projets
+// Optimized configuration for all projects
 module.exports = {
   extends: [
     'eslint:recommended',
-    '@typescript-eslint/recommended'  // Si TypeScript
+    '@typescript-eslint/recommended'  // If TypeScript
   ],
   rules: {
-    // Règles équilibrées: strictes mais flexibles
-    'no-console': 'warn',           // Permet debug, alerte production
-    'no-unused-vars': 'error',      # Variables inutilisées = erreur
-    'semi': ['error', 'always']     # Point-virgules obligatoires
+    // Balanced rules: strict but flexible
+    'no-console': 'warn',           // Allows debug, alerts production
+    'no-unused-vars': 'error',      // Unused variables = error
+    'semi': ['error', 'always']     // Semicolons required
   }
 };
 ```
 
-#### EditorConfig universel
+#### Universal EditorConfig
 
 ```ini
-# Fonctionne avec tous les éditeurs
+# Works with all editors
 root = true
 
 [*]
@@ -84,72 +84,72 @@ insert_final_newline = true
 trim_trailing_whitespace = true
 ```
 
-### 2. **Versioning automatique sémantique**
+### 2. **Automatic Semantic Versioning**
 
-#### Flux automatique
+#### Automatic Flow
 
 ```mermaid
 graph LR
-    A[Commit conventionnel] --> B[Analyse sémantique]
-    B --> C[Incrémentation version]
-    C --> D[Génération CHANGELOG]
-    D --> E[Tag Git]
+    A[Conventional commit] --> B[Semantic analysis]
+    B --> C[Version increment]
+    C --> D[CHANGELOG generation]
+    D --> E[Git Tag]
     E --> F[GitHub Release]
 ```
 
-#### Types de commits et impact
+#### Commit Types and Impact
 
 ```bash
-feat: nouvelle fonctionnalité     # 1.0.0 → 1.1.0 (MINOR)
-fix: correction de bug            # 1.1.0 → 1.1.1 (PATCH)
-feat!: changement breaking        # 1.1.1 → 2.0.0 (MAJOR)
-docs: documentation              # Pas de changement version
-style: formatage                 # Pas de changement version
+feat: new feature     # 1.0.0 → 1.1.0 (MINOR)
+fix: bug fix            # 1.1.0 → 1.1.1 (PATCH)
+feat!: breaking change        # 1.1.1 → 2.0.0 (MAJOR)
+docs: documentation              # No version change
+style: formatting                 # No version change
 ```
 
-### 3. **Système MDC (Multi-Dimensional Configuration)**
+### 3. **MDC System (Multi-Dimensional Configuration)**
 
-#### Architecture en couches
+#### Layered Architecture
 
 ```
 .cursor/rules/
-├── 001_workspace.mdc           # Règles fondamentales
-├── 002_planning_methodology.mdc # Méthodologie obligatoire
-├── 003_coding_standards.mdc    # Standards de code
-├── 004_security_guidelines.mdc # Sécurité intégrée
-├── 005_testing_strategy.mdc    # Tests >80% couverture
-├── 006_memory_bank.mdc         # Contexte persistant
-├── 007_modes.mdc              # Modes automatiques
-└── 008_github_workflow.mdc     # Workflow GitHub
+├── 001_workspace.mdc           # Fundamental rules
+├── 002_planning_methodology.mdc # Mandatory methodology
+├── 003_coding_standards.mdc    # Coding standards
+├── 004_security_guidelines.mdc # Integrated security
+├── 005_testing_strategy.mdc    # Tests >80% coverage
+├── 006_memory_bank.mdc         # Persistent context
+├── 007_modes.mdc              # Automatic modes
+└── 008_github_workflow.mdc     # GitHub workflow
 ```
 
-#### Modes automatiques
+#### Automatic Modes
 
 ```javascript
-// Workflow automatique intégré
+// Integrated automatic workflow
 const modes = {
-  RESEARCH: 'Analyse contexte + Memory Bank',
-  PLAN: 'Création plan automatique',
-  EXECUTE: 'Implémentation stricte',
+  RESEARCH: 'Context analysis + Memory Bank',
+  PLAN: 'Automatic plan creation',
+  EXECUTE: 'Strict implementation',
   REVIEW: 'Validation + documentation'
 };
 
-// Transitions automatiques
-RESEARCH → (demande code) → PLAN → (validation) → EXECUTE → REVIEW
+// Automatic transitions
+RESEARCH → (code request) → PLAN → (validation) → EXECUTE → REVIEW
 ```
 
-## 🛠️ Choix techniques
+## 🛠️ Technical Choices
 
-### 1. **Philosophie "Convention over Configuration"**
+### 1. **"Convention over Configuration" Philosophy**
 
-#### Avantages
+#### Advantages
 
-- ✅ **Zéro configuration** pour 90% des cas
-- ✅ **Standards universels** appliqués automatiquement
-- ✅ **Productivité maximale** dès le premier jour
-- ✅ **Consistency** entre tous les projets
+- ✅ **Zero configuration** for 90% of cases
+- ✅ **Universal standards** applied automatically
+- ✅ **Maximum productivity** from day one
+- ✅ **Consistency** across all projects
 
-#### Implémentation
+#### Implementation
 
 ```json
 {
@@ -162,36 +162,36 @@ RESEARCH → (demande code) → PLAN → (validation) → EXECUTE → REVIEW
 }
 ```
 
-### 2. **Architecture extensible par design**
+### 2. **Extensible Architecture by Design**
 
-#### Structure modulaire
+#### Modular Structure
 
 ```bash
-# Base minimale (toujours présente)
-src/                    # Code source
+# Minimal base (always present)
+src/                    # Source code
 docs/                   # Documentation
-scripts/                # Automatisation
+scripts/                # Automation
 
-# Extensions spécialisées (selon besoin)
-src/api/               # Pour API REST
-src/web/               # Pour frontend
-src/cli/               # Pour CLI
-src/mobile/            # Pour mobile
+# Specialized extensions (as needed)
+src/api/               # For REST API
+src/web/               # For frontend
+src/cli/               # For CLI
+src/mobile/            # For mobile
 ```
 
-#### Points d'extension
+#### Extension Points
 
 ```javascript
 // src/config/extensions.js
 module.exports = {
-  // Adaptateurs pour différents frameworks
+  // Adapters for different frameworks
   frameworks: {
     react: require('./adapters/react'),
     vue: require('./adapters/vue'),
     express: require('./adapters/express'),
   },
 
-  // Plugins pour fonctionnalités spécifiques
+  // Plugins for specific features
   plugins: {
     database: require('./plugins/database'),
     auth: require('./plugins/auth'),
@@ -200,55 +200,25 @@ module.exports = {
 };
 ```
 
-### 3. **Sécurité by design**
+## 🔄 Development Flow
 
-#### Principes intégrés
-
-```javascript
-// Exemples de sécurité automatique
-const securityDefaults = {
-  // Validation d'entrée par défaut
-  inputValidation: true,
-
-  // HTTPS forcé en production
-  forceHTTPS: process.env.NODE_ENV === 'production',
-
-  // Headers sécurisés automatiques
-  securityHeaders: {
-    'X-Content-Type-Options': 'nosniff',
-    'X-Frame-Options': 'DENY',
-    'X-XSS-Protection': '1; mode=block',
-  },
-};
-```
-
-#### Audit automatique
+### 1. **Standard Workflow**
 
 ```bash
-# Intégré dans le workflow qualité
-npm audit --audit-level high    # Fail si vulnérabilité haute
-npm run security:check          # Vérifications customs
+# 1. RESEARCH (automatic)
+# Read Memory Bank + context analysis
+
+# 2. PLAN (automatic if code requested)
+# Create detailed plan in .cursor/plans/
+
+# 3. EXECUTE (after validation)
+# Strict implementation of the plan
+
+# 4. REVIEW (automatic at end)
+# Validation + MAJ Memory Bank + archiving
 ```
 
-## 🔄 Flux de développement
-
-### 1. **Workflow standard**
-
-```bash
-# 1. RESEARCH (automatique)
-# Lit Memory Bank + analyse contexte
-
-# 2. PLAN (automatique si code demandé)
-# Crée plan détaillé dans .cursor/plans/
-
-# 3. EXECUTE (après validation)
-# Implémentation stricte du plan
-
-# 4. REVIEW (automatique en fin)
-# Validation + MAJ Memory Bank + archivage
-```
-
-### 2. **Intégration continue**
+### 2. **Continuous Integration**
 
 ```yaml
 # .github/workflows/ci.yml
@@ -265,123 +235,123 @@ jobs:
           node-version: '18'
       - run: npm ci
       - run: npm run quality # ESLint + Prettier
-      - run: npm run test # Tests automatiques
+      - run: npm run test # Automatic tests
       - run: npm run build # Build validation
-      - run: npm audit # Sécurité
+      - run: npm audit # Security
 ```
 
-### 3. **Release automatique**
+### 3. **Automatic Release**
 
 ```javascript
-// .releaserc.js - Configuration semantic-release
+// .releaserc.js - Semantic-release configuration
 module.exports = {
   branches: ['main'],
   plugins: [
-    '@semantic-release/commit-analyzer', // Analyse commits
+    '@semantic-release/commit-analyzer', // Commit analysis
     '@semantic-release/release-notes-generator', // CHANGELOG
     '@semantic-release/github', // GitHub Release
   ],
 };
 ```
 
-## 📊 Métriques et monitoring
+## 📊 Metrics and Monitoring
 
-### 1. **Qualité automatique**
+### 1. **Automatic Quality**
 
 ```bash
-# Métriques collectées automatiquement
-ESLint errors: 0/0        # Zéro tolérance
-Prettier issues: 0/0      # Formatage parfait
-Test coverage: >80%       # Couverture obligatoire
-Security audit: PASS      # Pas de vulnérabilités
-Build time: <30s          # Performance build
+# Metrics collected automatically
+ESLint errors: 0/0        # Zero tolerance
+Prettier issues: 0/0      # Perfect formatting
+Test coverage: >80%       # Mandatory coverage
+Security audit: PASS      # No vulnerabilities
+Build time: <30s          # Build performance
 ```
 
-### 2. **Métriques développeur**
+### 2. **Developer Metrics**
 
 ```bash
-# Productivité mesurée
-Setup time: <5min         # Démarrage rapide
-Code quality: Automatic   # Pas d'effort manuel
-Release time: <2min       # Deployment rapide
-Documentation: Always up-to-date  # Sync automatique
+# Productivity measured
+Setup time: <5min         # Quick startup
+Code quality: Automatic   # No manual effort
+Release time: <2min       # Quick deployment
+Documentation: Always up-to-date  # Automatic sync
 ```
 
-## 🚀 Scalabilité
+## 🚀 Scalability
 
-### 1. **Projet individuel → Équipe**
+### 1. **Individual Project → Team**
 
 ```bash
-# Standards automatiques pour tous
-git commit -m "feat: nouvelle feature"  # Convention obligatoire
-npm run quality                        # Même qualité pour tous
-npm run release                        # Process uniforme
+# Automatic standards for all
+git commit -m "feat: new feature"  # Mandatory convention
+npm run quality                        # Same quality for all
+npm run release                        # Uniform process
 ```
 
-### 2. **Équipe → Organisation**
+### 2. **Team → Organization**
 
 ```bash
-# Template organisation
+# Template organization
 templates/
-├── project-base/         # Base universelle
-├── microservice/         # Template microservice
-├── frontend/            # Template frontend
-└── mobile/              # Template mobile
+├── project-base/         # Universal base
+├── microservice/         # Microservice template
+├── frontend/            # Frontend template
+└── mobile/              # Mobile template
 ```
 
-### 3. **Croissance technique**
+### 3. **Technical Growth**
 
 ```bash
-# Extensions selon besoins
-npm install @project/database-plugin    # DB automatique
-npm install @project/auth-plugin        # Auth intégrée
-npm install @project/testing-plugin     # Tests avancés
+# Extensions based on needs
+npm install @project/database-plugin    # Automatic DB
+npm install @project/auth-plugin        # Integrated Auth
+npm install @project/testing-plugin     # Advanced tests
 ```
 
-## 🎯 Avantages architecturaux
+## 🎯 Architectural Advantages
 
-### ✅ **Pour développeurs**
+### ✅ **For Developers**
 
-- **Setup instantané** - `git clone` + `npm install` = prêt
-- **Qualité automatique** - Pas de configuration manuelle
-- **Standards intégrés** - Best practices par défaut
-- **Documentation sync** - Toujours à jour
+- **Instant Setup** - `git clone` + `npm install` = ready
+- **Automatic Quality** - No manual configuration
+- **Integrated Standards** - Best practices by default
+- **Documentation Sync** - Always up-to-date
 
-### ✅ **Pour équipes**
+### ✅ **For Teams**
 
-- **Consistency** - Même qualité pour tous
-- **Collaboration** - Standards partagés automatiques
-- **Onboarding** - Nouveaux développeurs productifs J+1
-- **Maintenance** - Updates centralisées
+- **Consistency** - Same quality for all
+- **Collaboration** - Shared automatic standards
+- **Onboarding** - New productive developers J+1
+- **Maintenance** - Centralized updates
 
-### ✅ **Pour organisations**
+### ✅ **For Organizations**
 
-- **Réutilisabilité** - Base pour tous projets
-- **Gouvernance** - Standards appliqués automatiquement
-- **Audit** - Compliance intégrée
-- **ROI** - Productivité x3-5 mesurée
+- **Reusability** - Base for all projects
+- **Governance** - Standards applied automatically
+- **Audit** - Integrated compliance
+- **ROI** - Productivity x3-5 measured
 
 ---
 
-## 🔧 Configuration avancée
+## 🔧 Advanced Configuration
 
-### Personnalisation ESLint
+### Customizing ESLint
 
 ```javascript
-// .eslintrc.js - Ajuster selon besoins
+// .eslintrc.js - Adjust based on needs
 module.exports = {
   extends: ['./node_modules/@project/eslint-config'],
   rules: {
-    // Surcharges spécifiques au projet
+    // Project-specific overrides
     'my-custom-rule': 'error',
   },
 };
 ```
 
-### Extensions spécialisées
+### Specialized Extensions
 
 ```javascript
-// Exemple d'extension pour React
+// Example extension for React
 const reactExtension = {
   dependencies: ['react', 'react-dom'],
   eslintConfig: 'react-app',
@@ -393,4 +363,4 @@ const reactExtension = {
 };
 ```
 
-**Architecture conçue pour grandir avec vos besoins !** 🎉
+**Architecture designed to grow with your needs!** 🎉

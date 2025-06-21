@@ -1,5 +1,5 @@
 #!/bin/bash
-# 🧹 Clean Script - Nettoyage automatique des fichiers temporaires
+# 🧹 Clean Script - Automatic Cleanup of Temporary Files
 
 echo "🧹 Starting cleanup process..."
 

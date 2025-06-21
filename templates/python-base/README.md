@@ -1,116 +1,116 @@
-# 🐍 Template Projet Python
+# 🐍 Python Project Template
 
-> **Template Python professionnel avec qualité automatique - Équivalent de la base JavaScript**
+> **Professional Python template with automatic quality - Equivalent to the JavaScript base**
 
-## 🎯 À propos
+## 🎯 About
 
-Ce template Python fournit les **mêmes standards de qualité** que la base JavaScript, adapté à l'écosystème Python.
+This Python template provides the **same quality standards** as the JavaScript base, adapted to the Python ecosystem.
 
-## ✨ Fonctionnalités incluses
+## ✨ Included Features
 
-### 🔧 Qualité automatique Python
+### 🔧 Automatic Python Quality
 
-- ✅ **Black** - Formatage automatique (équivalent Prettier)
-- ✅ **Flake8** - Détection d'erreurs (équivalent ESLint)
-- ✅ **isort** - Organisation des imports
-- ✅ **Bandit** - Analyse de sécurité
+- ✅ **Black** - Automatic formatting (equivalent to Prettier)
+- ✅ **Flake8** - Error detection (equivalent to ESLint)
+- ✅ **isort** - Import organization
+- ✅ **Bandit** - Security analysis
 
-### 📋 Standards professionnels
+### 📋 Professional Standards
 
-- ✅ **pytest** - Tests avec couverture >80%
-- ✅ **pre-commit** - Hooks Git automatiques
-- ✅ **pyproject.toml** - Configuration moderne
-- ✅ **Sphinx** - Documentation automatique
+- ✅ **pytest** - Tests with coverage >80%
+- ✅ **pre-commit** - Automatic Git hooks
+- ✅ **pyproject.toml** - Modern configuration
+- ✅ **Sphinx** - Automatic documentation
 
-### 🚀 Automatisation
+### 🚀 Automation
 
-- ✅ **Scripts Makefile** - Commandes standards
-- ✅ **GitHub Actions** - CI/CD Python
-- ✅ **Versioning sémantique** - Compatible Python
+- ✅ **Makefile Scripts** - Standard commands
+- ✅ **GitHub Actions** - Python CI/CD
+- ✅ **Semantic Versioning** - Python compatible
 
-## 🚀 Utilisation rapide
+## 🚀 Quick Usage
 
-### 1. Créer un projet Python
+### 1. Create a Python Project
 
 ```bash
-# Copier le template Python
-cp -r templates/python-base/ mon-projet-python
-cd mon-projet-python
+# Copy the Python template
+cp -r templates/python-base/ my-python-project
+cd my-python-project
 
-# Personnaliser pyproject.toml
-nano pyproject.toml  # Changer name, description, author
+# Customize pyproject.toml
+nano pyproject.toml  # Change name, description, author
 ```
 
-### 2. Installation environnement
+### 2. Environment Installation
 
 ```bash
-# Créer environnement virtuel
+# Create virtual environment
 python -m venv venv
 source venv/bin/activate  # Linux/Mac
-# ou
+# or
 venv\Scripts\activate     # Windows
 
-# Installer dépendances
+# Install dependencies
 pip install -e ".[dev]"
 ```
 
-### 3. Vérification qualité
+### 3. Quality Check
 
 ```bash
-# Équivalent "npm run quality"
+# Equivalent to "npm run quality"
 make quality
 
-# Équivalent "npm run quality:fix" 
+# Equivalent to "npm run quality:fix" 
 make format
 
-# Lancer les tests
+# Run tests
 make test
 ```
 
-## 📁 Structure du projet
+## 📁 Project Structure
 
 ```
-mon-projet-python/
+my-python-project/
 ├── 📋 Configuration
-│   ├── pyproject.toml        # Configuration principale (= package.json)
-│   ├── requirements.txt      # Dépendances de base
-│   ├── .pre-commit-config.yaml # Hooks Git
+│   ├── pyproject.toml        # Main configuration (= package.json)
+│   ├── requirements.txt      # Base dependencies
+│   ├── .pre-commit-config.yaml # Git hooks
 │   └── Makefile             # Scripts (= npm scripts)
 │
 ├── 📚 Documentation
-│   ├── README.md            # Ce fichier
-│   ├── CHANGELOG.md         # Historique versions
-│   └── docs/                # Documentation Sphinx
+│   ├── README.md            # This file
+│   ├── CHANGELOG.md         # Version history
+│   └── docs/                # Sphinx documentation
 │
 ├── 🔨 Code
-│   ├── src/                 # Code source principal
-│   │   └── mon_projet/
-│   ├── tests/               # Tests pytest
-│   └── examples/            # Exemples d'usage
+│   ├── src/                 # Main source code
+│   │   └── my_project/
+│   ├── tests/               # pytest tests
+│   └── examples/            # Usage examples
 │
 └── ⚙️ CI/CD
     ├── .github/workflows/   # GitHub Actions
-    └── .gitignore           # Exclusions Python
+    └── .gitignore           # Python exclusions
 ```
 
-## 🛠️ Commandes disponibles
+## 🛠️ Available Commands
 
-### Développement quotidien
+### Daily Development
 
 ```bash
-# Formatage automatique
+# Automatic formatting
 make format              # black + isort
 
-# Vérification qualité
+# Quality check
 make lint               # flake8 + bandit
 make quality            # lint + format check
 
 # Tests
-make test               # pytest avec couverture
-make test-cov           # tests + rapport HTML
+make test               # pytest with coverage
+make test-cov           # tests + HTML report
 ```
 
-### Versioning et release
+### Versioning and Release
 
 ```bash
 # Bump version
@@ -122,41 +122,41 @@ make version-major      # 1.0.0 → 2.0.0
 make release            # tag + push + PyPI
 ```
 
-## 📦 Équivalences avec le template JavaScript
+## 📦 Equivalences with the JavaScript Template
 
 | JavaScript/Node.js | Python | Description |
 |-------------------|--------|-------------|
-| `package.json` | `pyproject.toml` | Configuration principale |
-| `eslint` | `flake8` | Détection d'erreurs |
-| `prettier` | `black` | Formatage automatique |
-| `jest` | `pytest` | Framework de tests |
-| `npm install` | `pip install -e ".[dev]"` | Installation dépendances |
-| `npm run quality` | `make quality` | Vérification qualité |
-| `npm run quality:fix` | `make format` | Correction automatique |
+| `package.json` | `pyproject.toml` | Main configuration |
+| `eslint` | `flake8` | Error detection |
+| `prettier` | `black` | Automatic formatting |
+| `jest` | `pytest` | Testing framework |
+| `npm install` | `pip install -e ".[dev]"` | Dependency installation |
+| `npm run quality` | `make quality` | Quality check |
+| `npm run quality:fix` | `make format` | Automatic correction |
 
-## 🎨 Personnalisation
+## 🎨 Customization
 
-### Adapter à votre projet
+### Adapt to Your Project
 
 ```bash
-# 1. Modifier pyproject.toml
+# 1. Modify pyproject.toml
 [project]
-name = "mon-super-projet"
-description = "Description de mon projet"
-authors = [{name = "Votre Nom", email = "email@example.com"}]
+name = "my-awesome-project"
+description = "Description of my project"
+authors = [{name = "Your Name", email = "email@example.com"}]
 
-# 2. Renommer le package
-mv src/mon_projet src/mon_super_projet
+# 2. Rename the package
+mv src/my_project src/my_awesome_project
 
-# 3. Mettre à jour les imports dans les tests
+# 3. Update imports in tests
 # tests/test_example.py
-from mon_super_projet import hello_world
+from my_awesome_project import hello_world
 ```
 
-### Ajouter des dépendances
+### Add Dependencies
 
 ```bash
-# Framework web
+# Web framework
 pip install fastapi uvicorn
 echo "fastapi>=0.100.0" >> requirements.txt
 
@@ -164,14 +164,14 @@ echo "fastapi>=0.100.0" >> requirements.txt
 pip install pandas numpy matplotlib
 echo "pandas>=2.0.0" >> requirements.txt
 
-# Base de données
+# Database
 pip install sqlalchemy psycopg2-binary
 echo "sqlalchemy>=2.0.0" >> requirements.txt
 ```
 
 ## ✅ Validation
 
-### Métriques qualité attendues
+### Expected Quality Metrics
 
 ```bash
 make quality
@@ -184,13 +184,13 @@ make quality
 
 ---
 
-## 🎉 Résultat
+## 🎉 Result
 
-**Template Python professionnel équivalent à la base JavaScript !**
+**Professional Python template equivalent to the JavaScript base!**
 
-- ✅ **Même qualité** que le template JS/Node.js
-- ✅ **Standards Python** modernes appliqués
-- ✅ **Workflow familier** pour développeurs JS
-- ✅ **Prêt pour production** immédiatement
+- ✅ **Same quality** as the JS/Node.js template
+- ✅ **Modern Python standards** applied
+- ✅ **Familiar workflow** for JS developers
+- ✅ **Ready for production** immediately
 
-**🚀 Base universelle maintenant disponible en Python !** 
+**🚀 Universal base now available in Python!** 

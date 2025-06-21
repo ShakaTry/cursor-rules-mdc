@@ -1,5 +1,5 @@
 #!/bin/bash
-# 🏗️ Build Script - Construction du projet
+# 🏗️ Build Script - Project Construction
 
 echo "🏗️ Starting build process..."
 

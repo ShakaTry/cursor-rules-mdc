@@ -233,79 +233,79 @@ Button.propTypes = {
 export default Button;
 ```
 
-## ✅ Checklist qualité
+## ✅ Quality Checklist
 
 ### Code
 
-- [ ] Implémentation complète et fonctionnelle
-- [ ] Gestion d'erreurs appropriée
-- [ ] Validation des paramètres
-- [ ] Code commenté et lisible
-- [ ] Respect des conventions
+- [ ] Complete and functional implementation
+- [ ] Appropriate error handling
+- [ ] Parameter validation
+- [ ] Commented and readable code
+- [ ] Convention compliance
 
 ### Tests
 
-- [ ] Tests unitaires complets (>80% couverture)
-- [ ] Tests d'intégration si nécessaire
-- [ ] Tests de cas limites et d'erreurs
-- [ ] Tests de performance si applicable
+- [ ] Complete unit tests (>80% coverage)
+- [ ] Integration tests if necessary
+- [ ] Edge case and error tests
+- [ ] Performance tests if applicable
 
 ### Documentation
 
-- [ ] README.md complet
-- [ ] Exemples d'utilisation
-- [ ] Documentation API
-- [ ] Commentaires dans le code
+- [ ] Complete README.md
+- [ ] Usage examples
+- [ ] API documentation
+- [ ] Code comments
 
-### Qualité
+### Quality
 
-- [ ] ESLint: 0 erreur, 0 warning
-- [ ] Prettier: Code formaté
-- [ ] TypeScript: Types corrects (si applicable)
-- [ ] Audit sécurité: Aucune vulnérabilité
+- [ ] ESLint: 0 errors, 0 warnings
+- [ ] Prettier: Formatted code
+- [ ] TypeScript: Correct types (if applicable)
+- [ ] Security audit: No vulnerabilities
 
-## 🔄 Workflow de développement
+## 🔄 Development Workflow
 
-### 1. Développement
+### 1. Development
 
 ```bash
-# Créer le composant
-npm run create:component MonComposant
+# Create the component
+npm run create:component MyComponent
 
-# Développer avec qualité continue
+# Develop with continuous quality
 npm run quality:fix
 
-# Tester en continu
+# Test continuously
 npm run test:watch
 ```
 
 ### 2. Validation
 
 ```bash
-# Tests complets
+# Complete tests
 npm run test
 
-# Couverture de tests
+# Test coverage
 npm run test:coverage
 
-# Qualité du code
+# Code quality
 npm run quality
 ```
 
 ### 3. Integration
 
 ```bash
-# Committer le composant
+# Commit the component
 git add .
-git commit -m "feat(components): add MonComposant with full test coverage"
+git commit -m "feat(components): add MyComponent with full test coverage"
 
-# Intégrer dans le projet principal
-# Import dans src/index.js ou autres modules
+# Integrate into main project
+# Import in src/index.js or other modules
 ```
 
-## 📚 Exemples concrets
+## 📚 Concrete Examples
 
-### Exemple 1: Logger
+### Example 1: Logger
 
 ```javascript
 // Logger.js
@@ -340,7 +340,7 @@ class Logger {
 }
 ```
 
-### Exemple 2: Validator
+### Example 2: Validator
 
 ```javascript
 // Validator.js
@@ -359,28 +359,28 @@ class Validator {
 }
 ```
 
-## 🎯 Bonnes pratiques
+## 🎯 Best Practices
 
 ### Design
 
-1. **Single Responsibility**: Un composant = une responsabilité
-2. **Interface claire**: API simple et intuitive
-3. **Configuration flexible**: Options par défaut sensées
-4. **Gestion d'erreurs**: Messages d'erreur clairs
+1. **Single Responsibility**: One component = one responsibility
+2. **Clear Interface**: Simple and intuitive API
+3. **Flexible Configuration**: Sensible default options
+4. **Error Handling**: Clear error messages
 
 ### Code
 
-1. **Naming**: Noms descriptifs et cohérents
-2. **Documentation**: Code auto-documenté + commentaires
-3. **Tests**: Coverage >80% avec cas limites
-4. **Performance**: Optimisation quand nécessaire
+1. **Naming**: Descriptive and consistent names
+2. **Documentation**: Self-documented code + comments
+3. **Tests**: >80% coverage with edge cases
+4. **Performance**: Optimization when necessary
 
-### Réutilisation
+### Reusability
 
-1. **Générique**: Pas de dépendances spécifiques au projet
-2. **Configurable**: Adaptable à différents contextes
-3. **Stable**: API versionée et backward compatible
-4. **Portable**: Fonctionne dans différents environnements
+1. **Generic**: No project-specific dependencies
+2. **Configurable**: Adaptable to different contexts
+3. **Stable**: Versioned and backward compatible API
+4. **Portable**: Works in different environments
 
 ---
 

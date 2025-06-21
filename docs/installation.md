@@ -1,6 +1,6 @@
 # 📦 Installation Guide
 
-> **Guide d'installation pas-à-pas pour débutants**
+> **Step-by-step installation guide for beginners**
 
 ## 🎉 **Version 1.1.1 - Fully Validated** ✅
 
@@ -9,172 +9,172 @@
 ✅ All npm scripts tested and working  
 ✅ Version synchronization validated
 
-## 🎯 Prérequis
+## 🎯 Prerequisites
 
-### Vérifications avant installation
+### Pre-installation checks
 
 ```bash
-# Vérifier Git
+# Check Git
 git --version
 
-# Vérifier Node.js (pour outils qualité universels)
+# Check Node.js (for universal quality tools)
 node --version
 npm --version
 ```
 
-**Versions recommandées:**
+**Recommended versions:**
 
 - Git: 2.30+
-- Node.js: 18.18.0+ (voir `.nvmrc`) - **Outils universels ESLint/Prettier**
+- Node.js: 18.18.0+ (see `.nvmrc`) - **Universal ESLint/Prettier tools**
 - npm: 9.0+
 
-### ❓ Pourquoi Node.js pour une base universelle ?
+### ❓ Why Node.js for a universal base?
 
-**Node.js fournit les outils de qualité universels** (ESLint + Prettier) qui formatent **tous les langages modernes** : JavaScript, Python, Go, Rust, YAML, JSON, Markdown... C'est comme avoir Git installé - un outil de développement universel, pas une dépendance projet.
+**Node.js provides universal quality tools** (ESLint + Prettier) that format **all modern languages**: JavaScript, Python, Go, Rust, YAML, JSON, Markdown... It's like having Git installed - a universal development tool, not a project dependency.
 
-## 🚀 Installation Rapide
+## 🚀 Quick Installation
 
-### Option 1: Installation automatique (recommandée)
+### Option 1: Automatic installation (recommended)
 
 ```bash
-# Cloner le projet
+# Clone the project
 git clone <your-repo-url>
 cd cursor-rules
 
-# Installation automatique
+# Automatic installation
 ./scripts/setup.sh
 ```
 
-### Option 2: Installation manuelle
+### Option 2: Manual installation
 
 ```bash
-# 1. Cloner le projet
+# 1. Clone the project
 git clone <your-repo-url>
 cd cursor-rules
 
-# 2. Installer les dépendances
+# 2. Install dependencies
 npm install
 
-# 3. Vérifier la configuration
+# 3. Verify configuration
 npm run quality
 ```
 
 ## 🔧 Configuration
 
-### 1. Variables d'environnement
+### 1. Environment variables
 
 ```bash
-# Copier le fichier exemple
+# Copy the example file
 cp .env.example .env
 
-# Éditer vos variables
+# Edit your variables
 nano .env
 ```
 
-### 2. Configuration Git (première fois)
+### 2. Git configuration (first time)
 
 ```bash
-# Configurer votre identité
-git config user.name "Votre Nom"
-git config user.email "votre@email.com"
+# Configure your identity
+git config user.name "Your Name"
+git config user.email "your@email.com"
 
-# Activer le template de commit
+# Enable commit template
 git config commit.template .gitmessage
 ```
 
-### 3. Configuration éditeur
+### 3. Editor configuration
 
-Le fichier `.editorconfig` configure automatiquement :
+The `.editorconfig` file automatically configures:
 
-- ✅ Indentation (2 espaces)
-- ✅ Fin de ligne Unix (LF)
-- ✅ Encodage UTF-8
-- ✅ Suppression espaces en fin de ligne
+- ✅ Indentation (2 spaces)
+- ✅ Unix line endings (LF)
+- ✅ UTF-8 encoding
+- ✅ Trimming trailing spaces
 
-## ✅ Vérification installation
+## ✅ Installation verification
 
-### Tests de base
+### Basic tests
 
 ```bash
-# Vérifier la qualité du code
+# Check code quality
 npm run quality
 
-# Vérifier le formatage
+# Check formatting
 npm run format
 
-# Vérifier le linting
+# Check linting
 npm run lint
 ```
 
-### Tests avancés
+### Advanced tests
 
 ```bash
-# Test du système de versioning
+# Test versioning system
 npm run version:check
 
-# Test de build (si applicable)
+# Test build (if applicable)
 npm run build
 
-# Test des scripts
+# Test scripts
 ./scripts/clean.sh
 ```
 
-## 🔨 Outils installés
+## 🔨 Installed tools
 
-### Qualité de code
+### Code quality
 
-- **ESLint** - Détection d'erreurs automatique
-- **Prettier** - Formatage de code automatique
-- **EditorConfig** - Configuration éditeur universelle
+- **ESLint** - Automatic error detection
+- **Prettier** - Automatic code formatting
+- **EditorConfig** - Universal editor configuration
 
-### Versioning automatique
+### Automatic versioning
 
-- **Standard-version** - Versioning sémantique
-- **Release-it** - Releases GitHub automatiques
-- **Conventional Commits** - Messages standardisés
+- **Standard-version** - Semantic versioning
+- **Release-it** - Automatic GitHub releases
+- **Conventional Commits** - Standardized messages
 
-### Scripts disponibles
+### Available scripts
 
 ```bash
-npm run setup        # Installation complète
-npm run quality      # Vérification qualité
-npm run quality:fix  # Correction automatique
-npm run lint         # ESLint seulement
-npm run format       # Prettier seulement
+npm run setup        # Complete installation
+npm run quality      # Quality check
+npm run quality:fix  # Automatic fix
+npm run lint         # ESLint only
+npm run format       # Prettier only
 ```
 
-## 🐛 Résolution de problèmes
+## 🐛 Troubleshooting
 
-### Erreurs communes
+### Common errors
 
-#### Erreur: "ESLint not found"
+#### Error: "ESLint not found"
 
 ```bash
-# Réinstaller les dépendances
+# Reinstall dependencies
 npm install --force
 ```
 
-#### Erreur: "Permission denied" sur scripts
+#### Error: "Permission denied" on scripts
 
 ```bash
-# Donner les permissions d'exécution
+# Grant execution permissions
 chmod +x scripts/*.sh
 ```
 
-#### Erreur: Version Node.js
+#### Error: Node.js version
 
 ```bash
-# Utiliser la version recommandée
-nvm use  # ou nvm install 18.18.0
+# Use the recommended version
+nvm use  # or nvm install 18.18.0
 ```
 
 ### Support
 
 - 📖 Documentation: `docs/usage.md`
-- 🔍 Exemples: `examples/`
+- 🔍 Examples: `examples/`
 - 🐛 Issues: [GitHub Issues](https://github.com/your-repo/issues)
 
 ---
 
-**Installation terminée !** 🎉  
-➡️ **Suivant**: Consultez `docs/usage.md` pour commencer à utiliser le projet.
+**Installation complete!** 🎉  
+➡️ **Next**: Check `docs/usage.md` to start using the project.

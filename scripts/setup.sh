@@ -1,5 +1,5 @@
 #!/bin/bash
-# 🚀 Setup Script - Installation automatique complète
+# 🚀 Setup Script - Complete Automatic Installation
 
 echo "🔧 Starting cursor-rules setup..."
 

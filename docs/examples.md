@@ -1,6 +1,6 @@
 # 💡 Examples Guide
 
-> **Exemples pratiques et cas d'usage concrets**
+> **Practical examples and concrete use cases**
 
 ## 🎉 **Version 1.1.1 - Examples Validated** ✅
 
@@ -9,57 +9,57 @@
 ✅ Quality tools integration confirmed operational  
 ✅ Professional templates ready for immediate use
 
-## 🎯 Vue d'ensemble
+## 🎯 Overview
 
-Cette page présente des **exemples réels** d'utilisation du projet dans différents contextes, du plus simple au plus avancé.
+This page presents **real examples** of using the project in different contexts, from the simplest to the most advanced.
 
-## 🚀 Exemple 1: Projet simple
+## 🚀 Example 1: Simple Project
 
-### Contexte
+### Context
 
-Créer un nouveau projet JavaScript avec toute la qualité automatique.
+Create a new JavaScript project with full automatic quality.
 
-### Étapes complètes
+### Complete Steps
 
 ```bash
-# 1. Cloner la base
-git clone <this-repo> mon-nouveau-projet
-cd mon-nouveau-projet
+# 1. Clone the base
+git clone <this-repo> my-new-project
+cd my-new-project
 
-# 2. Personnaliser
-nano package.json  # Changer nom, description, auteur
+# 2. Customize
+nano package.json  # Change name, description, author
 
 # 3. Installation
 npm install
 
-# 4. Premier code dans src/
+# 4. First code in src/
 echo 'console.log("Hello World!");' > src/index.js
 
-# 5. Vérifier qualité
-npm run quality     # ✅ Code formaté automatiquement
+# 5. Check quality
+npm run quality     # ✅ Code automatically formatted
 
-# 6. Premier commit
+# 6. First commit
 git add .
 git commit -m "feat: initial project setup"
 
-# 7. Première release
-npm run release     # ✅ Version 1.0.0 automatique
+# 7. First release
+npm run release     # ✅ Automatic version 1.0.0
 ```
 
-### Résultat
+### Result
 
-- ✅ Projet configuré en 5 minutes
-- ✅ Qualité automatique garantie
-- ✅ Versioning automatique opérationnel
-- ✅ Documentation professionnelle
+- ✅ Project configured in 5 minutes
+- ✅ Automatic quality guaranteed
+- ✅ Automatic versioning operational
+- ✅ Professional documentation
 
-## 🔧 Exemple 2: Projet avec API
+## 🔧 Example 2: Project with API
 
-### Contexte
+### Context
 
-Développer une API Node.js avec Express et MongoDB.
+Develop a Node.js API with Express and MongoDB.
 
-### Structure recommandée
+### Recommended Structure
 
 ```bash
 src/
@@ -76,7 +76,7 @@ src/
 └── app.js
 ```
 
-### Code exemple
+### Example Code
 
 ```javascript
 // src/app.js
@@ -100,35 +100,35 @@ app.listen(PORT, () => {
 module.exports = app;
 ```
 
-### Workflow de développement
+### Development Workflow
 
 ```bash
-# Développement avec qualité automatique
-npm run quality:fix  # Formatte le code automatiquement
+# Development with automatic quality
+npm run quality:fix  # Automatically formats code
 
 # Tests
-npm test            # Lance les tests
+npm test            # Run tests
 
-# Commits conventionnels
+# Conventional commits
 git commit -m "feat(api): add health check endpoint"
 git commit -m "feat(auth): add user authentication"
 git commit -m "fix(db): handle connection errors"
 
-# Release automatique
-npm run release     # Incrémente version selon les commits
+# Automatic release
+npm run release     # Increment version based on commits
 ```
 
-## 🎨 Exemple 3: Projet Frontend React
+## 🎨 Example 3: Frontend React Project
 
-### Contexte
+### Context
 
-Application React avec TypeScript et qualité automatique.
+React application with TypeScript and automatic quality.
 
 ### Configuration
 
 ```json
 {
-  "name": "mon-app-react",
+  "name": "my-react-app",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -138,7 +138,7 @@ Application React avec TypeScript et qualité automatique.
 }
 ```
 
-### Structure TypeScript
+### TypeScript Structure
 
 ```bash
 src/
@@ -154,7 +154,7 @@ src/
 └── App.tsx
 ```
 
-### Exemple composant
+### Component Example
 
 ```typescript
 // src/components/Button/Button.tsx
@@ -180,19 +180,19 @@ export const Button: React.FC<ButtonProps> = ({
 };
 ```
 
-### Workflow qualité
+### Quality Workflow
 
 ```bash
-# Développement
+# Development
 npm run dev
 
-# Vérification continue
+# Continuous verification
 npm run quality:fix  # ESLint + Prettier + TypeScript
 
 # Tests
 npm run test
 
-# Build de production
+# Production build
 npm run build
 
 # Release
@@ -200,7 +200,7 @@ git commit -m "feat(ui): add Button component"
 npm run release
 ```
 
-## 🚢 Exemple 4: Déploiement automatique
+## 🚢 Example 4: Automatic Deployment
 
 ### Configuration GitHub Actions
 
@@ -226,7 +226,7 @@ jobs:
       - run: npm run deploy
 ```
 
-### Script de déploiement
+### Deployment Script
 
 ```bash
 #!/bin/bash
@@ -246,37 +246,37 @@ curl -f https://mon-site.com/health || exit 1
 echo "✅ Deployment successful!"
 ```
 
-### Utilisation
+### Usage
 
 ```bash
-# Déploiement manuel
+# Manual deployment
 ./scripts/deploy.sh
 
-# Déploiement automatique via commit
+# Automatic deployment via commit
 git commit -m "feat: add new feature"
-git push  # ✅ Deploy automatique via GitHub Actions
+git push  # ✅ Automatic deployment via GitHub Actions
 ```
 
-## 📱 Exemple 5: Projet multi-plateforme
+## 📱 Example 5: Multi-platform Project
 
-### Contexte
+### Context
 
-Application qui fonctionne en CLI, Web et API.
+Application that works in CLI, Web, and API.
 
-### Structure organisée
+### Organized Structure
 
 ```bash
 src/
-├── core/           # Logique métier partagée
+├── core/           # Shared business logic
 │   ├── models/
 │   └── services/
-├── cli/           # Interface ligne de commande
-├── web/           # Interface web
-├── api/           # API REST
-└── shared/        # Utilitaires communs
+├── cli/           # Command-line interface
+├── web/           # Web interface
+├── api/           # REST API
+└── shared/        # Common utilities
 ```
 
-### Configuration multi-environnement
+### Multi-environment Configuration
 
 ```json
 {
@@ -289,7 +289,7 @@ src/
 }
 ```
 
-### Exemple logique partagée
+### Shared Logic Example
 
 ```javascript
 // src/core/services/calculator.js
@@ -305,15 +305,15 @@ class Calculator {
 
 module.exports = { Calculator };
 
-// Utilisable partout:
+// Usable everywhere:
 // - CLI: const calc = new Calculator();
 // - Web: import { Calculator } from '../core/services/calculator';
 // - API: const { Calculator } = require('./core/services/calculator');
 ```
 
-## 🔍 Exemple 6: Intégration avec outils existants
+## 🔍 Example 6: Integration with Existing Tools
 
-### Intégration Docker
+### Docker Integration
 
 ```dockerfile
 # Dockerfile
@@ -330,7 +330,7 @@ EXPOSE 3000
 CMD ["npm", "start"]
 ```
 
-### Intégration base de données
+### Database Integration
 
 ```javascript
 // src/config/database.js
@@ -349,22 +349,22 @@ const connectDB = async () => {
 module.exports = { connectDB };
 ```
 
-### Intégration avec CI/CD
+### CI/CD Integration
 
 ```bash
-# Commandes standards qui fonctionnent partout
-npm run quality      # Vérification qualité
-npm run test         # Tests automatisés
+# Standard commands that work everywhere
+npm run quality      # Quality verification
+npm run test         # Automated tests
 npm run build        # Construction
-npm run deploy       # Déploiement
+npm run deploy       # Deployment
 ```
 
-## 📊 Exemple 7: Monitoring et métriques
+## 📊 Example 7: Monitoring and Metrics
 
-### Vérification qualité continue
+### Continuous Quality Verification
 
 ```bash
-# Script de vérification complet
+# Complete verification script
 #!/bin/bash
 echo "🔍 Quality Check..."
 
@@ -384,10 +384,10 @@ npm run build || exit 1
 echo "✅ All checks passed!"
 ```
 
-### Métriques automatiques
+### Automatic Metrics
 
 ```javascript
-// Exemple de métriques dans le code
+// Example of metrics in the code
 console.log('📊 Quality Metrics:');
 console.log('- ESLint errors: 0');
 console.log('- Test coverage: 95%');
@@ -395,45 +395,45 @@ console.log('- Build time: 2.3s');
 console.log('- Bundle size: 45KB');
 ```
 
-## 🎯 Cas d'usage spécifiques
+## 🎯 Specific Use Cases
 
-### Pour débutants
+### For Beginners
 
 ```bash
-# Workflow simplifié
-git clone <repo>      # Récupérer le code
-npm install          # Installer
-npm run quality      # Vérifier
-# Développer dans src/
-npm run quality:fix  # Corriger automatiquement
+# Simplified workflow
+git clone <repo>      # Get the code
+npm install          # Install
+npm run quality      # Verify
+# Develop in src/
+npm run quality:fix  # Automatically correct
 git commit -m "feat: ma feature"
 ```
 
-### Pour équipes
+### For Teams
 
 ```bash
-# Standards d'équipe automatiques
-git commit -m "feat(auth): add login system"    # Convention obligatoire
-npm run quality                                 # Qualité garantie
-npm run release                                 # Release automatique
-# ✅ Même qualité pour tous les développeurs
+# Team standards automatically
+git commit -m "feat(auth): add login system"    # Mandatory convention
+npm run quality                                 # Guaranteed quality
+npm run release                                 # Automatic release
+# ✅ Same quality for all developers
 ```
 
-### Pour production
+### For Production
 
 ```bash
-# Pipeline robuste
+# Robust pipeline
 npm run quality && npm run test && npm run build && npm run deploy
-# ✅ Zéro downtime, qualité garantie
+# ✅ Zero downtime, guaranteed quality
 ```
 
 ---
 
-## 🚀 Prochaines étapes
+## 🚀 Next Steps
 
-1. **Choisir un exemple** qui correspond à votre besoin
-2. **Suivre les étapes** pas à pas
-3. **Personnaliser** selon votre contexte
-4. **Consulter** `docs/architecture.md` pour les détails techniques
+1. **Choose an example** that matches your need
+2. **Follow the steps** one by one
+3. **Customize** according to your context
+4. **Consult** `docs/architecture.md` for technical details
 
-**Tous ces exemples sont testés et prêts à l'emploi !** 🎉
+**All these examples are tested and ready for use!** 🎉
