@@ -1,0 +1,60 @@
+# EditorConfig - Configuration universelle pour tous éditeurs
+# https://editorconfig.org
+
+root = true
+
+# Configuration pour tous fichiers
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 2
+insert_final_newline = true
+trim_trailing_whitespace = true
+max_line_length = 100
+
+# Markdown - Espaces trailing autorisés (syntaxe)
+[*.md]
+trim_trailing_whitespace = false
+max_line_length = 120
+
+# Makefile - Tabs obligatoires
+[Makefile]
+indent_style = tab
+
+# Batch files Windows
+[*.bat]
+end_of_line = crlf
+
+# Python - 4 espaces standard
+[*.py]
+indent_size = 4
+max_line_length = 88
+
+# Go - Tabs standard
+[*.go]
+indent_style = tab
+
+# YAML - 2 espaces standard
+[*.{yml,yaml}]
+indent_size = 2
+
+# JSON - 2 espaces
+[*.json]
+indent_size = 2
+
+# JavaScript/TypeScript - 2 espaces
+[*.{js,jsx,ts,tsx}]
+indent_size = 2
+
+# CSS/SCSS - 2 espaces
+[*.{css,scss,sass,less}]
+indent_size = 2
+
+# HTML - 2 espaces
+[*.{html,htm}]
+indent_size = 2
+
+# XML - 2 espaces
+[*.xml]
+indent_size = 2 

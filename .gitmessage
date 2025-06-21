@@ -1,0 +1,44 @@
+# Template de message de commit
+# Suivre les Conventional Commits pour versioning automatique
+# https://www.conventionalcommits.org/
+
+# Format: <type>(<scope>): <description>
+#
+# <body>
+#
+# <footer>
+
+# Types disponibles:
+# feat:     Nouvelle fonctionnalité
+# fix:      Correction bug
+# docs:     Documentation uniquement
+# style:    Changements qui n'affectent pas le sens du code
+# refactor: Refactoring du code (ni feat ni fix)
+# perf:     Amélioration des performances
+# test:     Ajout/modification tests
+# chore:    Changements outils, config, build
+# ci:       Changements CI/CD
+# build:    Changements système de build
+
+# Scopes suggérés (optionnel):
+# core, ui, api, auth, config, docs, tests, ci, build
+
+# Exemples:
+# feat(auth): add login functionality
+# fix(ui): resolve button alignment issue
+# docs: update installation guide
+# chore(deps): update dependencies
+
+# Règles:
+# - Première ligne max 50 caractères
+# - Utiliser l'impératif ("add" pas "added")
+# - Pas de point final sur la première ligne
+# - Ligne vide entre titre et corps
+# - Corps optionnel, max 72 caractères par ligne
+# - Footer pour breaking changes: BREAKING CHANGE: description
+
+# Breaking change exemple:
+# feat!: remove deprecated API
+# 
+# BREAKING CHANGE: The old API endpoint /v1/users has been removed.
+# Use /v2/users instead. 
