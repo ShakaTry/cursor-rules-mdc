@@ -27,8 +27,8 @@
     "npm": ">=9.0.0"
   },
   "scripts": {
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx,.mjs,.cjs",
-    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx,.mjs,.cjs --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "quality": "npm run lint && npm run format:check",
@@ -43,6 +43,7 @@
     "setup": "npm install && npm run prepare"
   },
   "devDependencies": {
+    "@eslint/js": "^9.29.0",
     "@release-it/conventional-changelog": "^7.0.2",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",

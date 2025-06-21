@@ -3,11 +3,13 @@
 > **Cas pratique : API REST complète avec architecture professionnelle**
 
 ## 🎯 Objectif
+
 Créer une API REST robuste avec authentification, base de données, tests automatisés et déploiement containerisé.
 
 ## 🏗️ Architecture avancée
 
-### Structure organisée  
+### Structure organisée
+
 ```
 src/
 ├── api/                    # API REST
@@ -30,6 +32,7 @@ src/
 ### 1. Configuration avancée
 
 #### Configuration environnement
+
 ```javascript
 // src/config/environment.js
 const config = {
@@ -37,20 +40,20 @@ const config = {
     PORT: process.env.PORT || 3000,
     DATABASE_URL: process.env.DATABASE_URL || 'mongodb://localhost:27017/myapp-dev',
     JWT_SECRET: process.env.JWT_SECRET || 'dev-secret-key',
-    LOG_LEVEL: 'debug'
+    LOG_LEVEL: 'debug',
   },
   production: {
     PORT: process.env.PORT || 8080,
     DATABASE_URL: process.env.DATABASE_URL,
     JWT_SECRET: process.env.JWT_SECRET,
-    LOG_LEVEL: 'info'
+    LOG_LEVEL: 'info',
   },
   test: {
     PORT: 3001,
     DATABASE_URL: process.env.TEST_DATABASE_URL || 'mongodb://localhost:27017/myapp-test',
     JWT_SECRET: 'test-secret',
-    LOG_LEVEL: 'error'
-  }
+    LOG_LEVEL: 'error',
+  },
 };
 
 const env = process.env.NODE_ENV || 'development';
@@ -58,6 +61,7 @@ module.exports = config[env];
 ```
 
 #### Configuration base de données
+
 ```javascript
 // src/config/database.js
 const mongoose = require('mongoose');
@@ -69,7 +73,7 @@ const connectDatabase = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       maxPoolSize: 10,
-      serverSelectionTimeoutMS: 5000
+      serverSelectionTimeoutMS: 5000,
     };
 
     await mongoose.connect(config.DATABASE_URL, options);
@@ -97,58 +101,57 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('../config/environment');
 
-const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, 'Name is required'],
-    trim: true,
-    maxlength: [50, 'Name cannot exceed 50 characters']
+const userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, 'Name is required'],
+      trim: true,
+      maxlength: [50, 'Name cannot exceed 50 characters'],
+    },
+    email: {
+      type: String,
+      required: [true, 'Email is required'],
+      unique: true,
+      lowercase: true,
+      match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please enter valid email'],
+    },
+    password: {
+      type: String,
+      required: [true, 'Password is required'],
+      minlength: [6, 'Password must be at least 6 characters'],
+      select: false,
+    },
+    role: {
+      type: String,
+      enum: ['user', 'admin'],
+      default: 'user',
+    },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
   },
-  email: {
-    type: String,
-    required: [true, 'Email is required'],
-    unique: true,
-    lowercase: true,
-    match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please enter valid email']
-  },
-  password: {
-    type: String,
-    required: [true, 'Password is required'],
-    minlength: [6, 'Password must be at least 6 characters'],
-    select: false
-  },
-  role: {
-    type: String,
-    enum: ['user', 'admin'],
-    default: 'user'
-  },
-  isActive: {
-    type: Boolean,
-    default: true
+  {
+    timestamps: true,
   }
-}, {
-  timestamps: true
-});
+);
 
 // Hash password before saving
-userSchema.pre('save', async function(next) {
+userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
   this.password = await bcrypt.hash(this.password, 12);
   next();
 });
 
 // Compare password method
-userSchema.methods.comparePassword = async function(candidatePassword) {
+userSchema.methods.comparePassword = async function (candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
 };
 
 // Generate JWT token
-userSchema.methods.generateAuthToken = function() {
-  return jwt.sign(
-    { id: this._id, role: this.role },
-    config.JWT_SECRET,
-    { expiresIn: '7d' }
-  );
+userSchema.methods.generateAuthToken = function () {
+  return jwt.sign({ id: this._id, role: this.role }, config.JWT_SECRET, { expiresIn: '7d' });
 };
 
 module.exports = mongoose.model('User', userSchema);
@@ -165,11 +168,11 @@ const config = require('../config/environment');
 const authenticate = async (req, res, next) => {
   try {
     const token = req.header('Authorization')?.replace('Bearer ', '');
-    
+
     if (!token) {
       return res.status(401).json({
         success: false,
-        message: 'Access denied. No token provided.'
+        message: 'Access denied. No token provided.',
       });
     }
 
@@ -179,7 +182,7 @@ const authenticate = async (req, res, next) => {
     if (!user || !user.isActive) {
       return res.status(401).json({
         success: false,
-        message: 'Invalid token or user inactive.'
+        message: 'Invalid token or user inactive.',
       });
     }
 
@@ -188,7 +191,7 @@ const authenticate = async (req, res, next) => {
   } catch (error) {
     res.status(401).json({
       success: false,
-      message: 'Invalid token.'
+      message: 'Invalid token.',
     });
   }
 };
@@ -198,7 +201,7 @@ const authorize = (...roles) => {
     if (!roles.includes(req.user.role)) {
       return res.status(403).json({
         success: false,
-        message: 'Access denied. Insufficient permissions.'
+        message: 'Access denied. Insufficient permissions.',
       });
     }
     next();
@@ -224,7 +227,7 @@ class AuthController {
         return res.status(400).json({
           success: false,
           message: 'Validation failed',
-          errors: errors.array()
+          errors: errors.array(),
         });
       }
 
@@ -235,7 +238,7 @@ class AuthController {
       if (existingUser) {
         return res.status(409).json({
           success: false,
-          message: 'User already exists with this email'
+          message: 'User already exists with this email',
         });
       }
 
@@ -254,16 +257,16 @@ class AuthController {
             id: user._id,
             name: user.name,
             email: user.email,
-            role: user.role
+            role: user.role,
           },
-          token
-        }
+          token,
+        },
       });
     } catch (error) {
       console.error('Registration error:', error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error'
+        message: 'Internal server error',
       });
     }
   }
@@ -275,7 +278,7 @@ class AuthController {
         return res.status(400).json({
           success: false,
           message: 'Validation failed',
-          errors: errors.array()
+          errors: errors.array(),
         });
       }
 
@@ -286,7 +289,7 @@ class AuthController {
       if (!user || !user.isActive) {
         return res.status(401).json({
           success: false,
-          message: 'Invalid credentials'
+          message: 'Invalid credentials',
         });
       }
 
@@ -295,7 +298,7 @@ class AuthController {
       if (!isMatch) {
         return res.status(401).json({
           success: false,
-          message: 'Invalid credentials'
+          message: 'Invalid credentials',
         });
       }
 
@@ -310,16 +313,16 @@ class AuthController {
             id: user._id,
             name: user.name,
             email: user.email,
-            role: user.role
+            role: user.role,
           },
-          token
-        }
+          token,
+        },
       });
     } catch (error) {
       console.error('Login error:', error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error'
+        message: 'Internal server error',
       });
     }
   }
@@ -334,15 +337,15 @@ class AuthController {
             name: req.user.name,
             email: req.user.email,
             role: req.user.role,
-            createdAt: req.user.createdAt
-          }
-        }
+            createdAt: req.user.createdAt,
+          },
+        },
       });
     } catch (error) {
       console.error('Get profile error:', error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error'
+        message: 'Internal server error',
       });
     }
   }
@@ -358,32 +361,21 @@ module.exports = new AuthController();
 const { body } = require('express-validator');
 
 const registerValidator = [
-  body('name')
-    .trim()
-    .isLength({ min: 2, max: 50 })
-    .withMessage('Name must be between 2 and 50 characters'),
-  
-  body('email')
-    .isEmail()
-    .normalizeEmail()
-    .withMessage('Please provide a valid email'),
-  
+  body('name').trim().isLength({ min: 2, max: 50 }).withMessage('Name must be between 2 and 50 characters'),
+
+  body('email').isEmail().normalizeEmail().withMessage('Please provide a valid email'),
+
   body('password')
     .isLength({ min: 6 })
     .withMessage('Password must be at least 6 characters')
     .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)
-    .withMessage('Password must contain at least one lowercase, one uppercase and one number')
+    .withMessage('Password must contain at least one lowercase, one uppercase and one number'),
 ];
 
 const loginValidator = [
-  body('email')
-    .isEmail()
-    .normalizeEmail()
-    .withMessage('Please provide a valid email'),
-  
-  body('password')
-    .notEmpty()
-    .withMessage('Password is required')
+  body('email').isEmail().normalizeEmail().withMessage('Please provide a valid email'),
+
+  body('password').notEmpty().withMessage('Password is required'),
 ];
 
 module.exports = { registerValidator, loginValidator };
@@ -428,7 +420,7 @@ class App {
   constructor() {
     this.app = express();
     this.port = config.PORT;
-    
+
     this.initializeDatabase();
     this.initializeMiddlewares();
     this.initializeRoutes();
@@ -447,7 +439,7 @@ class App {
     // Rate limiting
     const limiter = rateLimit({
       windowMs: 15 * 60 * 1000, // 15 minutes
-      max: 100 // limit each IP to 100 requests per windowMs
+      max: 100, // limit each IP to 100 requests per windowMs
     });
     this.app.use('/api/', limiter);
 
@@ -468,7 +460,7 @@ class App {
         success: true,
         message: 'Server is running',
         timestamp: new Date().toISOString(),
-        environment: process.env.NODE_ENV
+        environment: process.env.NODE_ENV,
       });
     });
 
@@ -479,7 +471,7 @@ class App {
     this.app.use('*', (req, res) => {
       res.status(404).json({
         success: false,
-        message: 'Route not found'
+        message: 'Route not found',
       });
     });
   }
@@ -488,11 +480,11 @@ class App {
     // Global error handler
     this.app.use((error, req, res, next) => {
       console.error('Unhandled error:', error);
-      
+
       res.status(error.status || 500).json({
         success: false,
         message: error.message || 'Internal server error',
-        ...(process.env.NODE_ENV === 'development' && { stack: error.stack })
+        ...(process.env.NODE_ENV === 'development' && { stack: error.stack }),
       });
     });
   }
@@ -532,26 +524,25 @@ process.on('SIGINT', () => {
 ## 🧪 Tests automatisés
 
 ### Configuration Jest
+
 ```javascript
 // jest.config.js
 module.exports = {
   testEnvironment: 'node',
-  collectCoverageFrom: [
-    'src/**/*.js',
-    '!src/index.js'
-  ],
+  collectCoverageFrom: ['src/**/*.js', '!src/index.js'],
   coverageThreshold: {
     global: {
       branches: 80,
       functions: 80,
       lines: 80,
-      statements: 80
-    }
-  }
+      statements: 80,
+    },
+  },
 };
 ```
 
 ### Tests d'intégration
+
 ```javascript
 // tests/auth.test.js
 const request = require('supertest');
@@ -569,13 +560,10 @@ describe('Auth Endpoints', () => {
       const userData = {
         name: 'Test User',
         email: 'test@example.com',
-        password: 'Test123!'
+        password: 'Test123!',
       };
 
-      const response = await request(app)
-        .post('/api/auth/register')
-        .send(userData)
-        .expect(201);
+      const response = await request(app).post('/api/auth/register').send(userData).expect(201);
 
       expect(response.body.success).toBe(true);
       expect(response.body.data.user.email).toBe(userData.email);
@@ -588,6 +576,7 @@ describe('Auth Endpoints', () => {
 ## 🐳 Containerisation
 
 ### Dockerfile optimisé
+
 ```dockerfile
 FROM node:18-alpine AS base
 
@@ -615,6 +604,7 @@ CMD ["node", "src/index.js"]
 ```
 
 ### Docker Compose pour développement
+
 ```yaml
 # docker-compose.yml
 version: '3.8'
@@ -623,7 +613,7 @@ services:
   app:
     build: .
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
       - NODE_ENV=development
       - DATABASE_URL=mongodb://mongo:27017/myapp
@@ -637,7 +627,7 @@ services:
   mongo:
     image: mongo:5
     ports:
-      - "27017:27017"
+      - '27017:27017'
     volumes:
       - mongo_data:/data/db
 
@@ -648,6 +638,7 @@ volumes:
 ## 🚀 Déploiement
 
 ### Scripts de déploiement
+
 ```bash
 # Production deployment
 docker build -t myapp:latest .
@@ -661,6 +652,7 @@ docker run -d \
 ```
 
 ### CI/CD avec GitHub Actions
+
 ```yaml
 # .github/workflows/deploy.yml
 name: Deploy
@@ -692,6 +684,7 @@ jobs:
 ## 📊 Monitoring et métriques
 
 ### Logging structuré
+
 ```javascript
 // src/utils/logger.js
 const winston = require('winston');
@@ -706,14 +699,16 @@ const logger = winston.createLogger({
   ),
   transports: [
     new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
-    new winston.transports.File({ filename: 'logs/combined.log' })
-  ]
+    new winston.transports.File({ filename: 'logs/combined.log' }),
+  ],
 });
 
 if (process.env.NODE_ENV !== 'production') {
-  logger.add(new winston.transports.Console({
-    format: winston.format.simple()
-  }));
+  logger.add(
+    new winston.transports.Console({
+      format: winston.format.simple(),
+    })
+  );
 }
 
 module.exports = logger;
@@ -725,7 +720,7 @@ Cette architecture avancée vous donne :
 
 - ✅ **API REST complète** avec authentification JWT
 - ✅ **Base de données** MongoDB avec validation
-- ✅ **Tests automatisés** avec >80% de couverture  
+- ✅ **Tests automatisés** avec >80% de couverture
 - ✅ **Containerisation** Docker optimisée
 - ✅ **CI/CD** avec GitHub Actions
 - ✅ **Monitoring** et logging structuré
@@ -736,4 +731,4 @@ Cette architecture avancée vous donne :
 
 **🚀 Architecture prête pour la production!**
 
-➡️ **Suivant**: Consultez `../integrations/` pour des intégrations externes. 
+➡️ **Suivant**: Consultez `../integrations/` pour des intégrations externes.

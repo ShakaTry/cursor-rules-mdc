@@ -9,9 +9,11 @@ Cette page présente des **exemples réels** d'utilisation du projet dans diffé
 ## 🚀 Exemple 1: Projet simple
 
 ### Contexte
+
 Créer un nouveau projet JavaScript avec toute la qualité automatique.
 
 ### Étapes complètes
+
 ```bash
 # 1. Cloner la base
 git clone <this-repo> mon-nouveau-projet
@@ -38,6 +40,7 @@ npm run release     # ✅ Version 1.0.0 automatique
 ```
 
 ### Résultat
+
 - ✅ Projet configuré en 5 minutes
 - ✅ Qualité automatique garantie
 - ✅ Versioning automatique opérationnel
@@ -46,9 +49,11 @@ npm run release     # ✅ Version 1.0.0 automatique
 ## 🔧 Exemple 2: Projet avec API
 
 ### Contexte
+
 Développer une API Node.js avec Express et MongoDB.
 
 ### Structure recommandée
+
 ```bash
 src/
 ├── routes/
@@ -65,6 +70,7 @@ src/
 ```
 
 ### Code exemple
+
 ```javascript
 // src/app.js
 const express = require('express');
@@ -88,6 +94,7 @@ module.exports = app;
 ```
 
 ### Workflow de développement
+
 ```bash
 # Développement avec qualité automatique
 npm run quality:fix  # Formatte le code automatiquement
@@ -97,7 +104,7 @@ npm test            # Lance les tests
 
 # Commits conventionnels
 git commit -m "feat(api): add health check endpoint"
-git commit -m "feat(auth): add user authentication"  
+git commit -m "feat(auth): add user authentication"
 git commit -m "fix(db): handle connection errors"
 
 # Release automatique
@@ -107,9 +114,11 @@ npm run release     # Incrémente version selon les commits
 ## 🎨 Exemple 3: Projet Frontend React
 
 ### Contexte
+
 Application React avec TypeScript et qualité automatique.
 
 ### Configuration
+
 ```json
 {
   "name": "mon-app-react",
@@ -123,6 +132,7 @@ Application React avec TypeScript et qualité automatique.
 ```
 
 ### Structure TypeScript
+
 ```bash
 src/
 ├── components/
@@ -138,6 +148,7 @@ src/
 ```
 
 ### Exemple composant
+
 ```typescript
 // src/components/Button/Button.tsx
 interface ButtonProps {
@@ -146,13 +157,13 @@ interface ButtonProps {
   onClick?: () => void;
 }
 
-export const Button: React.FC<ButtonProps> = ({ 
-  children, 
-  variant = 'primary', 
-  onClick 
+export const Button: React.FC<ButtonProps> = ({
+  children,
+  variant = 'primary',
+  onClick
 }) => {
   return (
-    <button 
+    <button
       className={`btn btn-${variant}`}
       onClick={onClick}
     >
@@ -163,6 +174,7 @@ export const Button: React.FC<ButtonProps> = ({
 ```
 
 ### Workflow qualité
+
 ```bash
 # Développement
 npm run dev
@@ -184,6 +196,7 @@ npm run release
 ## 🚢 Exemple 4: Déploiement automatique
 
 ### Configuration GitHub Actions
+
 ```yaml
 # .github/workflows/deploy.yml
 name: Deploy
@@ -199,7 +212,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '18'
-          
+
       - run: npm ci
       - run: npm run quality
       - run: npm run build
@@ -207,6 +220,7 @@ jobs:
 ```
 
 ### Script de déploiement
+
 ```bash
 #!/bin/bash
 # scripts/deploy.sh
@@ -226,6 +240,7 @@ echo "✅ Deployment successful!"
 ```
 
 ### Utilisation
+
 ```bash
 # Déploiement manuel
 ./scripts/deploy.sh
@@ -238,9 +253,11 @@ git push  # ✅ Deploy automatique via GitHub Actions
 ## 📱 Exemple 5: Projet multi-plateforme
 
 ### Contexte
+
 Application qui fonctionne en CLI, Web et API.
 
 ### Structure organisée
+
 ```bash
 src/
 ├── core/           # Logique métier partagée
@@ -253,6 +270,7 @@ src/
 ```
 
 ### Configuration multi-environnement
+
 ```json
 {
   "scripts": {
@@ -265,13 +283,14 @@ src/
 ```
 
 ### Exemple logique partagée
+
 ```javascript
 // src/core/services/calculator.js
 class Calculator {
   add(a, b) {
     return a + b;
   }
-  
+
   multiply(a, b) {
     return a * b;
   }
@@ -281,13 +300,14 @@ module.exports = { Calculator };
 
 // Utilisable partout:
 // - CLI: const calc = new Calculator();
-// - Web: import { Calculator } from '../core/services/calculator';  
+// - Web: import { Calculator } from '../core/services/calculator';
 // - API: const { Calculator } = require('./core/services/calculator');
 ```
 
 ## 🔍 Exemple 6: Intégration avec outils existants
 
 ### Intégration Docker
+
 ```dockerfile
 # Dockerfile
 FROM node:18-alpine
@@ -304,6 +324,7 @@ CMD ["npm", "start"]
 ```
 
 ### Intégration base de données
+
 ```javascript
 // src/config/database.js
 const mongoose = require('mongoose');
@@ -322,10 +343,11 @@ module.exports = { connectDB };
 ```
 
 ### Intégration avec CI/CD
+
 ```bash
 # Commandes standards qui fonctionnent partout
 npm run quality      # Vérification qualité
-npm run test         # Tests automatisés  
+npm run test         # Tests automatisés
 npm run build        # Construction
 npm run deploy       # Déploiement
 ```
@@ -333,6 +355,7 @@ npm run deploy       # Déploiement
 ## 📊 Exemple 7: Monitoring et métriques
 
 ### Vérification qualité continue
+
 ```bash
 # Script de vérification complet
 #!/bin/bash
@@ -355,6 +378,7 @@ echo "✅ All checks passed!"
 ```
 
 ### Métriques automatiques
+
 ```javascript
 // Exemple de métriques dans le code
 console.log('📊 Quality Metrics:');
@@ -367,6 +391,7 @@ console.log('- Bundle size: 45KB');
 ## 🎯 Cas d'usage spécifiques
 
 ### Pour débutants
+
 ```bash
 # Workflow simplifié
 git clone <repo>      # Récupérer le code
@@ -378,6 +403,7 @@ git commit -m "feat: ma feature"
 ```
 
 ### Pour équipes
+
 ```bash
 # Standards d'équipe automatiques
 git commit -m "feat(auth): add login system"    # Convention obligatoire
@@ -387,6 +413,7 @@ npm run release                                 # Release automatique
 ```
 
 ### Pour production
+
 ```bash
 # Pipeline robuste
 npm run quality && npm run test && npm run build && npm run deploy
@@ -398,8 +425,8 @@ npm run quality && npm run test && npm run build && npm run deploy
 ## 🚀 Prochaines étapes
 
 1. **Choisir un exemple** qui correspond à votre besoin
-2. **Suivre les étapes** pas à pas  
+2. **Suivre les étapes** pas à pas
 3. **Personnaliser** selon votre contexte
 4. **Consulter** `docs/architecture.md` pour les détails techniques
 
-**Tous ces exemples sont testés et prêts à l'emploi !** 🎉 
+**Tous ces exemples sont testés et prêts à l'emploi !** 🎉

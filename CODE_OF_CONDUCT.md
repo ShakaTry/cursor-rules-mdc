@@ -7,8 +7,9 @@ We are committed to providing a friendly, safe, and welcoming environment for al
 ## 🤝 Expected Behavior
 
 ### ✅ **DO**
+
 - **Be respectful** and kind in all interactions
-- **Be patient** with beginners and different skill levels  
+- **Be patient** with beginners and different skill levels
 - **Give constructive feedback** with specific suggestions
 - **Help others learn** and grow
 - **Use inclusive language** that welcomes everyone
@@ -16,6 +17,7 @@ We are committed to providing a friendly, safe, and welcoming environment for al
 - **Admit mistakes** and learn from them
 
 ### ❌ **DON'T**
+
 - Use offensive, discriminatory, or harassing language
 - Make personal attacks or insults
 - Publish others' private information without consent
@@ -26,18 +28,21 @@ We are committed to providing a friendly, safe, and welcoming environment for al
 ## 🔍 Examples
 
 ### ✅ **Good Examples**
-- *"This approach works, but have you considered X? It might be more efficient because..."*
-- *"I'm new to this - could someone explain why we use this pattern?"*
-- *"Great idea! I think we could improve it by adding..."*
+
+- _"This approach works, but have you considered X? It might be more efficient because..."_
+- _"I'm new to this - could someone explain why we use this pattern?"_
+- _"Great idea! I think we could improve it by adding..."_
 
 ### ❌ **Bad Examples**
-- *"This code is terrible"*
-- *"That's a stupid question"*
-- *"Real developers would know this"*
+
+- _"This code is terrible"_
+- _"That's a stupid question"_
+- _"Real developers would know this"_
 
 ## 📊 Scope
 
 This Code of Conduct applies to:
+
 - GitHub repositories and discussions
 - Issue tracker and pull requests
 - Community discussions and forums
@@ -57,11 +62,13 @@ If you experience or witness unacceptable behavior:
 ## ⚖️ Enforcement
 
 ### **Response Process**
+
 1. **Investigation** - We'll review all reports fairly
 2. **Communication** - We'll discuss with involved parties
 3. **Action** - Appropriate measures based on severity
 
 ### **Possible Actions**
+
 - **Warning** for minor issues
 - **Temporary ban** for repeated violations
 - **Permanent ban** for severe violations
@@ -69,6 +76,7 @@ If you experience or witness unacceptable behavior:
 ## 🌟 Recognition
 
 We appreciate contributors who:
+
 - Help maintain a positive environment
 - Mentor newcomers effectively
 - Provide excellent code reviews
@@ -77,6 +85,7 @@ We appreciate contributors who:
 ## 🤔 Questions?
 
 If you have questions about this Code of Conduct:
+
 - Create an issue with the `question` label
 - Reach out to project maintainers
 - Suggest improvements via pull request
@@ -87,4 +96,4 @@ This Code of Conduct is adapted from the [Contributor Covenant](https://www.cont
 
 ---
 
-**Remember**: Everyone was a beginner once. Let's create an environment where everyone can learn and contribute! 🚀 
+**Remember**: Everyone was a beginner once. Let's create an environment where everyone can learn and contribute! 🚀

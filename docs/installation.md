@@ -5,6 +5,7 @@
 ## 🎯 Prérequis
 
 ### Vérifications avant installation
+
 ```bash
 # Vérifier Git
 git --version
@@ -15,6 +16,7 @@ npm --version
 ```
 
 **Versions recommandées:**
+
 - Git: 2.30+
 - Node.js: 18.18.0+ (voir `.nvmrc`)
 - npm: 9.0+
@@ -22,6 +24,7 @@ npm --version
 ## 🚀 Installation Rapide
 
 ### Option 1: Installation automatique (recommandée)
+
 ```bash
 # Cloner le projet
 git clone <your-repo-url>
@@ -32,6 +35,7 @@ cd cursor-rules
 ```
 
 ### Option 2: Installation manuelle
+
 ```bash
 # 1. Cloner le projet
 git clone <your-repo-url>
@@ -47,6 +51,7 @@ npm run quality
 ## 🔧 Configuration
 
 ### 1. Variables d'environnement
+
 ```bash
 # Copier le fichier exemple
 cp .env.example .env
@@ -56,6 +61,7 @@ nano .env
 ```
 
 ### 2. Configuration Git (première fois)
+
 ```bash
 # Configurer votre identité
 git config user.name "Votre Nom"
@@ -66,7 +72,9 @@ git config commit.template .gitmessage
 ```
 
 ### 3. Configuration éditeur
+
 Le fichier `.editorconfig` configure automatiquement :
+
 - ✅ Indentation (2 espaces)
 - ✅ Fin de ligne Unix (LF)
 - ✅ Encodage UTF-8
@@ -75,6 +83,7 @@ Le fichier `.editorconfig` configure automatiquement :
 ## ✅ Vérification installation
 
 ### Tests de base
+
 ```bash
 # Vérifier la qualité du code
 npm run quality
@@ -87,6 +96,7 @@ npm run lint
 ```
 
 ### Tests avancés
+
 ```bash
 # Test du système de versioning
 npm run version:check
@@ -101,16 +111,19 @@ npm run build
 ## 🔨 Outils installés
 
 ### Qualité de code
+
 - **ESLint** - Détection d'erreurs automatique
 - **Prettier** - Formatage de code automatique
 - **EditorConfig** - Configuration éditeur universelle
 
 ### Versioning automatique
+
 - **Standard-version** - Versioning sémantique
-- **Release-it** - Releases GitHub automatiques  
+- **Release-it** - Releases GitHub automatiques
 - **Conventional Commits** - Messages standardisés
 
 ### Scripts disponibles
+
 ```bash
 npm run setup        # Installation complète
 npm run quality      # Vérification qualité
@@ -124,24 +137,28 @@ npm run format       # Prettier seulement
 ### Erreurs communes
 
 #### Erreur: "ESLint not found"
+
 ```bash
 # Réinstaller les dépendances
 npm install --force
 ```
 
 #### Erreur: "Permission denied" sur scripts
+
 ```bash
 # Donner les permissions d'exécution
 chmod +x scripts/*.sh
 ```
 
 #### Erreur: Version Node.js
+
 ```bash
 # Utiliser la version recommandée
 nvm use  # ou nvm install 18.18.0
 ```
 
 ### Support
+
 - 📖 Documentation: `docs/usage.md`
 - 🔍 Exemples: `examples/`
 - 🐛 Issues: [GitHub Issues](https://github.com/your-repo/issues)
@@ -149,4 +166,4 @@ nvm use  # ou nvm install 18.18.0
 ---
 
 **Installation terminée !** 🎉  
-➡️ **Suivant**: Consultez `docs/usage.md` pour commencer à utiliser le projet. 
+➡️ **Suivant**: Consultez `docs/usage.md` pour commencer à utiliser le projet.

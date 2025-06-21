@@ -31,7 +31,7 @@ function displayWelcome() {
  */
 function main() {
   displayWelcome();
-  
+
   // Example of using the project structure
   const config = {
     environment: process.env.NODE_ENV || 'development',
@@ -42,10 +42,10 @@ function main() {
       professionalStructure: true,
       documentation: true,
       examples: true,
-      templates: true
-    }
+      templates: true,
+    },
   };
-  
+
   console.log('⚙️ Configuration:');
   console.log(JSON.stringify(config, null, 2));
 }
@@ -54,10 +54,10 @@ function main() {
 module.exports = {
   displayWelcome,
   main,
-  version: packageInfo.version
+  version: packageInfo.version,
 };
 
 // Run main function if this file is executed directly
 if (require.main === module) {
   main();
-} 
+}

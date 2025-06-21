@@ -9,6 +9,7 @@ Ce template vous aide à créer des composants bien structurés, testés et docu
 ## 📁 Structure recommandée
 
 ### Pour un composant JavaScript/Node.js
+
 ```
 ComponentName/
 ├── index.js              # Point d'entrée principal
@@ -21,6 +22,7 @@ ComponentName/
 ```
 
 ### Pour un composant React
+
 ```
 ComponentName/
 ├── index.js              # Export principal
@@ -35,6 +37,7 @@ ComponentName/
 ## 🚀 Utilisation rapide
 
 ### 1. Créer un nouveau composant
+
 ```bash
 # Copier le template
 cp -r templates/component/ src/components/MonComposant
@@ -46,6 +49,7 @@ mv ComponentName.test.js MonComposant.test.js
 ```
 
 ### 2. Personnaliser le composant
+
 ```javascript
 // MonComposant.js - Exemple composant utilitaire
 class MonComposant {
@@ -53,7 +57,7 @@ class MonComposant {
     this.options = {
       name: 'defaultName',
       version: '1.0.0',
-      ...options
+      ...options,
     };
   }
 
@@ -81,6 +85,7 @@ module.exports = MonComposant;
 ```
 
 ### 3. Ajouter les tests
+
 ```javascript
 // MonComposant.test.js
 const MonComposant = require('./MonComposant');
@@ -105,7 +110,7 @@ describe('MonComposant', () => {
 
   test('should validate options correctly', () => {
     expect(() => component.validate()).not.toThrow();
-    
+
     const invalidComponent = new MonComposant({ name: '' });
     expect(() => invalidComponent.validate()).toThrow();
   });
@@ -119,6 +124,7 @@ describe('MonComposant', () => {
 ```
 
 ### 4. Documenter le composant
+
 ```markdown
 # MonComposant
 
@@ -136,8 +142,8 @@ npm install mon-composant
 const MonComposant = require('./MonComposant');
 
 const component = new MonComposant({
-  name: 'MyApp',
-  version: '1.0.0'
+name: 'MyApp',
+version: '1.0.0'
 });
 
 console.log(component.execute());
@@ -161,17 +167,18 @@ console.log(component.execute());
 ## 🎨 Templates par type
 
 ### Composant Utilitaire
+
 ```javascript
 // Exemple: DateHelper
 class DateHelper {
   static format(date, format = 'YYYY-MM-DD') {
     // Implementation
   }
-  
+
   static parse(dateString) {
     // Implementation
   }
-  
+
   static isValid(date) {
     // Implementation
   }
@@ -179,6 +186,7 @@ class DateHelper {
 ```
 
 ### Composant Service
+
 ```javascript
 // Exemple: APIService
 class APIService {
@@ -186,11 +194,11 @@ class APIService {
     this.baseURL = baseURL;
     this.options = options;
   }
-  
+
   async get(endpoint) {
     // Implementation
   }
-  
+
   async post(endpoint, data) {
     // Implementation
   }
@@ -198,26 +206,17 @@ class APIService {
 ```
 
 ### Composant React
+
 ```jsx
 // Exemple: Button
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Button = ({ 
-  children, 
-  variant = 'primary', 
-  size = 'medium',
-  disabled = false,
-  onClick 
-}) => {
+const Button = ({ children, variant = 'primary', size = 'medium', disabled = false, onClick }) => {
   const classes = `btn btn-${variant} btn-${size}`;
-  
+
   return (
-    <button 
-      className={classes}
-      disabled={disabled}
-      onClick={onClick}
-    >
+    <button className={classes} disabled={disabled} onClick={onClick}>
       {children}
     </button>
   );
@@ -228,7 +227,7 @@ Button.propTypes = {
   variant: PropTypes.oneOf(['primary', 'secondary', 'danger']),
   size: PropTypes.oneOf(['small', 'medium', 'large']),
   disabled: PropTypes.bool,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
 };
 
 export default Button;
@@ -237,6 +236,7 @@ export default Button;
 ## ✅ Checklist qualité
 
 ### Code
+
 - [ ] Implémentation complète et fonctionnelle
 - [ ] Gestion d'erreurs appropriée
 - [ ] Validation des paramètres
@@ -244,18 +244,21 @@ export default Button;
 - [ ] Respect des conventions
 
 ### Tests
+
 - [ ] Tests unitaires complets (>80% couverture)
 - [ ] Tests d'intégration si nécessaire
 - [ ] Tests de cas limites et d'erreurs
 - [ ] Tests de performance si applicable
 
 ### Documentation
+
 - [ ] README.md complet
 - [ ] Exemples d'utilisation
 - [ ] Documentation API
 - [ ] Commentaires dans le code
 
 ### Qualité
+
 - [ ] ESLint: 0 erreur, 0 warning
 - [ ] Prettier: Code formaté
 - [ ] TypeScript: Types corrects (si applicable)
@@ -264,6 +267,7 @@ export default Button;
 ## 🔄 Workflow de développement
 
 ### 1. Développement
+
 ```bash
 # Créer le composant
 npm run create:component MonComposant
@@ -276,6 +280,7 @@ npm run test:watch
 ```
 
 ### 2. Validation
+
 ```bash
 # Tests complets
 npm run test
@@ -288,6 +293,7 @@ npm run quality
 ```
 
 ### 3. Integration
+
 ```bash
 # Committer le composant
 git add .
@@ -300,6 +306,7 @@ git commit -m "feat(components): add MonComposant with full test coverage"
 ## 📚 Exemples concrets
 
 ### Exemple 1: Logger
+
 ```javascript
 // Logger.js
 class Logger {
@@ -307,18 +314,26 @@ class Logger {
     this.level = level;
     this.levels = ['debug', 'info', 'warn', 'error'];
   }
-  
+
   log(level, message, meta = {}) {
     if (this.shouldLog(level)) {
       console.log(`[${level.toUpperCase()}] ${message}`, meta);
     }
   }
-  
-  debug(message, meta) { this.log('debug', message, meta); }
-  info(message, meta) { this.log('info', message, meta); }
-  warn(message, meta) { this.log('warn', message, meta); }
-  error(message, meta) { this.log('error', message, meta); }
-  
+
+  debug(message, meta) {
+    this.log('debug', message, meta);
+  }
+  info(message, meta) {
+    this.log('info', message, meta);
+  }
+  warn(message, meta) {
+    this.log('warn', message, meta);
+  }
+  error(message, meta) {
+    this.log('error', message, meta);
+  }
+
   shouldLog(level) {
     return this.levels.indexOf(level) >= this.levels.indexOf(this.level);
   }
@@ -326,20 +341,18 @@ class Logger {
 ```
 
 ### Exemple 2: Validator
+
 ```javascript
 // Validator.js
 class Validator {
   static email(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   }
-  
+
   static password(password) {
-    return password.length >= 8 && 
-           /[A-Z]/.test(password) && 
-           /[a-z]/.test(password) && 
-           /\d/.test(password);
+    return password.length >= 8 && /[A-Z]/.test(password) && /[a-z]/.test(password) && /\d/.test(password);
   }
-  
+
   static required(value) {
     return value !== null && value !== undefined && value !== '';
   }
@@ -349,18 +362,21 @@ class Validator {
 ## 🎯 Bonnes pratiques
 
 ### Design
+
 1. **Single Responsibility**: Un composant = une responsabilité
 2. **Interface claire**: API simple et intuitive
 3. **Configuration flexible**: Options par défaut sensées
 4. **Gestion d'erreurs**: Messages d'erreur clairs
 
 ### Code
+
 1. **Naming**: Noms descriptifs et cohérents
 2. **Documentation**: Code auto-documenté + commentaires
 3. **Tests**: Coverage >80% avec cas limites
 4. **Performance**: Optimisation quand nécessaire
 
 ### Réutilisation
+
 1. **Générique**: Pas de dépendances spécifiques au projet
 2. **Configurable**: Adaptable à différents contextes
 3. **Stable**: API versionée et backward compatible
@@ -370,4 +386,4 @@ class Validator {
 
 **🧩 Composants prêts pour la réutilisation et la collaboration!**
 
-➡️ **Suivant**: Consultez `../config/` pour les templates de configuration. 
+➡️ **Suivant**: Consultez `../config/` pour les templates de configuration.
