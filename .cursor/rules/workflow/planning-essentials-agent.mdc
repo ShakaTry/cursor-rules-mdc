@@ -36,8 +36,15 @@ alwaysApply: false
 1. **Créer** plan avec phases
 2. **Valider** → Attendre "ok/approuvé"
 3. **Exécuter** phase par phase automatiquement
-4. **Checkpoint** → Commit + Memory Bank après chaque phase
+4. **🚀 Checkpoint cursor-tools** → `npm run cursor-tools -- commit` + Memory Bank
 5. **Archiver** → `completed/` en fin
+
+### **🚀 Intégration CURSOR-TOOLS**
+- **Phase Start** → `npm run cursor-tools -- detect` (si nouveau projet)
+- **Phase Build** → `npm run cursor-tools -- build` (si applicable)
+- **Phase Clean** → `npm run cursor-tools -- clean` (si nécessaire)
+- **Phase End** → `npm run cursor-tools -- commit "phase: [nom] completed"`
+- **Plan Complete** → `npm run cursor-tools -- release` (si release)
 
 ---
 
@@ -59,7 +66,7 @@ alwaysApply: false
 ## 🔄 CHECKPOINTS AUTOMATIQUES
 
 ### **Après Chaque Phase**
-- **💾 Commit automatique** → Sauvegarde progression
+- **💾 cursor-tools commit** → `npm run cursor-tools -- commit "phase: [description]"`
 - **🧠 MAJ Memory Bank** → Contexte persistant
 - **📊 Status update** → Transparence utilisateur
 - **🚀 Continue automatique** → Vers phase suivante
@@ -108,4 +115,8 @@ alwaysApply: false
 - **TOUJOURS** faire checkpoints après chaque phase
 - **TOUJOURS** archiver après implémentation
 - **Exception** : Tâches simples peuvent sauter planning
+
+
+
+
 
