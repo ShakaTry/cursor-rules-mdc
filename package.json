@@ -1,7 +1,7 @@
 {
   "name": "cursor-rules-mdc",
   "version": "1.1.1",
-  "description": "Base universelle réutilisable avec règles Cursor MDC et outils de qualité de code automatique",
+  "description": "Base universelle réutilisable pour tous langages avec règles Cursor MDC et outils de qualité automatique (ESLint/Prettier universels)",
   "private": true,
   "type": "module",
   "keywords": [

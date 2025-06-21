@@ -1,0 +1,28 @@
+# Base requirements pour projets Python professionnels
+# Outils de qualité de code (équivalent ESLint + Prettier)
+black>=23.0.0
+flake8>=6.0.0
+isort>=5.12.0
+
+# Tests (équivalent Jest)
+pytest>=7.4.0
+pytest-cov>=4.1.0
+
+# Documentation
+sphinx>=7.1.0
+
+# Sécurité
+bandit>=1.7.5
+
+# Développement
+pre-commit>=3.3.0
+
+# Optionnel - Framework web
+# fastapi>=0.100.0
+# flask>=2.3.0
+# django>=4.2.0
+
+# Optionnel - Data science
+# pandas>=2.0.0
+# numpy>=1.24.0
+# matplotlib>=3.7.0 

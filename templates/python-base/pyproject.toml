@@ -1,0 +1,102 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mon-projet-python"
+version = "1.0.0"
+description = "Description de mon projet Python"
+authors = [
+    {name = "Votre Nom", email = "email@example.com"}
+]
+readme = "README.md"
+license = {file = "LICENSE"}
+keywords = ["python", "projet", "template"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+requires-python = ">=3.8"
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "flake8",
+    "isort",
+    "pytest",
+    "pytest-cov",
+    "bandit",
+    "pre-commit"
+]
+docs = [
+    "sphinx",
+    "sphinx-rtd-theme"
+]
+
+[project.urls]
+Homepage = "https://github.com/username/mon-projet-python"
+Repository = "https://github.com/username/mon-projet-python.git"
+Documentation = "https://mon-projet-python.readthedocs.io"
+"Bug Tracker" = "https://github.com/username/mon-projet-python/issues"
+
+# Configuration Black (formatage)
+[tool.black]
+line-length = 88
+target-version = ['py38', 'py39', 'py310', 'py311']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+    \.git
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+)/
+'''
+
+# Configuration isort (imports)
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+known_first_party = ["mon_projet"]
+
+# Configuration pytest (tests)
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "--cov=src",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-report=xml",
+    "--cov-fail-under=80"
+]
+
+# Configuration coverage (couverture de tests)
+[tool.coverage.run]
+source = ["src"]
+omit = ["*/tests/*", "*/test_*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError"
+] 

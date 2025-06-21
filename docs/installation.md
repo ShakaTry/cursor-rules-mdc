@@ -17,7 +17,7 @@
 # Vérifier Git
 git --version
 
-# Vérifier Node.js (recommandé)
+# Vérifier Node.js (pour outils qualité universels)
 node --version
 npm --version
 ```
@@ -25,8 +25,12 @@ npm --version
 **Versions recommandées:**
 
 - Git: 2.30+
-- Node.js: 18.18.0+ (voir `.nvmrc`)
+- Node.js: 18.18.0+ (voir `.nvmrc`) - **Outils universels ESLint/Prettier**
 - npm: 9.0+
+
+### ❓ Pourquoi Node.js pour une base universelle ?
+
+**Node.js fournit les outils de qualité universels** (ESLint + Prettier) qui formatent **tous les langages modernes** : JavaScript, Python, Go, Rust, YAML, JSON, Markdown... C'est comme avoir Git installé - un outil de développement universel, pas une dépendance projet.
 
 ## 🚀 Installation Rapide
 

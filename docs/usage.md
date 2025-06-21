@@ -13,10 +13,15 @@
 
 Ce projet fournit une **base universelle réutilisable** pour tous vos futurs projets avec :
 
-- ✅ **Qualité automatique** - Code propre sans effort
+- ✅ **Qualité automatique universelle** - ESLint/Prettier pour tous langages (JS, Python, Go, Rust...)
 - ✅ **Versioning automatique** - Plus de gestion manuelle
-- ✅ **Standards professionnels** - Collaboration facilitée
+- ✅ **Standards professionnels** - Collaboration facilitée tous langages
 - ✅ **Documentation complète** - Démarrage rapide
+- ✅ **Templates spécialisés** - JavaScript, Python, React... prêts à l'emploi
+
+### 🔧 Outils universels inclus
+
+**ESLint + Prettier** sont devenus les **standards universels** de qualité de code, supportés par tous les éditeurs modernes pour **tous les langages**. Le `package.json` sert de gestionnaire d'outils universel.
 
 ## 🏁 Démarrage rapide
 

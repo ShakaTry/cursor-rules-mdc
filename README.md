@@ -34,15 +34,21 @@
 
 ## 🎯 Overview
 
-The **Cursor Rules MDC System** is a professional development framework that transforms Claude into a methodical senior developer. It enforces automatic workflows, professional standards, and comprehensive GitHub integration - all without manual intervention.
+The **Cursor Rules MDC System** is a **universal professional development framework** that transforms Claude into a methodical senior developer. It enforces automatic workflows, professional standards, and comprehensive GitHub integration - all without manual intervention.
 
 ### 🌟 What Makes It Special?
 
-- **Zero Configuration**: Just install and start coding
+- **Universal Base**: Works with JavaScript, Python, React, APIs, and any project type
+- **Modern Universal Tools**: ESLint + Prettier support all languages (JS, Python, Go, YAML, JSON...)
+- **Zero Configuration**: Just install and start coding in any language
 - **Automatic Methodology**: Claude follows professional workflows without prompting
 - **GitHub Integration**: Complete repository management from verification to deployment
 - **Memory Bank**: Persistent context across sessions
-- **Professional Standards**: ESLint, testing, security - all automatic
+- **Language-Agnostic**: Same quality standards applied to all project types
+
+### ❓ Why package.json in a Universal Base?
+
+**ESLint and Prettier have evolved into universal tools** that format and validate code across all modern languages. The `package.json` serves as a **universal tool manager** (like a Makefile) to provide consistent quality automation regardless of your project's main language.
 
 ---
 
@@ -459,6 +465,18 @@ Time: ~3-4 minutes (vs 40-65 traditional)
 ---
 
 ## ❓ FAQ
+
+### **Q: Is this really universal if it uses package.json?**
+
+**A:** **Yes!** Modern ESLint and Prettier support **all languages** (JavaScript, Python, Go, Rust, YAML, JSON, Markdown...). The `package.json` is just a **universal tool manager** - like a cross-platform Makefile. You can use this base for Python APIs, Go microservices, or any project type.
+
+### **Q: Do I need Node.js for non-JavaScript projects?**
+
+**A:** **Only for quality tools.** Node.js provides the universal ESLint/Prettier formatters used by **all major editors** (VS Code, Vim, Emacs). It's like having Git installed - a universal development tool, not a project dependency.
+
+### **Q: How do I adapt this for Python/Go/Rust projects?**
+
+**A:** Use the specialized templates! Copy `templates/python-base/` for Python, or use the base and replace `package.json` with your language's config. The MDC rules, documentation, and automation work with any language.
 
 ### **Q: Do I need to tell Claude to plan?**
 
