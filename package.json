@@ -53,7 +53,10 @@
     "scripts:github-helper": "node scripts/lib/github-helper.js",
     "scripts:build": "node scripts/build.js",
     "scripts:clean": "node scripts/clean.js",
-    "scripts:deploy": "node scripts/deploy.js"
+    "scripts:deploy": "node scripts/deploy.js",
+    "cursor-tools": "node cursor-tools.js",
+    "cursor-tools:compile": "node scripts/build-compiler.js",
+    "cursor-tools:test": "node cursor-tools.js info"
   },
   "dependencies": {
     "chalk": "^5.3.0",
