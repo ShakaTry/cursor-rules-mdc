@@ -11,7 +11,7 @@ import * as utils from './lib/utils.js';
 import { GitHelper } from './lib/git-helper.js';
 
 const { log, file, cmd } = utils.default;
-const git = new GitHelper();
+// const git = new GitHelper(); // Unused for now
 
 // Configuration
 const AUTOMATION_DIRS = [

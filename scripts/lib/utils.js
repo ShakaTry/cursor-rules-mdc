@@ -5,28 +5,41 @@
  * Universal utilities for Node.js scripts across Windows/Mac/Linux
  */
 
-import { fileURLToPath } from 'url';
-import { dirname, join, resolve, sep, relative, basename } from 'path';
-import { readFile, writeFile, mkdir, stat, readdir } from 'fs/promises';
+import path, { sep } from 'path';
 import { existsSync } from 'fs';
 import { spawn, exec } from 'child_process';
 import { promisify } from 'util';
-import { homedir, platform, EOL } from 'os';
-import chalk from 'chalk';
+import { homedir, platform as osPlatform, EOL } from 'os';
+
+// Check if chalk is available
+let chalk;
+try {
+    const chalkModule = await import('chalk');
+    chalk = chalkModule.default;
+} catch (error) {
+    // Fallback without colors
+    chalk = {
+        blue: (str) => str,
+        green: (str) => str,
+        yellow: (str) => str,
+        red: (str) => str,
+        gray: (str) => str,
+        cyan: (str) => str,
+        magenta: (str) => str
+    };
+}
 
 const execAsync = promisify(exec);
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 /**
  * Platform Detection
  */
-export const platform_info = {
-  isWindows: platform() === 'win32',
-  isMacOS: platform() === 'darwin',
-  isLinux: platform() === 'linux',
-  isUnix: platform() !== 'win32',
-  platform: platform(),
+const platform_info = {
+  isWindows: osPlatform() === 'win32',
+  isMacOS: osPlatform() === 'darwin',
+  isLinux: osPlatform() === 'linux',
+  isUnix: osPlatform() !== 'win32',
+  platform: osPlatform(),
   pathSeparator: sep,
   lineEnding: EOL,
   homeDir: homedir()
@@ -35,7 +48,8 @@ export const platform_info = {
 /**
  * 🎨 Colored Console Output
  */
-export const log = {
+const log = {
+  status: (message) => console.log(chalk.blue(`[INFO]`) + ` ${message}`),
   info: (message) => console.log(chalk.blue(`[INFO]`) + ` ${message}`),
   success: (message) => console.log(chalk.green(`[SUCCESS]`) + ` ${message}`),
   warning: (message) => console.log(chalk.yellow(`[WARNING]`) + ` ${message}`),
@@ -49,7 +63,7 @@ export const log = {
 /**
  * 📁 Cross-Platform File Operations
  */
-export const file = {
+const file = {
   /**
    * Check if file exists
    */
@@ -116,18 +130,18 @@ export const file = {
    * Cross-platform path resolution
    */
   path: {
-    join: (...paths) => join(...paths),
-    resolve: (...paths) => resolve(...paths),
-    relative: (from, to) => relative(from, to),
-    dirname: (path) => dirname(path),
-    basename: (path) => basename(path)
+    join: (...paths) => path.join(...paths),
+    resolve: (...paths) => path.resolve(...paths),
+    relative: (from, to) => path.relative(from, to),
+    dirname: (filePath) => path.dirname(filePath),
+    basename: (filePath) => path.basename(filePath)
   }
 };
 
 /**
  * ⚡ Cross-Platform Command Execution
  */
-export const cmd = {
+const cmd = {
   /**
    * Execute command with cross-platform support
    */
@@ -201,7 +215,7 @@ export const cmd = {
 /**
  * 🔧 Git Operations Wrapper
  */
-export const git = {
+const git = {
   /**
    * Git status
    */
@@ -274,7 +288,7 @@ export const git = {
 /**
  * 📦 Package Manager Operations
  */
-export const pkg = {
+const pkg = {
   /**
    * Detect package manager
    */
@@ -308,7 +322,7 @@ export const pkg = {
 /**
  * 🔍 Project Detection Utilities
  */
-export const project = {
+const project = {
   /**
    * Detect project type based on files
    */
@@ -355,7 +369,7 @@ export const project = {
 /**
  * 🎯 Common Utilities
  */
-export const common = {
+const common = {
   /**
    * Sleep/delay function
    */
@@ -400,16 +414,83 @@ export const common = {
   }
 };
 
-/**
- * Export all utilities as default object for easier importing
- */
-export default {
-  platform: platform_info,
+// Add new functions needed for Phase 4 scripts
+const execCmd = cmd.exec;
+const commandExists = cmd.exists;
+const ensureDir = file.ensureDir;
+const copyFiles = async (src, dest) => {
+  await file.ensureDir(dest);
+  await cmd.exec(`cp -r "${src}"/* "${dest}"/`);
+};
+const removeFiles = async (pattern) => {
+  try {
+    await cmd.exec(`rm -rf "${pattern}"`);
+  } catch (error) {
+    // Ignore errors if files don't exist
+  }
+};
+const getDirectorySize = async (dir) => {
+  try {
+    const result = await cmd.exec(`du -sh "${dir}"`);
+    return result.success ? result.stdout.split('\t')[0] : '0';
+  } catch (error) {
+    return '0';
+  }
+};
+const getDirectorySizeBytes = async (dir) => {
+  try {
+    const result = await cmd.exec(`du -sb "${dir}"`);
+    return result.success ? parseInt(result.stdout.split('\t')[0]) : 0;
+  } catch (error) {
+    return 0;
+  }
+};
+const countFiles = async (dir) => {
+  try {
+    const result = await cmd.exec(`find "${dir}" -type f | wc -l`);
+    return result.success ? parseInt(result.stdout.trim()) : 0;
+  } catch (error) {
+    return 0;
+  }
+};
+
+// ES module exports
+export {
+  platform_info,
   log,
   file,
   cmd,
   git,
   pkg,
   project,
-  common
+  common,
+  // Aliases for compatibility with new scripts
+  execCmd as exec,
+  commandExists,
+  ensureDir,
+  copyFiles,
+  removeFiles,
+  getDirectorySize,
+  getDirectorySizeBytes,
+  countFiles
+};
+
+// Default export for backwards compatibility
+export default {
+  platform_info,
+  log,
+  file,
+  cmd,
+  git,
+  pkg,
+  project,
+  common,
+  exec: execCmd,
+  commandExists,
+  ensureDir,
+  copyFiles,
+  removeFiles,
+  getDirectorySize,
+  getDirectorySizeBytes,
+  countFiles
 }; 

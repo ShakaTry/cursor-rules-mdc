@@ -183,11 +183,11 @@ class CommitHelper {
       case 'go':
         log.step('Running go fmt...');
         let result = await cmd.exec('go fmt ./...');
-        if (!result.success) return false;
+        if (!result.success) {return false;}
         
         log.step('Running go vet...');
         result = await cmd.exec('go vet ./...');
-        if (!result.success) return false;
+        if (!result.success) {return false;}
         break;
         
       case 'rust':
@@ -200,7 +200,7 @@ class CommitHelper {
         
         log.step('Running cargo clippy...');
         result = await cmd.exec('cargo clippy -- -D warnings');
-        if (!result.success) return false;
+        if (!result.success) {return false;}
         break;
     }
     
@@ -217,7 +217,7 @@ class CommitHelper {
     // Run pre-commit checks unless skipped
     if (!skipChecks) {
       const checksPass = await runPreCommitChecks();
-      if (!checksPass) return false;
+      if (!checksPass) {return false;}
     }
     
     // Commit the changes

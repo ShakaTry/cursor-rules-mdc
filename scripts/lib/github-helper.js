@@ -258,6 +258,5 @@ export class GitHubHelper {
 // Create singleton instance
 const githubHelper = new GitHubHelper();
 
-// Export both class and instance
-export { GitHubHelper };
+// Export default instance  
 export default githubHelper; 

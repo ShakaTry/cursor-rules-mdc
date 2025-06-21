@@ -4,6 +4,7 @@
   "description": "Reusable universal base for all languages with Cursor MDC rules and automatic quality tools (Universal ESLint/Prettier)",
   "private": true,
   "type": "module",
+
   "keywords": [
     "cursor",
     "mdc",
@@ -51,7 +52,8 @@
     "scripts:setup-automation": "node scripts/setup-automation.js",
     "scripts:github-helper": "node scripts/lib/github-helper.js",
     "scripts:build": "node scripts/build.js",
-    "scripts:clean": "node scripts/clean.js"
+    "scripts:clean": "node scripts/clean.js",
+    "scripts:deploy": "node scripts/deploy.js"
   },
   "dependencies": {
     "chalk": "^5.3.0",
