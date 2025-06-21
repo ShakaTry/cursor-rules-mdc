@@ -97,18 +97,20 @@ jobs:
 
       - name: Install dependencies (JavaScript)
         if: needs.detect-project.outputs.project-type == 'javascript'
+        shell: bash
         run: |
           if [ "${{ needs.detect-project.outputs.package-manager }}" = "yarn" ]; then
-            yarn install --frozen-lockfile
+            yarn install
           elif [ "${{ needs.detect-project.outputs.package-manager }}" = "pnpm" ]; then
             npm install -g pnpm
-            pnpm install --frozen-lockfile
+            pnpm install
           else
-            npm ci
+            npm install
           fi
 
       - name: Install dependencies (Python)
         if: needs.detect-project.outputs.project-type == 'python'
+        shell: bash
         run: |
           python -m pip install --upgrade pip
           pip install flake8 black isort
@@ -211,18 +213,20 @@ jobs:
 
       - name: Install dependencies (JavaScript)
         if: needs.detect-project.outputs.project-type == 'javascript'
+        shell: bash
         run: |
           if [ "${{ needs.detect-project.outputs.package-manager }}" = "yarn" ]; then
-            yarn install --frozen-lockfile
+            yarn install
           elif [ "${{ needs.detect-project.outputs.package-manager }}" = "pnpm" ]; then
             npm install -g pnpm
-            pnpm install --frozen-lockfile
+            pnpm install
           else
-            npm ci
+            npm install
           fi
 
       - name: Install dependencies (Python)
         if: needs.detect-project.outputs.project-type == 'python'
+        shell: bash
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then
@@ -238,6 +242,7 @@ jobs:
 
       - name: Run tests (JavaScript)
         if: needs.detect-project.outputs.project-type == 'javascript'
+        shell: bash
         run: |
           if [ "${{ needs.detect-project.outputs.package-manager }}" = "yarn" ]; then
             yarn test || echo "No test script found"
@@ -249,6 +254,7 @@ jobs:
 
       - name: Run tests (Python)
         if: needs.detect-project.outputs.project-type == 'python'
+        shell: bash
         run: |
           if command -v pytest &> /dev/null; then
             pytest --verbose
