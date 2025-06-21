@@ -16,9 +16,12 @@ Tu es Claude, assistant senior. Tu DOIS appliquer ce workflow GitHub AUTOMATIQUE
 
 ### **PHASE 1: VÉRIFICATIONS (pré-création)**
 ```bash
-# Status git local
-git status --porcelain
+# Status git local (avec --no-pager pour éviter blocage console)
+git --no-pager status --porcelain
 git branch --show-current
+
+# Historique récent (sans pager pour Windows PowerShell)
+git --no-pager log --oneline -5
 
 # Authentification GitHub CLI
 gh auth status
@@ -33,6 +36,7 @@ gh repo view [nom-repo] 2>/dev/null
 - ✅ GitHub CLI authentifié
 - ✅ Nom repository disponible
 - ✅ Pas de fichiers sensibles (.env, .key, secrets)
+- ✅ Commits récents suivent Conventional Commits
 
 ### **PHASE 2: CRÉATION REPOSITORY**
 ```bash
@@ -72,12 +76,61 @@ git remote -v
 - License MIT par défaut
 - .gitignore optimisé
 
+## GIT WORKFLOW PROFESSIONNEL
+
+### **Commandes Git sécurisées (Windows PowerShell)**
+```bash
+# TOUJOURS utiliser --no-pager pour éviter blocage console
+git --no-pager log --oneline -10
+git --no-pager show --stat
+git --no-pager diff --name-only
+
+# Vérifications avant commit
+git status --porcelain
+git --no-pager diff --cached --name-only
+```
+
+### **Standards de commits (Conventional Commits)**
+```bash
+# Types professionnels
+feat:     # Nouvelle fonctionnalité (MINOR version)
+fix:      # Correction bug (PATCH version)  
+docs:     # Documentation uniquement
+style:    # Formatage code (Prettier, ESLint)
+refactor: # Refactoring sans feat/fix
+perf:     # Amélioration performances
+test:     # Tests ajoutés/modifiés
+chore:    # Maintenance, config, build
+ci:       # CI/CD changements
+build:    # Système de build
+
+# Breaking changes (MAJOR version)
+feat!:    # Breaking change
+fix!:     # Fix avec breaking change
+```
+
+### **Workflow de release professionnel**
+```bash
+# Vérification avant release
+npm run quality              # ESLint + Prettier check
+git --no-pager status --porcelain  # Working tree clean
+
+# Release automatique (avec conventional commits)
+npm run release:dry         # Test sans modification
+npm run release            # Release réelle avec tag Git
+
+# Vérification post-release
+git --no-pager log --oneline -3
+git --no-pager tag -l | tail -3
+```
+
 ## INTÉGRATION MEMORY BANK
 
 ### **Tracking automatique**
 - Sauvegarder URL repository créé
 - Logger actions GitHub effectuées
 - Historique des configurations
+- **IMPORTANT**: Fixer Git log pager dans tous les scripts
 
 ### **Format Memory Bank**
 ```markdown
@@ -85,6 +138,11 @@ git remote -v
 - [nom-repo] - https://github.com/[user]/[nom-repo] - [date]
 - Status: ✅ Créé et configuré
 - Topics: cursor, mdc, [tech]
+
+## GIT WORKFLOW FIXES
+- ✅ Git log pager fix: Utiliser `git --no-pager log`
+- ✅ Conventional commits configurés
+- ✅ Release automation opérationnelle
 ```
 
 ## COMMANDES DISPONIBLES
@@ -92,6 +150,7 @@ git remote -v
 ### **Vérifications rapides**
 - `/gh-check` - Vérifications complètes pré-création
 - `/gh-status` - Status authentification et repos
+- `/git-log` - Historique sans pager (sécurisé)
 
 ### **Création automatisée**
 - `/gh-create [nom]` - Workflow complet automatique
@@ -107,12 +166,14 @@ git remote -v
 - Scan fichiers sensibles avant push
 - Validation noms repository (conventions)
 - Confirmation push de gros fichiers
+- **Git commands sécurisés** (--no-pager sur Windows)
 
 ### **Standards appliqués**
 - README.md toujours présent
 - .gitignore adapté au projet
 - License explicite
 - Description claire et concise
+- **Conventional commits** pour versioning automatique
 
 ## GESTION ERREURS
 
@@ -121,18 +182,21 @@ git remote -v
 - Authentification expirée → `gh auth login`
 - Working tree dirty → Proposer commit/stash
 - Remote déjà configuré → Nettoyer et reconfigurer
+- **Git log bloqué** → Utiliser --no-pager automatiquement
 
 ### **Rollback automatique**
 Si erreur en phase 2/3 → Supprimer repository créé
 
 ## INTÉGRATION MODES
 
-- **MODE RESEARCH** → Lit repos existants
+- **MODE RESEARCH** → Lit repos existants (avec git --no-pager)
 - **MODE PLAN** → Inclut étapes GitHub si applicable  
 - **MODE EXECUTE** → Applique workflow GitHub
 - **MODE REVIEW** → Vérifie repository créé et fonctionnel
 
 **GitHub CLI testé et fonctionnel** - Authentifié avec account ShakaTry ✅
+**Git workflow optimisé** - Fix pager Windows PowerShell ✅
+
 
 
 
