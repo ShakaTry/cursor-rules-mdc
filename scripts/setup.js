@@ -20,6 +20,7 @@ const { log, file, cmd, platform } = utils;
 class SetupManager {
   constructor(options = {}) {
     this.options = {
+      dryRun: false,
       skipInstall: false,
       interactive: true,
       createExample: true,
@@ -454,6 +455,7 @@ program
   .name('setup')
   .description('🚀 Complete Automatic Project Setup - Cross-platform Node.js version')
   .version('1.0.0')
+  .option('-d, --dry-run', 'Show what would be done without executing', false)
   .option('--skip-install', 'Skip dependency installation', false)
   .option('--no-interactive', 'Run without interactive prompts', false)
   .option('--no-example', 'Skip creating example files', false)
@@ -462,6 +464,7 @@ program
   .action(async (options) => {
     try {
       const setupManager = new SetupManager({
+        dryRun: options.dryRun,
         skipInstall: options.skipInstall,
         interactive: options.interactive,
         createExample: options.example,

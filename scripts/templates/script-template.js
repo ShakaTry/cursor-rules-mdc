@@ -2,162 +2,125 @@
 
 /**
  * 🤖 [SCRIPT_NAME] - [SCRIPT_DESCRIPTION]
- * Cross-platform Node.js script for universal automation
+ * Cross-platform Node.js automation script
+ * 
+ * @author cursor-rules automation
+ * @version 1.0.0
  */
 
 import { Command } from 'commander';
-import utils from './lib/utils.js';
+import utils from '../lib/utils.js';
 
-const { log, platform } = utils;
-
-// Script configuration
-const SCRIPT_VERSION = '1.0.0';
-const SCRIPT_NAME = '[SCRIPT_NAME]';
+const { log, file, cmd, platform } = utils;
 
 /**
- * Main script execution
- * @param {Object} options - Command line options
+ * Main script functionality class
  */
-async function main(options) {
-  try {
-    log.header(`${SCRIPT_NAME} - Cross-Platform Script`);
-    log.info(`Platform: ${platform.platform} (${platform.isWindows ? 'Windows' : platform.isMacOS ? 'macOS' : 'Linux'})`);
-    
-    if (options.dryRun) {
-      log.warning('DRY RUN MODE - No changes will be made');
+class ScriptManager {
+  constructor(options = {}) {
+    this.options = {
+      dryRun: false,
+      verbose: false,
+      ...options
+    };
+  }
+
+  /**
+   * Initialize and validate environment
+   */
+  async initialize() {
+    if (this.options.verbose) {
+      log.info(`Running on ${platform.platform}`);
+      log.info(`Node.js version: ${process.version}`);
     }
-    
-    if (options.verbose) {
-      log.debug('Verbose mode enabled');
+
+    // Add any initialization logic here
+    return true;
+  }
+
+  /**
+   * Main execution logic
+   */
+  async execute() {
+    log.step('Starting [SCRIPT_NAME] execution...');
+
+    if (this.options.dryRun) {
+      log.info('🔍 DRY RUN MODE - No changes will be made');
     }
-    
-    // ===============================
-    // SCRIPT IMPLEMENTATION GOES HERE
-    // ===============================
-    
-    // Example: Basic project detection
-    log.step('Detecting project type...');
-    const projectType = await utils.project.detectType();
-    log.success(`Project type detected: ${projectType}`);
-    
-    // Example: Git status check
-    if (options.checkGit) {
-      log.step('Checking Git status...');
-      const gitStatus = await utils.git.status();
-      if (gitStatus.clean) {
-        log.success('Git working tree is clean');
-      } else {
-        log.warning(`${gitStatus.files.length} files have changes`);
+
+    try {
+      // Add main script logic here
+      log.success('Script completed successfully');
+      return true;
+    } catch (error) {
+      log.error(`Script failed: ${error.message}`);
+      throw error;
+    }
+  }
+
+  /**
+   * Cleanup operations
+   */
+  async cleanup() {
+    // Add cleanup logic here if needed
+    if (this.options.verbose) {
+      log.info('Cleanup completed');
+    }
+  }
+
+  /**
+   * Run the complete script workflow
+   */
+  async run() {
+    try {
+      await this.initialize();
+      await this.execute();
+      await this.cleanup();
+    } catch (error) {
+      log.error(`Script execution failed: ${error.message}`);
+      if (this.options.verbose) {
+        console.error(error.stack);
       }
+      throw error;
     }
-    
-    // Example: File operations
-    if (options.createFile) {
-      log.step('Creating example file...');
-      await utils.file.write('example-output.txt', `Script executed at: ${utils.utils.timestamp()}`);
-      log.success('File created successfully');
-    }
-    
-    log.divider();
-    log.success(`${SCRIPT_NAME} completed successfully! 🎉`);
-    
-  } catch (error) {
-    log.error(`Script failed: ${error.message}`);
-    
-    if (options.verbose) {
-      console.error(error.stack);
-    }
-    
-    process.exit(1);
   }
 }
 
 /**
- * Setup CLI interface
+ * CLI Program Configuration
  */
-function setupCLI() {
-  const program = new Command();
-  
-  program
-    .name(SCRIPT_NAME.toLowerCase().replace(/\s+/g, '-'))
-    .description('[SCRIPT_DESCRIPTION]')
-    .version(SCRIPT_VERSION);
-  
-  // Standard options for all scripts
-  program
-    .option('-d, --dry-run', 'Show what would be done without executing', false)
-    .option('-v, --verbose', 'Enable verbose output', false)
-    .option('--check-git', 'Check Git status', false)
-    .option('--create-file', 'Create example file', false);
-  
-  // Script-specific options
-  program
-    .option('-f, --force', 'Force execution without prompts', false)
-    .option('-c, --config <path>', 'Custom configuration file path')
-    .option('-o, --output <path>', 'Output directory path');
-  
-  return program;
-}
+const program = new Command();
 
-/**
- * Error handling and process management
- */
-function setupErrorHandling() {
-  // Handle uncaught exceptions
-  process.on('uncaughtException', (error) => {
-    log.error(`Uncaught Exception: ${error.message}`);
-    console.error(error.stack);
-    process.exit(1);
+program
+  .name('[script-name]')
+  .description('[SCRIPT_DESCRIPTION] - Cross-platform Node.js version')
+  .version('1.0.0')
+  .option('-d, --dry-run', 'Show what would be done without executing', false)
+  .option('-v, --verbose', 'Verbose output', false)
+  .option('--no-color', 'Disable colored output', false)
+  .action(async (options) => {
+    try {
+      const manager = new ScriptManager(options);
+      await manager.run();
+      process.exit(0);
+    } catch (error) {
+      log.error(`[SCRIPT_NAME] failed: ${error.message}`);
+      if (options.verbose) {
+        console.error(error.stack);
+      }
+      process.exit(1);
+    }
   });
-  
-  // Handle unhandled promise rejections
-  process.on('unhandledRejection', (reason, promise) => {
-    log.error(`Unhandled Rejection at: ${promise}, reason: ${reason}`);
-    process.exit(1);
-  });
-  
-  // Handle graceful shutdown
-  process.on('SIGINT', () => {
-    log.warning('Script interrupted by user (Ctrl+C)');
-    process.exit(0);
-  });
-  
-  process.on('SIGTERM', () => {
-    log.warning('Script terminated');
-    process.exit(0);
-  });
-}
 
-/**
- * Entry point
- */
-async function run() {
-  // Setup error handling
-  setupErrorHandling();
-  
-  // Setup CLI
-  const program = setupCLI();
-  
-  // Parse arguments and run
-  program.action(async (options) => {
-    await main(options);
-  });
-  
-  // Parse command line arguments
+// Export for use as module
+export { ScriptManager };
+
+// Run if called directly
+if (import.meta.url.endsWith(process.argv[1].replace(/\\/g, '/'))) {
   program.parse();
 }
 
-// Run if this file is executed directly
-if (import.meta.url === `file://${process.argv[1]}`) {
-  run().catch((error) => {
-    log.error(`Failed to start script: ${error.message}`);
-    process.exit(1);
-  });
-}
-
-// Export for testing or importing
-export { main, setupCLI };
-export default { main };
+export default ScriptManager;
 
 /* 
 USAGE EXAMPLES:
@@ -171,13 +134,7 @@ node script-name.js --dry-run
 # Verbose output
 node script-name.js --verbose
 
-# Force execution
-node script-name.js --force
-
-# Custom configuration
-node script-name.js --config /path/to/config.json
-
-# Multiple options
-node script-name.js --dry-run --verbose --check-git
+# Disable colored output
+node script-name.js --no-color
 
 */ 

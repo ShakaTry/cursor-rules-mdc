@@ -43,7 +43,9 @@
     "setup": "npm install && npm run prepare",
     "scripts:make-executable": "chmod +x scripts/*.js",
     "scripts:project-detect": "node scripts/project-detector.js",
+    "scripts:setup": "node scripts/setup.js",
     "scripts:version-bump": "node scripts/version-manager.js bump",
+    "scripts:version-show": "node scripts/version-manager.js show",
     "scripts:commit-helper": "node scripts/commit-helper.js",
     "scripts:build": "node scripts/build.js",
     "scripts:clean": "node scripts/clean.js"
