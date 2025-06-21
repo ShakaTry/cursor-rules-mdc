@@ -1,5 +1,79 @@
 ---
-description:
-globs:
+description: 
+globs: 
 alwaysApply: false
 ---
+# CONTEXT MANAGER - SMART MODULAR
+
+## 🧠 DÉMARRAGE AUTOMATIQUE
+
+### **Lecture Contexte**
+1. **Scan** → Tous les fichiers `memory-bank/*` si existants
+2. **Initialise** → Crée structure si absente
+3. **Résumé** → Affiche contexte actuel au démarrage
+
+---
+
+## 📁 STRUCTURE INTELLIGENTE
+
+```
+memory-bank/
+├── projectbrief.md      # Vue d'ensemble projet
+├── activeContext.md     # Contexte actuel (MAJ auto)
+├── techContext.md       # Stack technique
+├── systemPatterns.md    # Patterns découverts
+└── progress.md          # État et progression
+```
+
+---
+
+## 🔄 MISES À JOUR AUTOMATIQUES
+
+### **Triggers Automatiques**
+- **Feature terminée** → MAJ `activeContext.md`
+- **Pattern découvert** → MAJ `systemPatterns.md`
+- **Tâche complétée** → MAJ `progress.md`
+- **Plan archivé** → Référence dans `projectbrief.md`
+
+### **Workflow Auto**
+1. **Début session** → Lecture automatique complète
+2. **Pendant travail** → MAJ au fil de l'eau
+3. **Fin tâche** → Archive et documente
+
+---
+
+## 📊 FORMAT STANDARDISÉ
+
+### **activeContext.md**
+```markdown
+## CONTEXTE ACTUEL
+- **Session** : [Date] - [Objectif principal]
+- **État** : [En cours/Terminé/Bloqué]
+- **Dernière action** : [Description]
+
+## PROCHAINES ÉTAPES
+- [ ] Action 1
+- [ ] Action 2
+```
+
+### **progress.md**
+```markdown
+## PROGRESSION GLOBALE
+- **Démarré** : [Date]
+- **Phases complétées** : X/Y
+- **Dernière release** : [Version]
+
+## HISTORIQUE RÉCENT
+- [Date] : [Action] - [Résultat]
+```
+
+---
+
+## ⚡ INTÉGRATION SMART MODULAR
+
+**Référencé par** : `core/workspace-orchestrator-always.mdc`
+**Utilise** : Structure `.cursor/plans/` pour tracking
+**Synchronise** : Avec Git commits pour traçabilité
+
+**Context Manager = Mémoire Persistante + Intelligence**
+

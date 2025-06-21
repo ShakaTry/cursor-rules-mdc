@@ -5,8 +5,9 @@
  * Universal utilities for Node.js scripts across Windows/Mac/Linux
  */
 
-import path, { sep } from 'path';
+import path, { sep, dirname } from 'path';
 import { existsSync } from 'fs';
+import { readFile, writeFile, mkdir, readdir, stat } from 'fs/promises';
 import { spawn, exec } from 'child_process';
 import { promisify } from 'util';
 import { homedir, platform as osPlatform, EOL } from 'os';
@@ -477,7 +478,7 @@ export {
 
 // Default export for backwards compatibility
 export default {
-  platform_info,
+  platform: platform_info,
   log,
   file,
   cmd,

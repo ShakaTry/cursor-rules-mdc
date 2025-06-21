@@ -1,5 +1,111 @@
 ---
-description:
-globs:
+description: 
+globs: 
 alwaysApply: false
 ---
+# PLANNING ESSENTIALS - SMART MODULAR
+
+## 🎯 RÈGLE FONDAMENTALE
+**Créer `/plan` pour tâches complexes** → Template automatique + phases précises
+
+---
+
+## 📋 WORKFLOW INTELLIGENT
+
+### **1. Création Plan Automatique**
+```bash
+# Template → Plan actif
+.cursor/plans/templates/plan-template.md
+→ .cursor/plans/active/[feature-name].md
+```
+
+### **2. Structure Phases Obligatoire**
+```markdown
+### **Phase 1: [Titre] (~[temps]min)**
+- 📋 **Objectif** : Description claire
+- 🎯 **Livrable** : Résultat concret
+- ⚡ **Actions** : Liste spécifique
+
+### **Phase 2: [Titre] (~[temps]min)**
+- 📋 **Objectif** : Description claire
+- 🎯 **Livrable** : Résultat concret
+- ⚡ **Actions** : Liste spécifique
+```
+
+### **3. Exécution Continue**
+1. **Créer** plan avec phases
+2. **Valider** → Attendre "ok/approuvé"
+3. **Exécuter** phase par phase automatiquement
+4. **Checkpoint** → Commit + Memory Bank après chaque phase
+5. **Archiver** → `completed/` en fin
+
+---
+
+## ⚡ PHASES TYPES
+
+### **Développement Standard**
+- **Phase 1** : Analyse & Architecture (~15min)
+- **Phase 2** : Implémentation Core (~30min)
+- **Phase 3** : Tests & Validation (~15min)
+- **Phase 4** : Documentation & Finalisation (~10min)
+
+### **Refactoring/Optimisation**
+- **Phase 1** : Audit & Diagnostic (~20min)
+- **Phase 2** : Restructuration (~25min)
+- **Phase 3** : Validation & Tests (~15min)
+
+---
+
+## 🔄 CHECKPOINTS AUTOMATIQUES
+
+### **Après Chaque Phase**
+- **💾 Commit automatique** → Sauvegarde progression
+- **🧠 MAJ Memory Bank** → Contexte persistant
+- **📊 Status update** → Transparence utilisateur
+- **🚀 Continue automatique** → Vers phase suivante
+
+### **Gestion Contexte**
+- **Traçabilité complète** → Historique Git
+- **Reprise possible** → En cas d'interruption
+- **Contexte préservé** → State management intelligent
+
+---
+
+## 📐 BONNES PRATIQUES
+
+### **Objectifs Phases**
+- **Livrable concret** pour chaque phase
+- **Mesurable** et **vérifiable**
+- **Actions spécifiques** et **réalisables**
+- **Temps estimé** réaliste
+
+### **Validation Progressive**
+- Valider chaque phase avant suivante
+- Ajuster phases suivantes si nécessaire
+- Documenter déviations du plan original
+- Maintenir momentum avec automation
+
+---
+
+## 📁 STRUCTURE DOSSIERS
+
+```
+.cursor/plans/
+├── templates/
+│   └── plan-template.md     # Template générique
+├── active/                  # Plans en cours
+│   └── [feature-name].md
+└── completed/              # Plans terminés
+    └── [feature-name].md
+```
+
+---
+
+## 🚨 RÈGLES CRITIQUES
+
+- **NE JAMAIS** coder sans plan validé (tâches complexes)
+- **TOUJOURS** découper en phases précises
+- **TOUJOURS** faire checkpoints après chaque phase
+- **TOUJOURS** archiver après implémentation
+- **Exception** : Tâches simples peuvent sauter planning
+

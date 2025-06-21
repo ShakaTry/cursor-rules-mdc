@@ -1,5 +1,90 @@
 ---
-description:
-globs:
+description: 
+globs: 
 alwaysApply: false
 ---
+# GITHUB WORKFLOW - SMART MODULAR
+
+## 🎯 WORKFLOW AUTOMATISÉ
+
+### **Phase 1: Vérifications**
+```bash
+# Détection projet + status
+./scripts/project-detector.sh
+git --no-pager status --porcelain
+gh auth status
+```
+
+### **Phase 2: Création Repository**
+```bash
+# Création avec auto-configuration
+gh repo create [nom-repo] \
+  --public \
+  --description "[description]" \
+  --push \
+  --source=.
+```
+
+### **Phase 3: Configuration**
+```bash
+# Topics + hooks selon projet détecté
+gh repo edit [nom-repo] \
+  --add-topic "cursor" \
+  --add-topic "$PROJECT_TYPE"
+
+git config core.hooksPath .githooks
+```
+
+---
+
+## ⚡ COMMANDES AUTOMATISÉES
+
+### **Scripts Prioritaires**
+- **Commit** → `./scripts/commit "message"` (au lieu de git commit)
+- **Release** → `./scripts/auto-release.sh [type]`
+- **Version** → `./scripts/version-manager.sh info`
+
+### **Vérifications Rapides**
+- **Détection** → `./scripts/project-detector.sh`
+- **Status** → `git --no-pager status --porcelain`
+- **GitHub** → `gh auth status`
+
+---
+
+## 🔧 INTÉGRATION CI/CD
+
+### **GitHub Actions Automatiques**
+- **CI/CD adaptatif** selon `PROJECT_TYPE` détecté
+- **Multi-plateforme** (Ubuntu/Windows/macOS)
+- **Publication automatique** (npm, PyPI, crates.io)
+
+### **Git Hooks Universels**
+- **commit-msg** → Validation conventional commits
+- **pre-commit** → Linting/tests selon projet
+- **post-commit** → Résumé et suggestions
+
+---
+
+## 🧠 MEMORY BANK INTEGRATION
+
+### **Tracking Auto**
+```markdown
+## GITHUB REPOSITORIES
+- [nom-repo] - [URL] - [date]
+- Status: ✅ Configuré avec automation
+- Type: [PROJECT_TYPE] (auto-détecté)
+- CI/CD: ✅ Opérationnel
+```
+
+---
+
+## 🚨 VALIDATIONS OBLIGATOIRES
+
+- ✅ **Type projet détecté** avant création
+- ✅ **Scripts automation** présents et exécutables
+- ✅ **Working tree clean** ou commit automatique
+- ✅ **GitHub CLI authentifié**
+- ✅ **Conventional commits** respectés
+
+**GitHub Workflow = Automation + CI/CD + Traçabilité**
+

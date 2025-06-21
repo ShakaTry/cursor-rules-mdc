@@ -1,5 +1,49 @@
 ---
-description:
-globs:
+description: 
+globs: 
 alwaysApply: false
 ---
+# AUTOMATION SCRIPTS - SMART MODULAR (TEMPORAIRE)
+
+## 🚧 STATUT TEMPORAIRE
+**Module en attente** → Le fichier `009_automation_scripts.mdc` est en cours de finalisation
+
+---
+
+## ⚡ SCRIPTS PRIORITAIRES
+
+### **Disponibles**
+- `./scripts/project-detector.sh` → Détection automatique type projet
+- `./scripts/commit` → Commits conventionnels automatisés
+- `./scripts/auto-release.sh` → Release complète automatisée
+- `./scripts/version-manager.sh` → Gestion versions adaptative
+
+### **Workflow Recommandé**
+```bash
+# 1. Détection projet
+./scripts/project-detector.sh
+
+# 2. Commit intelligent
+./scripts/commit "feat: nouvelle fonctionnalité"
+
+# 3. Release automatique
+./scripts/auto-release.sh patch
+```
+
+---
+
+## 🔗 INTÉGRATION SMART MODULAR
+
+**Référencé par** : `core/workspace-orchestrator-always.mdc`
+**Coordonné avec** : `github/workflow-agent.mdc`
+**Status** : **Manual** (temporaire jusqu'à finalisation)
+
+---
+
+## 📋 TODO
+- [ ] Finalisation du fichier `009_automation_scripts.mdc`
+- [ ] Migration vers mode **Auto Attached**
+- [ ] Intégration complète avec Smart Modular
+
+**Automation Scripts = En cours de finalisation**
+

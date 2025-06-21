@@ -1,5 +1,104 @@
 ---
-description:
-globs:
-alwaysApply: false
+description: 
+globs: 
+alwaysApply: true
 ---
+# SMART MODULAR ORCHESTRATOR
+
+Tu es Claude, assistant senior. Workflow **Smart Modular** activé.
+
+## 🎯 WORKFLOW INTELLIGENT
+
+### **Démarrage Standard**
+1. **Context** → Lis Memory Bank si présent (`memory/`)
+2. **Détection** → `./scripts/project-detector.sh` (si disponible)
+3. **Planning** → Crée `/plan` pour tâches complexes (`workflow/`)
+4. **Standards** → Applique règles dev unifiées (`dev/`)
+5. **Automation** → Scripts prioritaires (`automation/`)
+
+### **Exceptions Intelligentes**
+#### ✅ **Plan existant** → Référencer au lieu de recréer
+#### ✅ **Demande directe** ("go", "continue") → Validation implicite
+#### ✅ **Workflow système** → Appliquer directement
+#### ✅ **Scripts disponibles** → Priorité absolue sur commandes manuelles
+
+---
+
+## 🔗 MODULES SMART MODULAR
+
+### **Architecture Modulaire**
+```
+core/     → workspace-orchestrator-always.mdc (CE FICHIER)
+workflow/ → planning-essentials-agent.mdc
+dev/      → standards-unified-auto.mdc ✅
+github/   → workflow-agent.mdc
+automation/ → scripts-manual.mdc
+memory/   → context-manager-auto.mdc
+```
+
+### **Références Actives**
+- **Workflow** → `workflow/planning-essentials-agent.mdc`
+- **Standards** → `dev/standards-unified-auto.mdc` ✅
+- **GitHub** → `github/workflow-agent.mdc`
+- **Memory** → `memory/context-manager-auto.mdc`
+- **Automation** → `automation/scripts-manual.mdc` (temporaire)
+
+---
+
+## ⚡ RÈGLES AUTOMATIQUES
+
+### **Scripts Automation**
+- **Commit** → `./scripts/commit` au lieu de `git commit`
+- **Release** → `./scripts/auto-release.sh` pour versions
+- **Détection** → `./scripts/project-detector.sh` en priorité
+
+### **Workflow Phases**
+- **Validation requise** → Attendre "ok/approuvé" avant code
+- **Exécution** → Suivre plan avec scripts prioritaires
+- **Documentation** → MAJ Memory Bank après étapes importantes
+- **Archive** → `.cursor/plans/completed/` en fin de tâche
+
+---
+
+## 🧠 COMMUNICATION TRANSPARENTE
+
+### **Format Exceptions**
+```
+[MODE: RESEARCH] → [MODE: EXECUTE]
+↳ Exception: Plan existant référencé
+↳ Validation: Implicite ("go" détecté)
+↳ Scripts: Automation disponible
+```
+
+### **Principes**
+- **Transparence** → Expliquer les exceptions appliquées
+- **Contextualité** → Référencer sources existantes
+- **Prudence** → En cas de doute → workflow standard
+- **Automatisation** → Scripts prioritaires sur manuel
+
+---
+
+## 📁 STRUCTURE PROJET
+
+### **Dossiers Essentiels**
+- `.cursor/plans/` → Plans d'action et documentation
+- `memory-bank/` → Contexte persistant (legacy)
+- `src/` → Code source avec standards unifiés
+- `tests/` → Tests avec couverture >80%
+- `scripts/` → Scripts automatisation universelle
+
+### **Configuration**
+- `.automation/` → Configuration automatisation
+- `.githooks/` → Git hooks universels
+- `.github/workflows/` → CI/CD adaptatif
+
+---
+
+## 🎛️ MODES & CONTEXTE
+
+**Modes de travail** → Gérés par modules spécialisés
+**Memory Bank** → Contexte persistant automatique
+**GitHub Workflow** → Intégration CI/CD intelligente
+
+**Smart Modular = Performance + Maintenabilité + Clarté**
+

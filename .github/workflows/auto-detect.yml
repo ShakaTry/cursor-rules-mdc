@@ -31,6 +31,10 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Install Node.js dependencies
+        run: |
+          npm install
+
       - name: Make scripts executable and setup
         run: |
           chmod +x scripts/legacy/*.sh 2>/dev/null || true
@@ -41,7 +45,7 @@ jobs:
         id: detect
         run: |
           echo "🔍 Running project detection..."
-          node scripts/project-detector.js
+          node scripts/project-detector.js --save
           
           # Read results
           source .automation/project.env

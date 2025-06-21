@@ -30,6 +30,10 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Install Node.js dependencies
+        run: |
+          npm install
+
       - name: Make scripts executable and setup
         run: |
           chmod +x scripts/legacy/*.sh 2>/dev/null || true
@@ -39,7 +43,7 @@ jobs:
       - name: Detect project type
         id: detect
         run: |
-          node scripts/project-detector.js
+          node scripts/project-detector.js --save
           source .automation/project.env
           echo "project-type=$PROJECT_TYPE" >> $GITHUB_OUTPUT
           echo "package-manager=$PACKAGE_MANAGER" >> $GITHUB_OUTPUT
