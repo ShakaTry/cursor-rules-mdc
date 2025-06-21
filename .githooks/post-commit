@@ -157,7 +157,7 @@ check_release_conditions() {
         # Suggest release for significant changes
         if [[ "$commits_since_tag" -ge 5 ]] || [[ "$IS_BREAKING" == "true" ]] || [[ "$COMMIT_TYPE" == "feat" ]]; then
             echo -e "${YELLOW}💡 Consider creating a release:${NC}" >&2
-            echo -e "  ${BLUE}./scripts/auto-release.sh $IMPACT_LEVEL${NC}" >&2
+            echo -e "  ${BLUE}node scripts/auto-release.js $IMPACT_LEVEL${NC}" >&2
         fi
     fi
 }

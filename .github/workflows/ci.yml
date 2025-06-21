@@ -26,16 +26,26 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Node.js dependencies
+        run: |
+          npm install
+
       - name: Make scripts executable
         run: |
-          chmod +x scripts/*.sh || true
+          chmod +x scripts/legacy/*.sh 2>/dev/null || true
+          chmod +x scripts/*.js
           chmod +x .githooks/* || true
 
       - name: Detect project type
         id: detect
         run: |
-          if [ -f "./scripts/project-detector.sh" ]; then
-            ./scripts/project-detector.sh
+          if [ -f "./scripts/project-detector.js" ]; then
+            node scripts/project-detector.js --save
             source .automation/project.env
           else
             # Fallback detection

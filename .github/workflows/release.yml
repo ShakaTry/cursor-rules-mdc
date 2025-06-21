@@ -40,15 +40,25 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Node.js dependencies
+        run: |
+          npm install
+
       - name: Make scripts executable
         run: |
-          chmod +x scripts/*.sh
+          chmod +x scripts/legacy/*.sh 2>/dev/null || true
+          chmod +x scripts/*.js
           chmod +x .githooks/*
 
       - name: Detect project type
         id: detect
         run: |
-          ./scripts/project-detector.sh
+          node scripts/project-detector.js --save
           source .automation/project.env
           echo "project-type=$PROJECT_TYPE" >> $GITHUB_OUTPUT
           echo "package-manager=$PACKAGE_MANAGER" >> $GITHUB_OUTPUT
@@ -275,14 +285,23 @@ jobs:
         with:
           name: build-artifacts
 
+      - name: Setup Node.js for scripts
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Node.js dependencies for scripts
+        run: |
+          npm install
+
       - name: Get version
         id: version
         run: |
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             # Manual trigger - use auto-release script
-            chmod +x scripts/*.sh
-            ./scripts/auto-release.sh ${{ github.event.inputs.bump_type }} --dry-run
-            VERSION=$(./scripts/version-manager.sh info | grep "Current Version:" | awk '{print $3}')
+            chmod +x scripts/*.js
+            node scripts/auto-release.js ${{ github.event.inputs.bump_type }} --dry-run
+            VERSION=$(node scripts/version-manager.js info | grep "Current Version:" | awk '{print $3}')
           else
             # Tag trigger - extract version from tag
             VERSION=${GITHUB_REF#refs/tags/v}
