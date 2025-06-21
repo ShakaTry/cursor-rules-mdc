@@ -49,14 +49,14 @@ jobs:
 
       # JavaScript/TypeScript Linting
       - name: Setup Node.js
-        if: needs.detect-project.outputs.project-type == 'javascript'
+        if: contains(fromJSON('["javascript", "mixed", "universal"]'), needs.detect-project.outputs.project-type)
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: ${{ needs.detect-project.outputs.package-manager }}
 
       - name: Install dependencies (JavaScript)
-        if: needs.detect-project.outputs.project-type == 'javascript'
+        if: contains(fromJSON('["javascript", "mixed", "universal"]'), needs.detect-project.outputs.project-type)
         run: |
           if [ "${{ needs.detect-project.outputs.package-manager }}" = "yarn" ]; then
             yarn install --frozen-lockfile
@@ -68,7 +68,7 @@ jobs:
           fi
 
       - name: Lint JavaScript/TypeScript
-        if: needs.detect-project.outputs.project-type == 'javascript'
+        if: contains(fromJSON('["javascript", "mixed", "universal"]'), needs.detect-project.outputs.project-type)
         run: |
           if [ "${{ needs.detect-project.outputs.package-manager }}" = "yarn" ]; then
             yarn lint || true
@@ -158,20 +158,20 @@ jobs:
           output: 'trivy-results.sarif'
 
       - name: Upload Trivy scan results to GitHub Security
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         if: always()
         with:
           sarif_file: 'trivy-results.sarif'
 
       # JavaScript security
       - name: Setup Node.js for security scan
-        if: needs.detect-project.outputs.project-type == 'javascript'
+        if: contains(fromJSON('["javascript", "mixed", "universal"]'), needs.detect-project.outputs.project-type)
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Run npm audit (JavaScript)
-        if: needs.detect-project.outputs.project-type == 'javascript'
+        if: contains(fromJSON('["javascript", "mixed", "universal"]'), needs.detect-project.outputs.project-type)
         run: |
           if [ -f package-lock.json ]; then
             npm audit --audit-level=moderate
