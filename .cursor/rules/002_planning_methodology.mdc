@@ -4,41 +4,64 @@ globs:
 alwaysApply: false
 ---
 ---
-description: "Méthodologie de planification avec intégration native du /plan de Claude"
+description: "Méthodologie de planification avec template générique"
 globs: ".cursor/plans/**/*,**/plan/**/*,**/planning/**/*"
 alwaysApply: false
 ---
 
-# PLANIFICATION - UTILISE /plan
+# PLANIFICATION OBLIGATOIRE - COPIE DU TEMPLATE
 
-## PROCESSUS OBLIGATOIRE
-1. **Analyse** → Comprendre contexte et contraintes
-2. **Plan** → Utilise `/plan` pour structurer
-3. **Validation** → Attendre approbation explicite
-4. **Exécution** → Suivre le plan à la lettre
+## 🚨 RÈGLE ABSOLUE
+**TOUJOURS** copier le template générique avant de coder !
 
-## TEMPLATE /plan
-```
-/plan
-# [TITRE TÂCHE]
-## Contexte: [Besoin et contraintes]
-## Objectifs:
-- [ ] Objectif 1
-- [ ] Objectif 2
-## Étapes:
-1. [Action] - [Fichiers impactés]
-2. [Action] - [Détails techniques]
-## Validation: [Critères de succès]
+## 📋 PROCESSUS AUTOMATIQUE
+
+### 1. **CRÉATION DU PLAN**
+```bash
+# Copier le template générique
+.cursor/plans/templates/plan-template.md
+→ .cursor/plans/active/YYYY-MM-DD-[feature].md
 ```
 
-## RÈGLES PLAN
-- Décompose en étapes atomiques (<20min)
-- Identifie TOUS les fichiers impactés
-- Définis critères de validation mesurables
-- Archive dans `.cursor/plans/YYYY-MM-DD_task.md`
-- Met à jour `memory-bank/activeContext.md`
+### 2. **WORKFLOW OBLIGATOIRE**
+1. **COPIE** le template générique
+2. **REMPLIT** toutes les sections `[PLACEHOLDER]`
+3. **AFFICHE** le plan complété
+4. **ATTEND** validation : "ok", "approuvé", "validé"
+5. **IMPLÉMENTE** selon le plan
+6. **ARCHIVE** dans `completed/` après finalisation
 
-**RAPPEL:** Utilise TOUJOURS `/plan` avant de coder!
+### 3. **STRUCTURE DES DOSSIERS**
+
+.cursor/plans/
+├── templates/
+│ └── plan-template.md # Template générique (NE PAS MODIFIER)
+├── active/ # Plans en cours
+│ └── YYYY-MM-DD-.md
+└── completed/ # Plans terminés
+└── YYYY-MM-DD-.md
 
 
+## ⚡ COMMANDES MENTALES
 
+```bash
+# Nouveau plan
+cp templates/plan-template.md active/$(date +%Y-%m-%d)-feature.md
+
+# Plan terminé
+mv active/plan.md completed/
+
+# MAJ Memory Bank
+echo "Plan complété" >> memory-bank/activeContext.md
+```
+
+## 🔴 RAPPELS CRITIQUES
+
+- **NE JAMAIS** coder sans plan validé
+- **NE JAMAIS** modifier le template générique
+- **TOUJOURS** faire une copie du template
+- **TOUJOURS** remplir TOUTES les sections
+- **TOUJOURS** archiver après implémentation
+
+
+**Template générique : `.cursor/plans/templates/plan-template.md`**

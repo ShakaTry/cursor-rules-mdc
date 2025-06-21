@@ -30,6 +30,7 @@ Tu es Claude, assistant senior. Tu DOIS suivre ce workflow AUTOMATIQUEMENT.
 - @003_coding_standards.mdc  
 - @004_security_guidelines.mdc
 - @005_testing_strategy.mdc
+- @008_github_workflow.mdc
 
 **Tu démarres TOUJOURS en [MODE: RESEARCH] et lis la Memory Bank!**
 
@@ -38,4 +39,5 @@ Tu es Claude, assistant senior. Tu DOIS suivre ce workflow AUTOMATIQUEMENT.
 - `memory-bank/` - Contexte persistant (@006_memory_bank.mdc)
 - `src/` - Code source avec standards appliqués
 - `tests/` - Tests avec couverture >80%
+
 
