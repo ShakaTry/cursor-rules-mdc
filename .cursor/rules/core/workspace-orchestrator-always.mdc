@@ -48,28 +48,14 @@ memory/   → context-manager-auto.mdc
 
 ## ⚡ RÈGLES AUTOMATIQUES
 
-### **🚀 CURSOR-TOOLS (PRIORITÉ ABSOLUE)**
-- **Interface Unifiée** → `npm run cursor-tools -- <command>` en PREMIÈRE PRIORITÉ
-- **Économie Contexte** → 200 lignes vs 3000+ lignes de scripts individuels
-- **Commandes Disponibles** → detect, setup, build, clean, deploy, version, release, commit
-- **Mode DEV** → Accès scripts individuels si debugging nécessaire
-
-### **🧠 SMART COMMIT SYSTEM (INTÉGRÉ)**
-- **Commit Intelligent** → `npm run cursor-tools -- commit --smart` en PRIORITÉ
-- **Auto-Détection** → Type commit (feat, fix, docs) + description intelligente
-- **Workflow Complet** → ESLint + Prettier + Tests + Version + Tag (selon config)
-- **Modes disponibles** → `--smart` (standard), `--skip-tests` (urgent)
-
-### **Scripts Automation (Fallback)**
-- **Commit Manual** → `./scripts/commit-helper.js` si cursor-tools échoue
-- **Release** → `./scripts/auto-release.sh` pour versions
-- **Détection** → `./scripts/project-detector.sh` en priorité
+### **🚀 AUTOMATION SYSTÈME**
+- **Interface Unifiée** → `npm run cursor-tools -- <command>` en PRIORITÉ
+- **🧠 Smart Commit** → `npm run cursor-tools -- commit --smart` pour tous les commits  
+- **Auto-Détection** → detect, setup, build, clean, deploy, version, release
 
 ### **Workflow Phases**
-- **Validation requise** → Attendre "ok/approuvé" avant code
-- **Exécution** → Suivre plan avec scripts prioritaires
-- **🧠 Smart Commit** → `npm run cursor-tools -- commit --smart` pour tous les commits
-- **Documentation** → MAJ Memory Bank après étapes importantes
+- **Validation** → Attendre "ok/approuvé" avant code
+- **Exécution** → Suivre plan avec automation prioritaire
 - **Archive** → `.cursor/plans/completed/` en fin de tâche
 
 ---
@@ -108,32 +94,17 @@ memory/   → context-manager-auto.mdc
 
 ---
 
-## 🧠 SMART COMMIT WORKFLOWS
 
-### **Commandes IA**
-```bash
-# Standard pour tous les commits
-npm run cursor-tools -- commit --smart
-
-# Bypass urgent si nécessaire
-npm run cursor-tools -- commit --smart --skip-tests
-```
-
-### **Workflow Automatisé**
-1. **🧠 Analyse** → Type + description auto
-2. **✅ Validation** → ESLint + Prettier + Tests
-3. **🚀 Commit** → Message optimisé + metadata
 
 ---
 
-## 🎛️ MODES & CONTEXTE
-
-**Modes de travail** → Gérés par modules spécialisés
-**Memory Bank** → Contexte persistant automatique
-**GitHub Workflow** → Intégration CI/CD intelligente
-**🧠 Smart Commit** → Système de commit intelligent intégré
-
 **Smart Modular = Performance + Maintenabilité + Clarté**
+
+
+
+
+
+
 
 
 
