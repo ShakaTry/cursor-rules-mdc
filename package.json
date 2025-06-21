@@ -40,7 +40,24 @@
     "release:dry": "release-it --dry-run",
     "release": "release-it",
     "commit": "git add . && git commit -F .gitmessage || git commit",
-    "setup": "npm install && npm run prepare"
+    "setup": "npm install && npm run prepare",
+    "scripts:make-executable": "chmod +x scripts/*.js",
+    "scripts:project-detect": "node scripts/project-detector.js",
+    "scripts:version-bump": "node scripts/version-manager.js bump",
+    "scripts:commit-helper": "node scripts/commit-helper.js",
+    "scripts:build": "node scripts/build.js",
+    "scripts:clean": "node scripts/clean.js"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "commander": "^11.1.0",
+    "cross-spawn": "^7.0.3",
+    "fs-extra": "^11.2.0",
+    "glob": "^10.3.0",
+    "inquirer": "^9.2.0",
+    "semver": "^7.5.4",
+    "simple-git": "^3.20.0",
+    "which": "^4.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.29.0",
