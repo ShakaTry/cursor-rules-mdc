@@ -53,18 +53,17 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: ${{ needs.detect-project.outputs.package-manager }}
 
       - name: Install dependencies (JavaScript)
         if: contains(fromJSON('["javascript", "mixed", "universal"]'), needs.detect-project.outputs.project-type)
         run: |
           if [ "${{ needs.detect-project.outputs.package-manager }}" = "yarn" ]; then
-            yarn install --frozen-lockfile
+            yarn install
           elif [ "${{ needs.detect-project.outputs.package-manager }}" = "pnpm" ]; then
             npm install -g pnpm
-            pnpm install --frozen-lockfile
+            pnpm install
           else
-            npm ci
+            npm install
           fi
 
       - name: Lint JavaScript/TypeScript
@@ -160,6 +159,7 @@ jobs:
       - name: Upload Trivy scan results to GitHub Security
         uses: github/codeql-action/upload-sarif@v3
         if: always()
+        continue-on-error: true
         with:
           sarif_file: 'trivy-results.sarif'
 

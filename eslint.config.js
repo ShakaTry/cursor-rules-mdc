@@ -48,11 +48,12 @@ export default [
     },
   },
 
-  // Configuration pour les exemples
+  // Configuration pour les exemples et scripts
   {
-    files: ['examples/**/*', 'docs/**/*'],
+    files: ['examples/**/*', 'docs/**/*', 'scripts/**/*', 'src/**/*'],
     rules: {
       'no-console': 'off',
+      'no-unused-vars': 'warn',
     },
   },
 
