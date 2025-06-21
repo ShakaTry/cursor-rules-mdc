@@ -35,7 +35,7 @@
     "quality:fix": "npm run lint:fix && npm run format",
     "prepare": "git config core.hooksPath .githooks || true",
     "version:patch": "npm version patch --no-git-tag-version",
-    "version:minor": "npm version minor --no-git-tag-version", 
+    "version:minor": "npm version minor --no-git-tag-version",
     "version:major": "npm version major --no-git-tag-version",
     "release:dry": "release-it --dry-run",
     "release": "release-it",
@@ -43,6 +43,7 @@
     "setup": "npm install && npm run prepare"
   },
   "devDependencies": {
+    "@release-it/conventional-changelog": "^7.0.2",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "eslint": "^8.50.0",
@@ -51,8 +52,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^6.1.0",
     "prettier": "^3.0.0",
-    "release-it": "^16.0.0",
-    "@release-it/conventional-changelog": "^7.0.0"
+    "release-it": "^16.3.0"
   },
   "optionalDependencies": {
     "typescript": "^5.0.0"
@@ -65,4 +65,4 @@
     "*.md",
     "LICENSE"
   ]
-} 
+}
