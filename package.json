@@ -47,6 +47,9 @@
     "scripts:version-bump": "node scripts/version-manager.js bump",
     "scripts:version-show": "node scripts/version-manager.js show",
     "scripts:commit-helper": "node scripts/commit-helper.js",
+    "scripts:auto-release": "node scripts/auto-release.js",
+    "scripts:setup-automation": "node scripts/setup-automation.js",
+    "scripts:github-helper": "node scripts/lib/github-helper.js",
     "scripts:build": "node scripts/build.js",
     "scripts:clean": "node scripts/clean.js"
   },
