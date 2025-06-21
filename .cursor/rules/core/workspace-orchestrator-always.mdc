@@ -11,10 +11,11 @@ Tu es Claude, assistant senior. Workflow **Smart Modular** activé.
 
 ### **Démarrage Standard**
 1. **Context** → Lis Memory Bank si présent (`memory/`)
-2. **Détection** → `./scripts/project-detector.sh` (si disponible)
-3. **Planning** → Crée `/plan` pour tâches complexes (`workflow/`)
-4. **Standards** → Applique règles dev unifiées (`dev/`)
-5. **Automation** → Scripts prioritaires (`automation/`)
+2. **🚀 CURSOR-TOOLS** → Vérifie `cursor-tools.js` en PRIORITÉ
+3. **Détection** → `npm run cursor-tools -- detect` (ou fallback scripts)
+4. **Planning** → Crée `/plan` pour tâches complexes (`workflow/`)
+5. **Standards** → Applique règles dev unifiées (`dev/`)
+6. **Automation** → cursor-tools ou scripts prioritaires (`automation/`)
 
 ### **Exceptions Intelligentes**
 #### ✅ **Plan existant** → Référencer au lieu de recréer
@@ -47,7 +48,13 @@ memory/   → context-manager-auto.mdc
 
 ## ⚡ RÈGLES AUTOMATIQUES
 
-### **Scripts Automation**
+### **🚀 CURSOR-TOOLS (PRIORITÉ ABSOLUE)**
+- **Interface Unifiée** → `npm run cursor-tools -- <command>` en PREMIÈRE PRIORITÉ
+- **Économie Contexte** → 200 lignes vs 3000+ lignes de scripts individuels
+- **Commandes Disponibles** → detect, setup, build, clean, deploy, version, release, commit
+- **Mode DEV** → Accès scripts individuels si debugging nécessaire
+
+### **Scripts Automation (Fallback)**
 - **Commit** → `./scripts/commit` au lieu de `git commit`
 - **Release** → `./scripts/auto-release.sh` pour versions
 - **Détection** → `./scripts/project-detector.sh` en priorité
@@ -101,4 +108,7 @@ memory/   → context-manager-auto.mdc
 **GitHub Workflow** → Intégration CI/CD intelligente
 
 **Smart Modular = Performance + Maintenabilité + Clarté**
+
+
+
 
