@@ -271,7 +271,6 @@ npm run version:major    # 1.0.0 → 2.0.0
 
 ### Documentation
 
-- �� [Detailed examples](examples.md)
 - 🏗️ [Technical overview](architecture.md)
 - 🛠️ [Installation guide](installation.md)
 
@@ -280,6 +279,63 @@ npm run version:major    # 1.0.0 → 2.0.0
 - [Conventional Commits](https://www.conventionalcommits.org/)
 - [Semantic Versioning](https://semver.org/)
 - [Keep a Changelog](https://keepachangelog.com/)
+
+## 🔧 **Development Workflow**
+
+### **Quality Control**
+```bash
+# Check code quality
+npm run quality
+
+# Auto-fix issues
+npm run quality:fix
+```
+
+### **Git Workflow (Professional)**
+
+#### **Safe Git Commands (Windows PowerShell)**
+```bash
+# Use --no-pager to avoid console hanging
+git --no-pager log --oneline -10
+git --no-pager status --porcelain
+git --no-pager diff --name-only
+
+# Or use configured aliases
+git lg    # Enhanced log view
+git st    # Clean status view
+```
+
+#### **Commit Standards (Conventional Commits)**
+```bash
+# Feature addition
+git commit -m "feat(auth): add login functionality"
+
+# Bug fix
+git commit -m "fix(ui): resolve button alignment issue"
+
+# Documentation
+git commit -m "docs: update installation guide"
+
+# Code formatting
+git commit -m "style: fix ESLint warnings"
+
+# Breaking change
+git commit -m "feat!: remove deprecated API"
+```
+
+#### **Release Workflow**
+```bash
+# Test release (dry run)
+npm run release:dry
+
+# Create actual release
+npm run release
+
+# Manual versioning if needed
+npm run version:patch  # 1.0.0 → 1.0.1
+npm run version:minor  # 1.0.0 → 1.1.0
+npm run version:major  # 1.0.0 → 2.0.0
+```
 
 ---
 

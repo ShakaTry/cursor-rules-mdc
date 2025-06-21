@@ -207,4 +207,25 @@ echo "  npm run release      # Create new release"
 echo "  ./scripts/build.sh   # Build project"
 echo "  ./scripts/deploy.sh  # Deploy project"
 echo ""
-print_success "Happy coding! 🎉" 
+print_success "Happy coding! 🎉"
+
+echo "🔧 Setting up development environment..."
+
+# Install dependencies
+echo "📦 Installing dependencies..."
+npm install
+
+# Configure Git hooks
+echo "🪝 Configuring Git hooks..."
+git config core.hooksPath .githooks 2>/dev/null || true
+
+# Configure Git for better workflow (Windows PowerShell compatibility)
+echo "⚙️ Configuring Git workflow..."
+git config --global alias.lg "log --oneline --graph --decorate --all"
+git config --global alias.st "status --porcelain"
+git config --global alias.co "checkout"
+git config --global alias.br "branch"
+
+# Set up commit message template
+echo "📝 Setting up commit message template..."
+git config commit.template .gitmessage 2>/dev/null || true 
