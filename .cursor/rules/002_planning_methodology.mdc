@@ -57,9 +57,10 @@ alwaysApply: false
 4. **AFFICHE** le plan complété avec phases
 5. **ATTEND** validation : "ok", "approuvé", "validé"
 6. **IMPLÉMENTE** phase par phase selon le plan
-7. **🚀 EXECUTE LA PHASE** automatiquement mais **⏸️ S'ARRÊTE** après completion
-8. **ATTEND VALIDATION** utilisateur avant phase suivante (évite perte contexte)
-9. **ARCHIVE** dans `completed/` après finalisation
+7. **🚀 EXECUTE LA PHASE** automatiquement puis **CONTINUE** vers suivante
+8. **💾 COMMIT AUTOMATIQUE** après chaque phase (sauvegarde progression)
+9. **🧠 MAJ MEMORY BANK** après chaque phase (contextualisation)
+10. **ARCHIVE** dans `completed/` après finalisation
 
 ### 4. **STRUCTURE DES DOSSIERS**
 
@@ -94,22 +95,22 @@ echo "Plan complété" >> memory-bank/activeContext.md
 - **🚨 OBLIGATOIRE** : Découper en phases précises avec temps estimé
 - **TOUJOURS** suivre les phases dans l'ordre
 - **TOUJOURS** valider chaque phase avant la suivante
-- **🚀 TOUJOURS** continuer automatiquement mais **⏸️ S'ARRÊTER** après chaque phase
-- **⚠️ CRITIQUE** : NE JAMAIS exécuter toutes les phases d'un coup (perte contexte)
+- **🚀 TOUJOURS** continuer automatiquement avec **💾 COMMIT** + **🧠 MAJ MEMORY BANK** après chaque phase
+- **💾 OBLIGATOIRE** : Commit automatique + MAJ Memory Bank après chaque phase
 - **TOUJOURS** archiver après implémentation
 
 ## 🧠 GESTION DU CONTEXTE
 
 ### **Problème critique identifié**
-- **Exécution complète** d'un plan multi-phases → **Perte de contexte**
-- **Qualité dégradée** quand trop d'actions simultanées
-- **Erreurs augmentent** avec la complexité cumulée
+- **Perte de contexte** lors de l'exécution sans sauvegarde intermédiaire
+- **Absence de traçabilité** entre les phases
+- **Impossibilité de reprendre** en cas d'interruption
 
 ### **Solution appliquée**
-- **Une phase à la fois** : Exécution contrôlée
-- **Validation entre phases** : Maintien de la qualité
-- **Contexte préservé** : Focus sur une tâche précise
-- **Utilisateur impliqué** : Validation et ajustements possibles
+- **Exécution automatique continue** : Toutes les phases enchaînées
+- **Checkpoints automatiques** : Commit + Memory Bank après chaque phase
+- **Contexte préservé** : Sauvegarde progressive de l'état
+- **Traçabilité complète** : Historique Git + contexte persistant
 
 ## 📐 **BONNES PRATIQUES PHASES**
 
@@ -123,13 +124,13 @@ echo "Plan complété" >> memory-bank/activeContext.md
 - Objectifs **mesurables** et **vérifiables**
 - Actions **spécifiques** et **réalisables**
 
-### **Validation progressive & Continuité contrôlée**
+### **Validation progressive & Continuité avec checkpoints**
 - Valider chaque phase avant la suivante
-- **🚀 CONTINUER AUTOMATIQUEMENT** le workflow après chaque phase validée
-- **⏸️ S'ARRÊTER** après chaque phase complétée pour validation utilisateur
-- **ÉVITER** l'exécution complète d'un coup (problème de contexte)
-- Permettre validation/ajustement avant phase suivante
-- Enchaîner une phase à la fois de manière contrôlée
+- **🚀 CONTINUER AUTOMATIQUEMENT** vers la phase suivante
+- **💾 COMMIT AUTOMATIQUE** après chaque phase complétée
+- **🧠 MAJ MEMORY BANK** après chaque phase complétée
+- **Checkpoints automatiques** pour sauvegarder progression
+- Enchaîner les phases de manière fluide avec sauvegarde
 - Ajuster les phases suivantes si nécessaire
 - Documenter les déviations du plan
 
