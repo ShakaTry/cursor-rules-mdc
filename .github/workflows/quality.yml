@@ -25,15 +25,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Make scripts executable
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Make scripts executable and setup
         run: |
-          chmod +x scripts/*.sh
+          chmod +x scripts/legacy/*.sh 2>/dev/null || true
+          chmod +x scripts/*.js
           mkdir -p .automation
 
       - name: Detect project type
         id: detect
         run: |
-          ./scripts/project-detector.sh
+          node scripts/project-detector.js
           source .automation/project.env
           echo "project-type=$PROJECT_TYPE" >> $GITHUB_OUTPUT
           echo "package-manager=$PACKAGE_MANAGER" >> $GITHUB_OUTPUT
@@ -251,11 +257,6 @@ jobs:
         uses: DavidAnson/markdownlint-cli2-action@v20
         with:
           globs: '**/*.md'
-          config: |
-            {
-              "MD013": { "line_length": 120 },
-              "MD041": false
-            }
         continue-on-error: true
 
   commit-quality:

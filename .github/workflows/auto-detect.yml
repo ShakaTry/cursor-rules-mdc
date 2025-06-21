@@ -26,16 +26,22 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Make scripts executable
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Make scripts executable and setup
         run: |
-          chmod +x scripts/*.sh
+          chmod +x scripts/legacy/*.sh 2>/dev/null || true
+          chmod +x scripts/*.js
           mkdir -p .automation
 
       - name: Run project detection
         id: detect
         run: |
           echo "🔍 Running project detection..."
-          ./scripts/project-detector.sh
+          node scripts/project-detector.js
           
           # Read results
           source .automation/project.env
