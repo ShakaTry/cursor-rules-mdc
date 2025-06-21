@@ -7,11 +7,9 @@
  */
 
 import { Command } from 'commander';
-import { join } from 'path';
-import { readFileSync, existsSync, writeFileSync } from 'fs';
 import utils from './lib/utils.js';
 
-const { log, file, cmd, platform_info } = utils;
+const { log, file, platform } = utils;
 
 /**
  * Project detection results
@@ -205,7 +203,7 @@ class ProjectDetector {
       packageManager: this.packageManager,
       buildTool: this.buildTool,
       versionFile: this.versionFile,
-      platform: platform_info.platform,
+      platform: platform.platform,
       detected: this.detected
     };
 
@@ -299,14 +297,14 @@ program
   .action(async (options) => {
     try {
       if (options.verbose) {
-        log.debug(`Running on ${platform_info.platform}`);
+        log.debug(`Running on ${platform.platform}`);
         log.debug(`Node.js version: ${process.version}`);
       }
 
       const detector = new ProjectDetector();
       await detector.detectProjectType();
       
-      const results = await detector.outputResults(options.format);
+      await detector.outputResults(options.format);
       
       if (options.save) {
         await detector.saveToConfig();
@@ -326,6 +324,6 @@ program
 export { ProjectDetector };
 
 // Run if called directly
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (import.meta.url.endsWith(process.argv[1].replace(/\\/g, '/'))) {
   program.parse();
 } 

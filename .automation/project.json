@@ -1,0 +1,10 @@
+{
+  "projectType": "javascript",
+  "packageManager": "npm",
+  "buildTool": "",
+  "versionFile": "package.json",
+  "platform": "win32",
+  "detected": true,
+  "version": "1.1.1",
+  "name": "cursor-rules-mdc"
+}

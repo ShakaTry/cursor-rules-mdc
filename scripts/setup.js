@@ -7,13 +7,12 @@
  */
 
 import { Command } from 'commander';
-import { join, dirname } from 'path';
-import { createWriteStream } from 'fs';
+import { join } from 'path';
 import inquirer from 'inquirer';
 import utils from './lib/utils.js';
 import { ProjectDetector } from './project-detector.js';
 
-const { log, file, cmd, platform_info } = utils;
+const { log, file, cmd, platform } = utils;
 
 /**
  * Setup Manager
@@ -348,7 +347,7 @@ Check the \`docs/\` directory for detailed documentation.
    * Make scripts executable
    */
   async makeScriptsExecutable() {
-    if (platform_info.isUnix) {
+    if (platform.isUnix) {
       log.step('Making scripts executable...');
       
       const scriptFiles = await file.list('scripts');
@@ -484,6 +483,6 @@ program
 export { SetupManager };
 
 // Run if called directly
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (import.meta.url.endsWith(process.argv[1].replace(/\\/g, '/'))) {
   program.parse();
 } 

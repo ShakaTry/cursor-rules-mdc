@@ -6,9 +6,9 @@
  */
 
 import { fileURLToPath } from 'url';
-import { dirname, join, resolve, sep } from 'path';
-import { readFile, writeFile, access, mkdir, chmod, stat, readdir } from 'fs/promises';
-import { existsSync, constants } from 'fs';
+import { dirname, join, resolve, sep, relative, basename } from 'path';
+import { readFile, writeFile, mkdir, stat, readdir } from 'fs/promises';
+import { existsSync } from 'fs';
 import { spawn, exec } from 'child_process';
 import { promisify } from 'util';
 import { homedir, platform, EOL } from 'os';
@@ -134,7 +134,7 @@ export const cmd = {
   exec: async (command, options = {}) => {
     const defaultOptions = {
       encoding: 'utf8',
-      shell: platform_info.isWindows ? 'powershell.exe' : '/bin/bash',
+      shell: true, // Let Node.js choose the appropriate shell
       ...options
     };
     
@@ -355,7 +355,7 @@ export const project = {
 /**
  * 🎯 Common Utilities
  */
-export const utils = {
+export const common = {
   /**
    * Sleep/delay function
    */
@@ -370,7 +370,7 @@ export const utils = {
         return await fn();
       } catch (error) {
         if (i === maxRetries - 1) {throw error;}
-        await utils.sleep(delay * Math.pow(2, i));
+        await common.sleep(delay * Math.pow(2, i));
       }
     }
   },
@@ -411,5 +411,5 @@ export default {
   git,
   pkg,
   project,
-  utils
+  common
 }; 

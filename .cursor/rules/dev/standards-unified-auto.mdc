@@ -1,0 +1,126 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# STANDARDS DE DÉVELOPPEMENT UNIFIÉS
+
+## 🏗️ PRINCIPES FONDAMENTAUX
+- **SOLID** - Single Responsibility, Open/Closed, Liskov, Interface, Dependency
+- **DRY** - Don't Repeat Yourself + **Sécurité by Design** + **Test First**
+- **KISS** - Keep It Simple, Stupid
+- **YAGNI** - You Aren't Gonna Need It
+
+---
+
+## 💻 STANDARDS DE CODE
+
+### **Conventions**
+```javascript
+// ✅ Bon: Noms explicites, validation intégrée, testable
+const getUserById = async (userId) => {
+  validateId(userId); // Sécurité intégrée
+  return await userRepository.findById(userId);
+}
+
+// ❌ Évite: Noms vagues, logique complexe, non sécurisé
+const get = (id) => { /* 50 lignes non testables */ }
+```
+
+### **Structure & Qualité**
+- **Fonctions** < 20 lignes (facilite tests unitaires)
+- **Classes** < 200 lignes  
+- **Imports** organisés (libs → projet → locaux)
+- **Responsabilité unique** par module
+- **Gestion d'erreurs** explicite et sécurisée
+
+---
+
+## 🔒 SÉCURITÉ INTÉGRÉE
+
+### **Validation Obligatoire**
+```javascript
+// ✅ TOUJOURS valider (sécurité + tests)
+const schema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().min(8).required()
+});
+const validated = schema.validate(input);
+```
+
+### **Authentification Standard**
+- **Bcrypt** (saltRounds=12) pour passwords
+- **JWT** avec expiration courte (1h max)
+- **Refresh tokens** en HttpOnly cookies
+- **Rate limiting** sur endpoints sensibles
+
+### **Protection Essentielle**
+- **XSS**: Échapper TOUT contenu utilisateur
+- **SQL**: Requêtes préparées UNIQUEMENT
+- **CSRF**: Tokens sur toutes mutations
+- **Secrets**: Variables env, JAMAIS hardcodés
+
+---
+
+## 🧪 STRATÉGIE DE TESTS
+
+### **Pyramide de Tests**
+```
+   /\    E2E (5%) - Parcours critiques
+  /--\   Integration (15%) - APIs, DB  
+ /----\  Unit (80%) - Logique métier
+```
+
+### **Structure AAA + Sécurité**
+```javascript
+test('should validate user input securely', () => {
+  // Arrange - Données sécurisées
+  const maliciousInput = "<script>alert('xss')</script>";
+  
+  // Act - Validation + sanitization
+  const result = sanitizeInput(maliciousInput);
+  
+  // Assert - Sécurité vérifiée
+  expect(result).not.toContain('<script>');
+  expect(result).toBe('&lt;script&gt;alert(\'xss\')&lt;/script&gt;');
+});
+```
+
+### **Règles TDD + Sécurité**
+- **Test d'abord** pour nouvelles features
+- **Tests sécurité** systématiques (XSS, injection, auth)
+- **Un test** = un seul comportement
+- **Mocks** pour dépendances externes
+- **Tests isolés** et rapides (<100ms)
+
+---
+
+## ✅ CHECKLISTS INTÉGRÉES
+
+### **Checklist Développement**
+- [ ] **Code** : Fonctions < 20 lignes, noms explicites
+- [ ] **Sécurité** : Validation entrées, échappement sorties
+- [ ] **Tests** : Unitaires + couverture >80%
+- [ ] **Structure** : Imports organisés, responsabilité unique
+
+### **Checklist PR/Déploiement**
+- [ ] **Tests** : Unitaires ajoutés, coverage >80%, pas de `.only`/.skip`
+- [ ] **Sécurité** : Scan dépendances (`npm audit`), headers sécurité
+- [ ] **Qualité** : Linting passé, documentation à jour
+- [ ] **Déploiement** : HTTPS forcé, logs sans données sensibles
+
+### **Checklist Sécurité Critique**
+- [ ] Variables environnement pour secrets
+- [ ] Rate limiting configuré
+- [ ] Tests d'intrusion basiques passés
+- [ ] Audit dépendances clean
+
+---
+
+## 📚 DOCUMENTATION INTELLIGENTE
+- **JSDoc** pour APIs publiques uniquement
+- **Commentaires** sur le POURQUOI, pas le QUOI
+- **README.md** par module si logique complexe
+- **Tests** comme documentation vivante du comportement
+
+

@@ -7,7 +7,7 @@
 
 import utils from './utils.js';
 
-const { cmd, log, file, utils: commonUtils } = utils;
+const { cmd, log } = utils;
 
 /**
  * Enhanced Git operations
@@ -93,8 +93,8 @@ export class GitHelper {
     await this.ensureRepo();
     
     const commitOptions = [];
-    if (options.amend) commitOptions.push('--amend');
-    if (options.noVerify) commitOptions.push('--no-verify');
+    if (options.amend) {commitOptions.push('--amend');}
+    if (options.noVerify) {commitOptions.push('--no-verify');}
     
     const command = `git commit ${commitOptions.join(' ')} -m "${message}"`;
     return await cmd.exec(command);
@@ -110,7 +110,7 @@ export class GitHelper {
     if (message) {
       tagOptions.push(`-a -m "${message}"`);
     }
-    if (options.force) tagOptions.push('-f');
+    if (options.force) {tagOptions.push('-f');}
 
     const command = `git tag ${tagOptions.join(' ')} ${tagName}`;
     return await cmd.exec(command);
@@ -139,7 +139,7 @@ export class GitHelper {
    */
   async getAheadBehind() {
     const result = await cmd.exec('git rev-list --count --left-right @{upstream}...HEAD');
-    if (!result.success) return { ahead: 0, behind: 0 };
+    if (!result.success) {return { ahead: 0, behind: 0 };}
     
     const [behind, ahead] = result.stdout.split('\t').map(n => parseInt(n) || 0);
     return { ahead, behind };
@@ -157,9 +157,9 @@ export class GitHelper {
     }
 
     const pushOptions = [];
-    if (options.setUpstream) pushOptions.push(`--set-upstream ${remote} ${currentBranch}`);
-    if (options.force) pushOptions.push('--force-with-lease');
-    if (options.tags) pushOptions.push('--tags');
+    if (options.setUpstream) {pushOptions.push(`--set-upstream ${remote} ${currentBranch}`);}
+    if (options.force) {pushOptions.push('--force-with-lease');}
+    if (options.tags) {pushOptions.push('--tags');}
 
     const command = options.setUpstream 
       ? `git push ${pushOptions.join(' ')}`
@@ -177,8 +177,8 @@ export class GitHelper {
     const currentBranch = branch || (await this.getStatus()).branch;
     const pullOptions = [];
     
-    if (options.rebase) pullOptions.push('--rebase');
-    if (options.ff) pullOptions.push('--ff-only');
+    if (options.rebase) {pullOptions.push('--rebase');}
+    if (options.ff) {pullOptions.push('--ff-only');}
     
     const command = `git pull ${remote} ${currentBranch} ${pullOptions.join(' ')}`;
     return await cmd.exec(command);
@@ -209,7 +209,7 @@ export class GitHelper {
     const formatOption = formatOptions[format] || formatOptions.oneline;
     const result = await cmd.exec(`git log ${formatOption} -${count}`);
     
-    if (!result.success) return [];
+    if (!result.success) {return [];}
 
     if (format === 'json') {
       return result.stdout.split('\n').map(line => {
@@ -231,14 +231,14 @@ export class GitHelper {
     await this.ensureRepo();
     
     const result = await cmd.exec('git remote -v');
-    if (!result.success) return {};
+    if (!result.success) {return {};}
 
     const remotes = {};
     result.stdout.split('\n').forEach(line => {
       const match = line.match(/^(\S+)\s+(\S+)\s+\((\w+)\)$/);
       if (match) {
         const [, name, url, type] = match;
-        if (!remotes[name]) remotes[name] = {};
+        if (!remotes[name]) {remotes[name] = {};}
         remotes[name][type] = url;
       }
     });
@@ -253,9 +253,9 @@ export class GitHelper {
     await this.ensureRepo();
     
     const stashOptions = [];
-    if (message) stashOptions.push(`push -m "${message}"`);
-    if (options.includeUntracked) stashOptions.push('-u');
-    if (options.keepIndex) stashOptions.push('--keep-index');
+    if (message) {stashOptions.push(`push -m "${message}"`);}
+    if (options.includeUntracked) {stashOptions.push('-u');}
+    if (options.keepIndex) {stashOptions.push('--keep-index');}
 
     const command = `git stash ${stashOptions.length ? stashOptions.join(' ') : 'push'}`;
     return await cmd.exec(command);
@@ -344,6 +344,5 @@ export class GitHelper {
 // Create singleton instance
 const gitHelper = new GitHelper();
 
-// Export both class and instance
-export { GitHelper };
+// Export default instance
 export default gitHelper; 

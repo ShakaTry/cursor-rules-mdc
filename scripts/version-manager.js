@@ -7,11 +7,9 @@
  */
 
 import { Command } from 'commander';
-import { readFileSync, writeFileSync } from 'fs';
 import semver from 'semver';
 import inquirer from 'inquirer';
 import utils from './lib/utils.js';
-import { GitHelper } from './lib/git-helper.js';
 import { ProjectDetector } from './project-detector.js';
 
 const { log, file, cmd } = utils;
@@ -22,7 +20,6 @@ const { log, file, cmd } = utils;
 class VersionManager {
   constructor() {
     this.detector = new ProjectDetector();
-    this.git = new GitHelper();
     this.projectConfig = null;
   }
 
@@ -92,8 +89,8 @@ class VersionManager {
         case 'go':
           // Go modules don't have version in go.mod, check git tags
           try {
-            const latestTag = await this.git.getLatestTag();
-            return latestTag ? latestTag.replace(/^v/, '') : '0.0.0';
+            const result = await cmd.exec('git describe --tags --abbrev=0');
+            return result.success ? result.stdout.replace(/^v/, '') : '0.0.0';
           } catch (error) {
             return '0.0.0';
           }
@@ -262,18 +259,19 @@ class VersionManager {
     log.step(`Creating git tag: ${tagName}`);
     
     try {
-      await this.git.initialize();
-      
       // Check if tag already exists
-      const existingTags = await this.git.getTags();
-      if (existingTags.includes(tagName)) {
-        log.warning(`Tag ${tagName} already exists`);
-        return false;
+      const existingResult = await cmd.exec('git tag --list');
+      if (existingResult.success) {
+        const existingTags = existingResult.stdout.split('\n').filter(tag => tag.trim());
+        if (existingTags.includes(tagName)) {
+          log.warning(`Tag ${tagName} already exists`);
+          return false;
+        }
       }
       
       // Create annotated tag
       const tagMessage = message || `Release version ${version}`;
-      const result = await this.git.createTag(tagName, tagMessage);
+      const result = await cmd.exec(`git tag -a ${tagName} -m "${tagMessage}"`);
       
       if (result.success) {
         log.success(`Created git tag: ${tagName}`);
@@ -303,10 +301,9 @@ class VersionManager {
     
     // Show git tag info if available
     try {
-      await this.git.initialize();
-      const latestTag = await this.git.getLatestTag();
-      if (latestTag) {
-        log.info(`Latest Git Tag: ${latestTag}`);
+      const result = await cmd.exec('git describe --tags --abbrev=0');
+      if (result.success) {
+        log.info(`Latest Git Tag: ${result.stdout}`);
       }
     } catch (error) {
       log.debug('No git repository or tags found');
@@ -482,6 +479,6 @@ program
 export { VersionManager };
 
 // Run if called directly
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (import.meta.url.endsWith(process.argv[1].replace(/\\/g, '/'))) {
   program.parse();
 } 
