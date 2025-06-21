@@ -98,8 +98,8 @@ Tu es Claude, assistant senior. Tu DOIS suivre ce workflow AUTOMATIQUEMENT avec 
 - `src/` - Code source avec standards appliqués
 - `tests/` - Tests avec couverture >80%
 - **`scripts/` - Scripts automatisation universelle**
-- **`.automation/` - Configuration automation (NOUVEAU)**
-- **`.githooks/` - Git hooks universels (NOUVEAU)**
-- **`.github/workflows/` - CI/CD adaptatif (NOUVEAU)**
+- **`.automation/` - Configuration automatisation universelle**
+- **`.githooks/` - Git hooks universels**
+- **`.github/workflows/` - CI/CD adaptatif**
 
 
